@@ -1,113 +1,126 @@
-# Wafer2 快速开发 Demo
+# WeRead 微信小程序开发手册
 
-本仓库是最简版的 Wafer2 开发套件，建议配合腾讯云微信小程序开发者工具解决方案一起使用。适用于想要使用 Wafer SDK 开发的开发者，Demo 对 SDK 进行了详细的使用和介绍，降低开发者的学习成本。
+WeRead 采用微信 Wafer2 开发套件提供底层会话、用户验证以及长连接服务。
 
 ## 目录
 
-- [腾讯云一站式部署开通指引](#腾讯云一站式部署开通指引)
-  - [一、通过微信公众平台授权登录腾讯云](#一通过微信公众平台授权登录腾讯云)
-  - [二、安装开发工具](#二安装开发工具)
-  - [三、导入 DEMO 和配置](#三导入-demo-和配置)
-  - [四、上传和部署代码](#四上传和部署代码)
-- [文档](#文档)
+- 数据库初始化工具
+- 服务端开发文档
+- 客户端开发文档
 
-## 腾讯云一站式部署开通指引
+## 数据库初始化工具
 
-只需要四步即可部署属于自己的小程序**开发环境**。
+本工具是为了让用户快速的按照腾讯云制定的数据库 schema 创建符合 SDK 标准的数据库结构。
 
-### 一、通过微信公众平台授权登录腾讯云
+_**注意**：本工具支持的 MySQL 版本为 **5.7**，并且需提前在数据库中创建名为 `cAuth` 的数据库。`charset` 设置为 `utf8mb4`。_
 
-打开[微信公众平台](https://mp.weixin.qq.com)注册并登录小程序，按如下步骤操作：
+快速使用：
 
-1. 单击左侧菜单栏中的【设置】。
-2. 单击右侧 Tab 栏中的【开发者工具】。
-3. 单击【腾讯云】，进入腾讯云工具页面，单击【开通】。
-4. 使用小程序绑定的微信扫码即可将小程序授权给腾讯云，开通之后会自动进去腾讯云微信小程序控制台，显示开发环境已开通，此时可以进行后续操作。
+```bash
+npm run initdb
+```
 
-> **注意：**
->
-> 此时通过小程序开发者工具查看腾讯云状态并不会显示已开通，已开通状态会在第一次部署开发环境之后才会同步到微信开发者工具上。
+或直接执行 `tools` 目录下的 `initdb.js` 文件：
 
-![进入微信公众平台后台](https://mc.qcloudimg.com/static/img/a3ca2891b23cfce7d3678cd05a4e14fe/13.jpg)
+```bash
+# 请保证已经执行了 npm install 安装了所需要的依赖
+node tools/initdb.js
+```
 
-![开通腾讯云](https://mc.qcloudimg.com/static/img/53e34b52e098ee3a0a02ecc8fbb68a54/14.jpg)
+我们提供了初始化的 SQL 文件，你也可以用其他数据库工具（如 Navicat）直接导入 SQL 文件。
 
-![腾讯云微信小程序控制台](https://mc.qcloudimg.com/static/img/032d0b2b99dfcfdf4234db911e93b60f/15.png)
+## 服务端开发文档
 
-### 二、安装开发工具
+- 代码部署目录：`/data/release/node-weapp-demo`
+- 运行 Node 版本：`v8.1.0`
+- Node 进程管理工具：`pm2`
 
-下载并安装最新版本的[微信开发者工具](https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html)，使用小程序绑定的微信号扫码登录开发者工具。
+### 项目结构
 
-![微信开发者工具](https://mc.qcloudimg.com/static/img/4fd45bb5c74eed92b031fbebf8600bd2/1.png)
+```
+koa-weapp-demo
+├── README.md
+├── app.js
+├── controllers
+│   ├── index.js
+│   ├── login.js
+│   ├── message.js
+│   ├── tunnel.js
+│   ├── upload.js
+│   └── user.js
+├── middlewares
+│   └── response.js
+├── config.js
+├── package.json
+├── process.json
+├── nodemon.json
+├── qcloud.js
+└── routes
+    └── index.js
+```
 
-### 三、初始化 Demo 并上传
+`app.js` 是 Demo 的主入口文件，Demo 使用 Koa 框架，在 `app.js` 创建一个 Koa 实例并响应请求。
 
-1. 打开第二步安装的微信开发者工具，点击【小程序项目】按钮。
+`routes/index.js` 是 Demo 的路由定义文件
 
-2. 输入小程序 AppID，项目目录选择一个**空的目录**，接着选择【建立腾讯云 Node.js 启动模板】，点击确定创建小程序项目。
+`controllers` 存放 Demo 所有业务逻辑的目录，`index.js` 不需要修改，他会动态的将 `controllers` 文件夹下的目录结构映射成 modules 的 Object，例如 Demo 中的目录将会被映射成如下的结构：
 
-   <img src="https://mc.qcloudimg.com/static/img/b5e57e41bab97b6b01f4de03ccfc8acc/image.png" width="413px">
+```javascript
+// index.js 输出
+{
+  login: require('login'),
+  message: require('message'),
+  tunnel: require('tunnel'),
+  upload: require('upload'),
+  user: require('user')
+}
+```
 
-3. 安装依赖
+`qcloud.js` 导出了一个 SDK 的单例，包含了所有的 SDK 接口，之后使用的时候只需要 `require` 这个文件就行，无需重复初始化 SDK。
 
-   > 为方便本地调试，建议您在本地安装依赖。你也可以跳过这步直接使用开发者工具的“腾讯云”菜单中的“安装依赖”直接在线上安装依赖。
+`config.js` 主要的配置如下：
 
-   在您刚刚选择的目录打开 CMD 安装依赖：
+```javascript
+{
+  port: '5757',                             // 项目启动的端口
 
-   ```bash
-   cd server && npm install
-   ```
+  appId: 'wx00dd00dd00dd00dd',              // 微信小程序 App ID
+  appSecret: 'abcdefg',                     // 微信小程序 App Secret
+  wxLoginExpires: 7200,                     // 微信登录态有效期
+  useQcloudLogin: false,                    // 是否使用腾讯云代理登录
 
-   ![安装依赖](https://mc.qcloudimg.com/static/img/f39248e665fd0915e041da67e5970b7f/12.png)
+  /**
+   * MySQL 配置，用来存储用户登录态和用户信息
+   * 如果不提供 MySQL 配置，模式会使用自动配置好的本地镜像中的 MySQL 储存信息
+   * 具体查看文档-登录态储存和校验
+   **/
+  mysql: {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    db: 'cAuth',
+    pass: '',
+    char: 'utf8'
+  },
+  
+  // COS 配置，用于上传模块使用
+  cos: {
+    /**
+     * 区域
+     * 华北：cn-north
+     * 华东：cn-east
+     * 华南：cn-south
+     * 西南：cn-southwest
+     */
+    region: 'cn-south',
+    fileBucket: 'test',                    // Bucket 名称
+    uploadFolder: ''                       // 文件夹
+  }
+}
+```
 
-4. 点击界面右上角的【腾讯云】图标，在下拉的菜单栏中选择【上传测试代码】。
+除了 `config.js` ，腾讯云还会在你初始化小程序解决方案的时候，向你的机器下发 `sdk.config`，里面包含了你的腾讯云 AppId、SecretId、SecretKey 和服务器等信息，无需修改，`qcloud.js` 会自动引入。如果你想要在自己的机器上部署 SDK 的 Demo，请查看[自行部署 Demo 说明]()。
 
-   ![上传按钮](https://mc.qcloudimg.com/static/img/8480bbc02b097bac0d511c334b731e12/5.png)
+除此以外，关于 SDK 的详细配置信息，还可以查看 [SDK 的 API 文档]()。
 
-5. 选择【模块上传】并勾选全部选项，然后勾选【部署后自动安装依赖】，点击【确定】开始上传代码。
-
-   ![选择模块](https://user-images.githubusercontent.com/3380894/30306412-8df08f4e-97aa-11e7-9a5b-7ab82c58c63d.png)
-
-   ![上传成功](https://mc.qcloudimg.com/static/img/a78431b42d0edf0bddae0b85ef00d40f/7.png)
-
-6. 上传代码完成之后，点击右上角的【详情】按钮，接着选择【腾讯云状态】即可看到腾讯云自动分配给你的开发环境域名：
-
-   ![查看开发域名](https://mc.qcloudimg.com/static/img/04a97a0551d28a25aa066352e74e0443/8.png)
-
-7. 完整复制（包括 `https://`）开发环境 request 域名，然后在编辑器中打开 `client/config.js` 文件，将复制的域名填入 `host` 中并保存，保存之后编辑器会自动编译小程序，左边的模拟器窗口即可实时显示出客户端的 Demo：
-
-   ![修改客户端配置](https://mc.qcloudimg.com/static/img/397c68210ef2113721608dd2506f8f12/9.png)
-
-8. 在模拟器中点击【登录】，看到显示“登录成功”，即为开通完成，可以开始你的其他开发了。
-
-   ![登录测试](https://mc.qcloudimg.com/static/img/7102752e343d9d8791564b2ffc9d8308/10.png)
-
-## 文档
-
-我们还提供了服务端、客户端的 Demo、SDK 的具体文档：
-
-- [Wiki 首页](https://github.com/tencentyun/wafer2-startup/wiki)
-- [开发环境和生产环境](https://github.com/tencentyun/wafer2-startup/wiki/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%92%8C%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83)
-- [自行部署](https://github.com/tencentyun/wafer2-startup/wiki/%E8%87%AA%E8%A1%8C%E9%83%A8%E7%BD%B2)
-- [一站式部署](https://github.com/tencentyun/wafer2-startup/blob/master/README.md)
-- [常见问题](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
-  - [如何部署代码到开发环境](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81%E5%88%B0%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
-  - [如何重启服务器](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E9%87%8D%E5%90%AF%E6%9C%8D%E5%8A%A1%E5%99%A8)
-  - [如何恢复初始化环境](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E6%81%A2%E5%A4%8D%E5%88%9D%E5%A7%8B%E5%8C%96%E7%8E%AF%E5%A2%83)
-  - [如何远程调试后台代码](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81)
-  - [如何查看后台日志](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E5%90%8E%E5%8F%B0%E6%97%A5%E5%BF%97)
-  - [如何修改数据库密码](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81)
-  - [如何新建和修改数据库的库表](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E6%96%B0%E5%BB%BA%E5%92%8C%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%BA%93%E8%A1%A8)
-  - [如何上传图片](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87)
-  - [如何部署 Demo 到自己的服务器](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2-demo-%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8)
-  - [如何快速新建路由](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%96%B0%E5%BB%BA%E8%B7%AF%E7%94%B1)
-  - [微信后台如何配置客服消息推送接口](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%BE%AE%E4%BF%A1%E5%90%8E%E5%8F%B0%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E5%AE%A2%E6%9C%8D%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81%E6%8E%A5%E5%8F%A3)
-  - [如何使用服务端 SDK 连接和操作数据库](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF-sdk-%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93)
-  - [本地如何搭建开发环境](https://github.com/tencentyun/wafer2-startup/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E6%9C%AC%E5%9C%B0%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
-- [Wafer2 服务端 Demo 文档](./server/README.md)
-- [Wafer2 服务端 Demo 工具文档](./server/tools.md)
-- [Wafer2 客户端 Demo 文档](./client/README.md)
-- [Wafer2 服务端 SDK 使用文档](https://github.com/tencentyun/wafer2-node-sdk/blob/master/README.md)
-- [Wafer2 服务端 SDK API 文档](https://github.com/tencentyun/wafer2-node-sdk/blob/master/API.md)
-- [Wafer2 客户端 SDK 使用文档](https://github.com/tencentyun/wafer2-client-sdk/blob/master/README.md)
-
+##客户端开发文档
