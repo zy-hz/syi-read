@@ -31,14 +31,14 @@ node tools/initdb.js
 
 ## 服务端开发文档
 
-- 代码部署目录：`/data/release/node-weapp-demo`
+- 代码部署目录：`/data/release/node-weread`
 - 运行 Node 版本：`v8.1.0`
 - Node 进程管理工具：`pm2`
 
 ### 项目结构
 
 ```
-koa-weapp-demo
+koa-weread
 ├── README.md
 ├── app.js
 ├── controllers
@@ -59,11 +59,11 @@ koa-weapp-demo
     └── index.js
 ```
 
-`app.js` 是 Demo 的主入口文件，Demo 使用 Koa 框架，在 `app.js` 创建一个 Koa 实例并响应请求。
+`app.js` 是 WeRead 主入口文件，WeRead 使用 Koa 框架，在 `app.js` 创建一个 Koa 实例并响应请求。
 
-`routes/index.js` 是 Demo 的路由定义文件
+`routes/index.js` 是 WeRead 的路由定义文件
 
-`controllers` 存放 Demo 所有业务逻辑的目录，`index.js` 不需要修改，他会动态的将 `controllers` 文件夹下的目录结构映射成 modules 的 Object，例如 Demo 中的目录将会被映射成如下的结构：
+`controllers` 存放 WeRead 所有业务逻辑的目录，`index.js` 不需要修改，他会动态的将 `controllers` 文件夹下的目录结构映射成 modules 的 Object，例如 WeRead 中的目录将会被映射成如下的结构：
 
 ```javascript
 // index.js 输出
@@ -119,7 +119,7 @@ koa-weapp-demo
 }
 ```
 
-除了 `config.js` ，腾讯云还会在你初始化小程序解决方案的时候，向你的机器下发 `sdk.config`，里面包含了你的腾讯云 AppId、SecretId、SecretKey 和服务器等信息，无需修改，`qcloud.js` 会自动引入。如果你想要在自己的机器上部署 SDK 的 Demo，请查看[自行部署 Demo 说明]()。
+除了 `config.js` ，腾讯云还会在你初始化小程序解决方案的时候，向你的机器下发 `/data/release/sdk.config.json`，里面包含了你的腾讯云 AppId、SecretId、SecretKey 和服务器等信息，无需修改，`qcloud.js` 会自动引入。如果想要在自己的机器上部署 SDK 的 Demo，请查看[自行部署 Demo 说明]()。
 
 除此以外，关于 SDK 的详细配置信息，还可以查看 [SDK 的 API 文档]()。
 
