@@ -1,2 +1,2 @@
 <!--pages/zTest.wxml-->
-<text>pages/zTest.wxml</text>
+<view>{{DateString}}</view>

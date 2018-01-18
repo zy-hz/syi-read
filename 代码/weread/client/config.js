@@ -3,7 +3,7 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'http://127.0.0.1:5757';
+var host = 'https://bgn7tmky.qcloud.la';
 
 var config = {
 
