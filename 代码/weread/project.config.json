@@ -4,9 +4,41 @@
 	"miniprogramRoot": "./client",
 	"qcloudRoot": "./server",
 	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
 		"newFeature": true
 	},
 	"appid": "wxdb3c0e700520efe2",
+<<<<<<< HEAD
 	"projectname": "随义读书",
 	"condition": {}
+=======
+	"projectname": "weread",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "zTest",
+					"pathName": "pages/zTest",
+					"query": ""
+				}
+			]
+		}
+	}
+>>>>>>> 5d795d912ce7942853577a1a04dcd43b81c83a20
 }
