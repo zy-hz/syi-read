@@ -2,13 +2,13 @@
   "pages": [
     "pages/index/index",
     "pages/addCgi/addCgi",
-    "pages/zTest"
+    "pages/welcome/welcome"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "随义读书",
+    "navigationBarTitleText": "WeRead",
     "navigationBarTextStyle": "black"
   }
 }

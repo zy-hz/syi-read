@@ -1,0 +1,15 @@
+<view class="page">
+  
+  <view class='page__hd'>
+    <view class='page__title'>{{NoticeTitle}}</view>
+    <view class='page__desc'>{{NoticeContent}}</view>
+  </view>
+
+  <view class='page__ft'>
+    <view class="weui-btn-area">
+      <button  class="weui-btn"  type='primary' open-type='getUserInfo' bindgetuserinfo='doGetUserInfo' disabled='{{hasAuthorized}}'>前往授权</button>
+      <button  class="weui-btn"  type='default'>取消</button>
+    </view>
+  </view>
+
+</view>

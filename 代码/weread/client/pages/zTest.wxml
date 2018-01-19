@@ -1,2 +1,0 @@
-<!--pages/zTest.wxml-->
-<view>{{DateString}}</view>
