@@ -11,11 +11,7 @@
 		"newFeature": true
 	},
 	"appid": "wxdb3c0e700520efe2",
-<<<<<<< HEAD
 	"projectname": "随义读书",
-	"condition": {}
-=======
-	"projectname": "weread",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -33,12 +29,17 @@
 			"list": [
 				{
 					"id": -1,
-					"name": "zTest",
-					"pathName": "pages/zTest",
+					"name": "welcome",
+					"pathName": "pages/welcome/welcome",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "zzTest",
+					"pathName": "pages/zzTest/zzTest",
 					"query": ""
 				}
 			]
 		}
 	}
->>>>>>> 5d795d912ce7942853577a1a04dcd43b81c83a20
 }
