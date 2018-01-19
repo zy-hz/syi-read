@@ -16,10 +16,9 @@ module.exports = function init(options) {
 
   // 初始化配置
   const configs = config.set(options)
-  console.log(options)
 
   return {
     service,
-    user: require('./lib/user')
+    org: require('./lib/org')
   }
 }

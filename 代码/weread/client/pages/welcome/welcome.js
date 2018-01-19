@@ -1,4 +1,5 @@
-// pages/introduce/introduce.js
+const { org } = require('../../weread.js');
+
 Page({
 
   /**
@@ -13,9 +14,7 @@ Page({
   // 点击用户授权
   doGetUserInfo: function (options) {
     if (options.detail.userInfo != null) {
-      wx.reLaunch({
-        url: '/pages/taskBlock/taskBlock',
-      })
+      this.doRegistUser()
     }
     else {
       this.setData({
@@ -37,8 +36,26 @@ Page({
     wx.getSetting({
       success(res) {
         var isAuth = res.authSetting['scope.userInfo'];
+        if (isAuth == undefined) isAuth = false;
+        
         thePage.setData({ hasAuthorized: isAuth });
       }
+    })
+  },
+
+  // 用户注册
+  doRegistUser: function () {
+    org.registUser({
+      success(result) {
+
+      },
+      fail(error) {
+        //common.showModel('初始化失败', error);
+        console.log('初始化失败', error);
+      }
+    })
+    wx.reLaunch({
+      url: '/pages/taskBlock/taskBlock',
     })
   },
 
