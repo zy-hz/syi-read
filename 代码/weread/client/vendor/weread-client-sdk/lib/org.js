@@ -15,7 +15,7 @@ function registUser(options) {
 
   // 自动登录
   options.login = true;
-  options.url = `${service.baseUrl}/registUser`;
+  options.url = `${service.baseUrl}/registuser`;
 
   qcloud.request(options);
 }

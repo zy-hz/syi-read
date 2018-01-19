@@ -37,7 +37,7 @@ Page({
       success(res) {
         var isAuth = res.authSetting['scope.userInfo'];
         if (isAuth == undefined) isAuth = false;
-        
+
         thePage.setData({ hasAuthorized: isAuth });
       }
     })
@@ -48,14 +48,14 @@ Page({
     org.registUser({
       success(result) {
 
+        // 注册成功后的转向
+        wx.reLaunch({ url: '/pages/taskBlock/taskBlock' })
+
       },
       fail(error) {
         //common.showModel('初始化失败', error);
         console.log('初始化失败', error);
       }
-    })
-    wx.reLaunch({
-      url: '/pages/taskBlock/taskBlock',
     })
   },
 
