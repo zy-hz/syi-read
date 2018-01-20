@@ -47,14 +47,11 @@ Page({
   doRegistUser: function () {
     org.registUser({
       success(result) {
-
         // 注册成功后的转向
         wx.reLaunch({ url: '/pages/taskBlock/taskBlock' })
-
       },
       fail(error) {
-        //common.showModel('初始化失败', error);
-        console.log('初始化失败', error);
+        console.log('用户注册失败', error);
       }
     })
   },
