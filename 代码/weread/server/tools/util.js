@@ -1,15 +1,3 @@
-const configs = require('../config')
-const DB = require('knex')({
-  client: 'mysql',
-  connection: {
-    host: configs.mysql.host,
-    port: configs.mysql.port,
-    user: configs.mysql.user,
-    password: configs.mysql.pass,
-    database: "weread",
-    charset: configs.mysql.char
-  }
-})
 
  /**
   * 验证请求
@@ -29,6 +17,5 @@ const DB = require('knex')({
   }
 
 module.exports = {
-  DB,
   verify_request
 };
