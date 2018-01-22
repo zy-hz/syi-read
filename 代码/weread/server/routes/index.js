@@ -33,6 +33,7 @@ router.get('/message', controllers.message.get)
 router.post('/message', controllers.message.post)
 
 // 组织的方法
+router.get('/createorg', validationMiddleware, controllers.org.createOrg)
 router.get('/registuser', validationMiddleware, controllers.org.registUser)
 
 module.exports = router
