@@ -1,5 +1,5 @@
-var org = require('../../vendor/weread-client-sdk/lib/org.js')
 var wxutil = require('../../utils/z-util-wx.js')
+const { org, task } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());

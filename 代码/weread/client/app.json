@@ -4,7 +4,8 @@
     "pages/addCgi/addCgi",
     "pages/welcome/welcome",
     "pages/zzTest/zzTest",
-    "pages/taskList/taskList"
+    "pages/taskList/taskList",
+    "pages/prepareJoinOrg/prepareJoinOrg"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -18,8 +19,8 @@
       {
         "pagePath": "pages/taskList/taskList",
         "text": "任务",
-        "iconPath":"images/task_list_1.png",
-        "selectedIconPath":"images/task_list_1.png"
+        "iconPath": "images/task_list_1.png",
+        "selectedIconPath": "images/task_list_1.png"
       },
       {
         "pagePath": "pages/zzTest/zzTest",
@@ -28,6 +29,6 @@
         "selectedIconPath": "images/man_1.png"
       }
     ],
-    "position":"bottom"
+    "position": "bottom"
   }
 }

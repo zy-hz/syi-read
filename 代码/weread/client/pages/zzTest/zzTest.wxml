@@ -1,2 +1,8 @@
 <!--pages/zzTest/zzTest.wxml-->
-<text>我是测试!!!</text>
+
+<view class='page__ft'>
+  <view class="weui-btn-area">
+    <button class="weui-btn" type='default' bindtap='doCreateNewTask'>新建任务</button>
+    <button class="weui-btn" type='default'>指派任务</button>
+  </view>
+</view>

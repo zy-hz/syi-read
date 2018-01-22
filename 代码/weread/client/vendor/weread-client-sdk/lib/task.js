@@ -2,6 +2,18 @@ const qcloud = require('../../wafer2-client-sdk/index.js')
 const { service } = require('../config.js')
 
 /**
+ * 创建新任务
+ * 
+ * @param {Object} options 函数配置
+ * @param {Function} options.success(result) 成功后的回调函数 const { TaskId } = result.data
+ * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
+ * 
+ */
+function createNewTask(options){
+
+}
+
+/**
  * 获得作业
  * 
  * @param {Object} options 函数配置
@@ -18,4 +30,4 @@ function getTasks(options){
   qcloud.request(options);
 }
 
-module.exports = { checkUserAuth, registUser };
+module.exports = { createNewTask, getTasks };
