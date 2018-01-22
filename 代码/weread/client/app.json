@@ -12,5 +12,20 @@
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "WeRead",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/taskList/taskList",
+        "text": "任务",
+        "iconPath":"images/task_list_96.png",
+        "selectedIconPath":"images/task_list_96.png"
+      },
+      {
+        "pagePath": "pages/zzTest/zzTest",
+        "text": "我"
+      }
+    ],
+    "position":"bottom"
   }
 }
