@@ -21,10 +21,17 @@ const DB = require('knex')({
 var TABLE_USERS = "sy_users";
 var TABLE_MEMBERS = "sy_members";
 
+var TABLE_TASKS = "sy_tasks";
+var TABLE_MEMBER_TASKS = "sy_member_tasks";
+
 var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
+var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_TASKS}.title  as TaskTitle`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`];
+
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
+
+
 
 /**
  * 根据微信标记查询用户
@@ -36,7 +43,7 @@ async function findUserByWx(openId) {
   return result.lenght == 0 ? null : result[0];
 }
 
-async function findUserByUid(uid){
+async function findUserByUid(uid) {
   var result = await DB(TABLE_USERS).select(USER_ITEM).where('id', uid);
   return result.lenght == 0 ? null : result[0];
 }
@@ -73,7 +80,7 @@ async function findMemberByUserId(oid, uid) {
 /**
  * 向一个组织添加成员
  */
-async function addMember(oid, uid, mt,name){
+async function addMember(oid, uid, mt, name) {
   var result = await DB(TABLE_MEMBERS).returning('id').insert({
     name,
     user_id: uid,
@@ -84,10 +91,23 @@ async function addMember(oid, uid, mt,name){
   return result.lenght == 0 ? null : result[0];
 }
 
+
+////////////////////////// 作业 //////////////////////////////
+
+/**
+ * 指派给用户的所有任务
+ */
+async function getAllTasksAssignToUser(uid, isDone) {
+  return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone })
+    .leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
+}
+
 module.exports = {
   findUserByWx,
   findUserByUid,
   createNewUserFromWx,
   findMemberByUserId,
   addMember,
+
+  getAllTasksAssignToUser,
 }

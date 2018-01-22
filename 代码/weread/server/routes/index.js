@@ -36,4 +36,7 @@ router.post('/message', controllers.message.post)
 router.get('/createorg', validationMiddleware, controllers.org.createOrg)
 router.get('/registuser', validationMiddleware, controllers.org.registUser)
 
+// 任务的方法
+router.get('/gettasks', validationMiddleware, controllers.task.getTasks)
+
 module.exports = router
