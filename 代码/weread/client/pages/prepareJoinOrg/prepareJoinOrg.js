@@ -1,66 +1,54 @@
-// pages/prepareJoinOrg/prepareJoinOrg.js
-Page({
+var wxutil = require('../../utils/z-util-wx.js')
+const { org, task } = require('../../weread.js')
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-  
-  },
+// 页面函数，传入一个object对象作为参数
+Page(createPageObject());
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
+// 创建页面对象
+function createPageObject() {
+  var obj = new Object();
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
+  obj.data = {
+    NoticeTitle:"你好",
+    NoticeContent:"欢迎来到随义读书",
+    RecommendOrgs: {},
+  };
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
+  obj.onLoad = onLoad;
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
+  return obj;
+}
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
+/**
+ * 载入页面
+ */
+function onLoad(options) {
+  wx.setNavigationBarTitle({
+    title: '发现',
+  })
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
+  var thePage = this;
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
+  org.checkUserAuth({
+    afterNoAuth() {
+      wx.reLaunch({ url: '/pages/welcome/welcome' })
+    },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
-})
+    afterHasAuth() {
+      doLoadTaskList(thePage)
+    },
+
+    fail(err) {
+      wxutil.showModel('检查用户授权失败', err)
+      console.log('检查用户授权失败', err)
+    }
+
+  })
+}
+
+/**
+ * 载入用户列表
+ */
+function doLoadTaskList(thePage) {
+
+}
