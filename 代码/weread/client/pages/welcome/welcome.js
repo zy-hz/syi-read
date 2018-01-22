@@ -1,4 +1,5 @@
-const { org } = require('../../weread.js');
+var wxutil = require('../../utils/z-util-wx.js')
+const { org } = require('../../weread.js')
 
 Page({
 
@@ -45,12 +46,14 @@ Page({
 
   // 用户注册
   doRegistUser: function () {
+    wxutil.showBusy('注册中');
     org.registUser({
       success(result) {
         // 注册成功后的转向
         wx.reLaunch({ url: '/pages/taskList/taskList' })
       },
       fail(error) {
+        wxutil.showModel('用户注册失败', error);
         console.log('用户注册失败', error);
       }
     })
