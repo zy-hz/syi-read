@@ -48,7 +48,7 @@ Page({
     org.registUser({
       success(result) {
         // 注册成功后的转向
-        wx.reLaunch({ url: '/pages/taskBlock/taskBlock' })
+        wx.reLaunch({ url: '/pages/taskList/taskList' })
       },
       fail(error) {
         console.log('用户注册失败', error);

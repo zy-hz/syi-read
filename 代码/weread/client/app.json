@@ -18,12 +18,14 @@
       {
         "pagePath": "pages/taskList/taskList",
         "text": "任务",
-        "iconPath":"images/task_list_96.png",
-        "selectedIconPath":"images/task_list_96.png"
+        "iconPath":"images/task_list_1.png",
+        "selectedIconPath":"images/task_list_1.png"
       },
       {
         "pagePath": "pages/zzTest/zzTest",
-        "text": "我"
+        "text": "我的",
+        "iconPath": "images/man_1.png",
+        "selectedIconPath": "images/man_1.png"
       }
     ],
     "position":"bottom"

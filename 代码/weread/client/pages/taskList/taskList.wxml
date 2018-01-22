@@ -1,2 +1,27 @@
-<!--pages/taskList/taskList.wxml-->
-<text>pages/taskList/taskList.wxml</text>
+<view class="task-list">
+
+  <!--页眉-->
+
+  <!--begin:作业列表-->
+  <view class="weui-cells weui-cells_after-title block-list__bd">
+
+    <!--begin:作业-->
+    <navigator url="/pages/taskItemList/taskItemList?BlockId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{tasks}}" wx:key="{{item.id}}">
+      <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+        <image style="width: 50px; height: 50px; display: block" src="{{'/images/' + item.FolderIcon + '.png'}}" />
+        <view class="weui-badge wetask-badge__tr" hidden="{{item.TaskItemLeftCount == 0}}">{{item.TaskItemLeftCount}}</view>
+        <view class="wetask-badge__mid" hidden='{{item.DaysOnIcon == false}}'>{{item.CreateDateDays}}日</view>
+      </view>
+
+      <view class="weui-cell__bd">
+        <view>{{item.AsBlockName ? "":item.BlockName}} {{item.FolderName}}</view>
+        <view style="font-size: 13px;color: #888888;">共 {{item.CourseCount}} 门课 {{item.TaskItemCount}} 项作业</view>
+      </view>
+
+    </navigator>
+    <!--end:作业-->
+
+  </view>
+  <!--end:作业列表-->
+
+</view>

@@ -1,66 +1,37 @@
-// pages/taskList/taskList.js
-Page({
+var org = require('../../vendor/weread-client-sdk/lib/org.js')
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-  
-  },
+// 页面函数，传入一个object对象作为参数
+Page(createPageObject());
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
+// 创建页面对象
+function createPageObject() {
+  var obj = new Object();
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
+  obj.data = {
+    tasks: {},
+  };
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
+  obj.onLoad = onLoad;
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
+  return obj;
+}
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
+/**
+ * 载入页面
+ */
+function onLoad(options) {
+  org.checkUserAuth({
+    afterNoAuth(){
+      wx.reLaunch({ url: '/pages/welcome/welcome' })
+    },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
+    afterHasAuth(){
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
+    },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
-})
+    fail(err){
+
+    }
+
+  })
+}

@@ -42,7 +42,8 @@
 				{
 					"id": -1,
 					"name": "taskList",
-					"pathName": "pages/taskList/taskList"
+					"pathName": "pages/taskList/taskList",
+					"query": ""
 				}
 			]
 		}
