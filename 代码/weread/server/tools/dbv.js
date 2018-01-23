@@ -23,7 +23,10 @@ var TABLE_MEMBERS = "sy_members";
 
 var TABLE_TASKS = "sy_tasks";
 var TABLE_MEMBER_TASKS = "sy_member_tasks";
-var TABLE_MEMBER_ADD = "sy_member_add";
+
+var LOG_MEMBER_JOIN = "sy_log_member_join";
+var LOG_USER_LOGIN = "sy_log_user_login";
+
 
 var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
@@ -126,7 +129,7 @@ async function getAllTasksAssignToUser(uid, isDone) {
  */
 async function logMemberJoin(member, way, introucerId, rawDate) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
-  await DB(TABLE_MEMBER_ADD).insert({
+  await DB(LOG_MEMBER_JOIN).insert({
     member_id:member.id,
     user_id: member.user_id,
     org_id: member.org_id,
@@ -134,6 +137,17 @@ async function logMemberJoin(member, way, introucerId, rawDate) {
     join_way:way,
     introducer_id: introucerId,
     raw_date: rawDate
+  });
+}
+
+/**
+ * 用户注册
+ */
+async function logUserRegist(user){
+  var dt = new Date().toString(DATETIME_LONGSTRING);
+  await DB(LOG_USER_LOGIN).insert({
+    user_id: user.id,
+    regist_on: dt
   });
 }
 
@@ -148,4 +162,5 @@ module.exports = {
 
   getAllTasksAssignToUser,
   logMemberJoin,
+  logUserRegist,
 }

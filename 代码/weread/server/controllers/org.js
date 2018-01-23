@@ -26,11 +26,17 @@ async function registUser(ctx, next) {
     var member = await joinOneOrg(uid, 1, 4, user.NickName);
 
     // 登记用户注册的路径
-    const { scene } = ctx.request.body;
-    var join_raw_data = JSON.stringify(ctx.request.body);
-    await dbv.logMemberJoin(member, scene, 0, join_raw_data);
+    if (ctx.method == "POST") {
+      const { scene } = ctx.request.body;
+      var join_raw_data = JSON.stringify(ctx.request.body);
+      await dbv.logMemberJoin(member, scene, 0, join_raw_data);
+    }
   }
 
+  // 记录用户登录日志
+  await dbv.logUserRegist(user);
+  
+  // 返回用户对象
   ctx.body = { user };
 }
 
@@ -68,7 +74,7 @@ async function joinOneOrg(uid, oid, mt, name) {
     member = await dbv.findMemberByMemberId(mid);
   } else {
     // 找到了，恢复该成员
-    await dbv.activeMember(member.id , mt,1);
+    await dbv.activeMember(member.id, mt, 1);
   }
 
   return member;
