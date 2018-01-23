@@ -4,3 +4,30 @@
   border-right: none;
   padding: 10px 5px;
 }
+
+.org-grid{
+  border-top: none;
+  border-left: none;
+}
+
+.org-grid .weui-grid{
+  border-right: none;
+  border-bottom: none;
+  padding: 10px 5px;  
+}
+
+.org-grid .weui-grid__icon{
+  width: 48px;
+  height: 48px;
+}
+
+.bottom-cell::before {
+  border-top: none;
+}
+
+.weui-panel__hd{
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.weui-panel__hd::after{
+  border-bottom: none;
+}

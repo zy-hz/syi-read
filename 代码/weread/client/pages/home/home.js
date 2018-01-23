@@ -10,6 +10,7 @@ function createPageObject() {
 
   obj.data = {
     SummaryObjects: {},
+    OrgEntries: {},
   };
 
   obj.onLoad = onLoad;
@@ -22,11 +23,20 @@ function createPageObject() {
  */
 function onLoad(options) {
   wx.setNavigationBarTitle({
-    title: '随义读书',
+    title: '首页',
   })
 
   var thePage = this;
   var sobjs = [{ title: "任务", score: 122 }, { title: "小组", score: 1 }, { title: "积分", score: 2233 }];
-  this.setData({ SummaryObjects:sobjs });
+  this.setData({ SummaryObjects: sobjs, OrgEntries: getTestOrgEntries() });
+}
+
+function getTestOrgEntries() {
+  return [{ Name: 'LCC-1 abcdedfaggddddfaafdasfdasfasdf', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
+  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
+  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
+  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
+  { Name: "发现", Avatar: "/images/find_1.png" },
+  { Name: "更多", Avatar: "/images/more_1.png" }];
 }
 
