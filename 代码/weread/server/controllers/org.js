@@ -19,7 +19,13 @@ async function registUser(ctx, next) {
     var uid = await dbv.createNewUserFromWx(ctx.state.$wxInfo.userinfo);
     // 查找用户
     user = await dbv.findUserByUid(uid);
+
+    // TODO::检查注册用户的来源，判断是否直接加入到某个具体的小组
+
+    // 如果没有任何参数，加入默认的组织
+    joinOneOrg(uid,1,4,user.NickName)
   }
+
   ctx.body = { user };
 }
 
@@ -30,6 +36,14 @@ async function createOrg(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
   const { FolderId, BlockName, CreateDate, DeliverDate } = ctx.query;
+}
+
+/**
+ * 查找组织
+ */
+async function getOrgs(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
 }
 
 /**
@@ -59,11 +73,6 @@ async function getTasks(ctx, next) {
 
   var Tasks = dbv.getAllTasksAssignToUser(uid, IsDone);
   ctx.body = { Tasks };
-}
-
-async function getOrgs(ctx,next){
-  // 微信用户身份验证
-  if (util.verify_request(ctx) == -1) return;
 }
 
 /**

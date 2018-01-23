@@ -24,7 +24,7 @@ var TABLE_MEMBERS = "sy_members";
 var TABLE_TASKS = "sy_tasks";
 var TABLE_MEMBER_TASKS = "sy_member_tasks";
 
-var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language'];
+var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
 var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_TASKS}.title  as TaskTitle`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`];
@@ -85,7 +85,8 @@ async function addMember(oid, uid, mt, name) {
     name,
     user_id: uid,
     org_id: oid,
-    type: mt
+    type: mt,
+    status: 1
   });
 
   return result.lenght == 0 ? null : result[0];
@@ -98,7 +99,7 @@ async function addMember(oid, uid, mt, name) {
  * 指派给用户的所有任务
  */
 async function getAllTasksAssignToUser(uid, isDone) {
-  
+
   //return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone }).leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
 }
 
