@@ -50,7 +50,27 @@ async function joinOneOrg(uid, oid, mt, name) {
   }
 }
 
+async function getTasks(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+
+  var uid = ctx.state.$wxInfo.userinfo.openId;
+  const { AllOrg, InOrgs, IsDone } = ctx.query;
+
+  var Tasks = dbv.getAllTasksAssignToUser(uid, IsDone);
+  ctx.body = { Tasks };
+}
+
+/**
+ * 获得用户的合计信息
+ */
+async function getSummaryInfo(ctx, next){
+
+}
+
 module.exports = {
   createOrg,
-  registUser
+  registUser,
+  getTasks,
+  getSummaryInfo
 };
