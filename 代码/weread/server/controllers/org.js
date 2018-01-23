@@ -35,9 +35,9 @@ async function registUser(ctx, next) {
 
   // 记录用户登录日志
   await dbv.logUserRegist(user);
-  
+
   // 返回用户对象
-  ctx.body = { user };
+  ctx.body = { User: user };
 }
 
 /** 
@@ -55,6 +55,10 @@ async function createOrg(ctx, next) {
 async function getOrgs(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
+
+
+  // 返回用户对象
+  ctx.body = { Orgs };
 }
 
 /**
