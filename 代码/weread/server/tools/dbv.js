@@ -98,6 +98,16 @@ async function addMember(oid, uid, mt, name) {
   return result.lenght == 0 ? null : result[0];
 }
 
+/**
+ * 激活成员
+ */
+async function activeMember(mid , mt , isActived){
+  await DB(TABLE_MEMBERS).update({
+    status: isActived,
+    type:mt,
+  })
+}
+
 
 ////////////////////////// 任务 //////////////////////////////
 
@@ -134,6 +144,7 @@ module.exports = {
   findMemberByUserId,
   findMemberByMemberId,
   addMember,
+  activeMember,
 
   getAllTasksAssignToUser,
   logMemberJoin,

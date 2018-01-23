@@ -29,12 +29,7 @@ async function registUser(ctx, next) {
     const { scene } = ctx.request.body;
     var join_raw_data = JSON.stringify(ctx.request.body);
 
-    try {
-      await dbv.logMemberJoin(member, scene, 0, join_raw_data);
-    }
-    catch (err) {
-      console.log(err)
-    }
+    await dbv.logMemberJoin(member, scene, 0, join_raw_data);
   }
 
   ctx.body = { user };
@@ -74,6 +69,7 @@ async function joinOneOrg(uid, oid, mt, name) {
     member = await dbv.findMemberByMemberId(mid);
   } else {
     // 找到了，恢复该成员
+    await dbv.activeMember(member.id , mt,1);
   }
 
   return member;
