@@ -13,7 +13,15 @@ function checkUserAuth(options) {
         options.afterNoAuth();
       } else {
         // 已经授权
-        options.afterHasAuth();
+        wx.getUserInfo({
+          success(res){
+            options.afterHasAuth(res.userInfo);
+          },
+
+          fail(err) {
+            options.fail(err);
+          }
+        })
       }
     },
 

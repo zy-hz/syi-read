@@ -19,6 +19,7 @@ module.exports = function init(options) {
 
   return {
     service,
+    util: require('./lib/util'),
     org: require('./lib/org'),
     task:require('./lib/task.js')
   }
