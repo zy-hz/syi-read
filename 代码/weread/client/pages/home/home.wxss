@@ -1,1 +1,6 @@
 /* pages/home/home.wxss */
+
+.summary-bar .weui-grid {
+  border-right: none;
+  padding: 10px 5px;
+}

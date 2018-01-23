@@ -14,7 +14,7 @@
     <!--指标列表-->
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
-        <view class="weui-grids">
+        <view class="weui-grids summary-bar">
           <block wx:for="{{SummaryObjects}}" wx:key="*this">
             <view url="" class="weui-grid" hover-class="weui-grid_active">
               <view class="weui-grid__label">{{item.score}}</view>
