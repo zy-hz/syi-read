@@ -48,6 +48,10 @@ Page({
   doRegistUser: function () {
     wxutil.showBusy('注册中');
     org.registUser({
+      
+      method: 'POST', 
+      data: getApp().EntryOptions ,
+
       success(result) {
         // 注册成功后的转向
         wx.reLaunch({ url: '/pages/home/home' })

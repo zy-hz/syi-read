@@ -34,7 +34,7 @@ router.post('/message', controllers.message.post)
 
 // 组织的方法
 router.get('/createorg', validationMiddleware, controllers.org.createOrg)
-router.get('/registuser', validationMiddleware, controllers.org.registUser)
+router.post('/registuser', validationMiddleware, controllers.org.registUser)
 router.get('/getorgs', validationMiddleware, controllers.org.getOrgs)
 
 // 任务的方法
