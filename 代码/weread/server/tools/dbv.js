@@ -23,6 +23,7 @@ var TABLE_MEMBERS = "sy_members";
 
 var TABLE_TASKS = "sy_tasks";
 var TABLE_MEMBER_TASKS = "sy_member_tasks";
+var TABLE_MEMBER_ADD = "sy_member_add";
 
 var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
@@ -77,6 +78,11 @@ async function findMemberByUserId(oid, uid) {
   return result.lenght == 0 ? null : result[0];
 }
 
+async function findMemberByMemberId(mid) {
+  var result = await DB(TABLE_MEMBERS).select(MEMBER_ITEM).where({ id: mid });
+  return result.lenght == 0 ? null : result[0];
+}
+
 /**
  * 向一个组织添加成员
  */
@@ -93,7 +99,7 @@ async function addMember(oid, uid, mt, name) {
 }
 
 
-////////////////////////// 作业 //////////////////////////////
+////////////////////////// 任务 //////////////////////////////
 
 /**
  * 指派给用户的所有任务
@@ -103,12 +109,32 @@ async function getAllTasksAssignToUser(uid, isDone) {
   //return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone }).leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
 }
 
+////////////////////////// 日志 //////////////////////////////
+
+/**
+ * 记录成员加入
+ */
+async function logMemberJoin(member, way, introucerId, rawDate) {
+  var dt = new Date().toString(DATETIME_LONGSTRING);
+  await DB(TABLE_MEMBER_ADD).insert({
+    member_id:member.id,
+    user_id: member.user_id,
+    org_id: member.org_id,
+    join_on:dt,
+    join_way:way,
+    introducer_id: introucerId,
+    raw_date: rawDate
+  });
+}
+
 module.exports = {
   findUserByWx,
   findUserByUid,
   createNewUserFromWx,
   findMemberByUserId,
+  findMemberByMemberId,
   addMember,
 
   getAllTasksAssignToUser,
+  logMemberJoin,
 }

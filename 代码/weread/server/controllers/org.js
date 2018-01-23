@@ -23,7 +23,18 @@ async function registUser(ctx, next) {
     // TODO::检查注册用户的来源，判断是否直接加入到某个具体的小组
 
     // 如果没有任何参数，加入默认的组织
-    joinOneOrg(uid,1,4,user.NickName)
+    var member = await joinOneOrg(uid, 1, 4, user.NickName);
+
+    // 登记用户注册的路径
+    const { scene } = ctx.request.body;
+    var join_raw_data = JSON.stringify(ctx.request.body);
+
+    try {
+      await dbv.logMemberJoin(member, scene, 0, join_raw_data);
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
   ctx.body = { user };
@@ -58,10 +69,14 @@ async function joinOneOrg(uid, oid, mt, name) {
   var member = await dbv.findMemberByUserId(oid, uid);
   if (member == null) {
     // 没找到，新建成员
-    await dbv.addMember(oid, uid, mt, name);
+    var mid = await dbv.addMember(oid, uid, mt, name);
+    // 查找成员
+    member = await dbv.findMemberByMemberId(mid);
   } else {
     // 找到了，恢复该成员
   }
+
+  return member;
 }
 
 async function getTasks(ctx, next) {
