@@ -65,7 +65,7 @@ async function getTasks(ctx, next) {
  * 获得用户的合计信息
  */
 function getSummaryInfo(ctx, next) {
-  var summaryInfo = [{ Name: "任务", Score: 10 }, { Name: "组织", Score: 1 }, { Name: "积分", Score: 2126 }];
+  var summaryInfo = [{ Name: "任务", Score: 10 }, { Name: "小组", Score: 1 }, { Name: "积分", Score: 2126 }];
   ctx.body = { SummaryInfo: summaryInfo };
 }
 

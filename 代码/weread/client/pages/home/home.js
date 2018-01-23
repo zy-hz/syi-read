@@ -49,39 +49,12 @@ function onLoad(options) {
 }
 
 /**
- * 载入任务面板
- */
-function initTaskPanel(thePage) {
-  org.getTasks({
-    options: { Limit: 3, OrderBy: "IsDone" },
-
-    success(res) {
-      // 设置任务面板
-      const { Tasks } = res.data
-      thePage.setData({ SomeTasks: Tasks });
-
-      // 初始化组织面板
-      initOrgPanel(thePage)
-    },
-
-    fail(err) {
-      wxutil.showModel('初始化任务面板失败', err)
-      console.log('初始化任务面板失败', err)
-    }
-  })
-}
-
-/**
- * 初始化组织面板
- */
-function initOrgPanel(thePage) {
-
-}
-
-/**
- * 初始化统计面板
+ * 初始化统计面板 STEP:1
  */
 function initSummaryPanel(thePage) {
+  // 显示载入动画
+  wxutil.showLoading();
+
   org.getSummaryInfo({
     options: {},
 
@@ -99,5 +72,40 @@ function initSummaryPanel(thePage) {
       console.log('初始化任务面板失败', err)
     }
   })
+}
+
+
+/**
+ * 载入任务面板 STEP:2
+ */
+function initTaskPanel(thePage) {
+
+  org.getTasks({
+    options: { Limit: 3, OrderBy: "IsDone" },
+
+    success(res) {
+
+      // 设置任务面板
+      const { Tasks } = res.data
+      thePage.setData({ SomeTasks: Tasks });
+
+      // 初始化组织面板
+      initOrgPanel(thePage)
+    },
+
+    fail(err) {
+      wxutil.showModel('初始化任务面板失败', err)
+      console.log('初始化任务面板失败', err)
+    }
+  })
+}
+
+/**
+ * 初始化组织面板 STEP:3
+ */
+function initOrgPanel(thePage) {
+  // 关闭载入动画
+  wxutil.hideLoading();
+
 }
 
