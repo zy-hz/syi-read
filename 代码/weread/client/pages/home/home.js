@@ -51,7 +51,7 @@ function onLoad(options) {
 /**
  * 注册用户
  */
-function doRegistUser(thePage){
+function doRegistUser(thePage) {
   // 显示载入动画
   wxutil.showLoading();
 
@@ -124,7 +124,7 @@ function initTaskPanel(thePage) {
 function initOrgPanel(thePage) {
 
   org.getOrgs({
-    options: { Limit: 4 },
+    pms: { Limit: 4 },
 
     success(res) {
       // 关闭载入动画
@@ -132,6 +132,11 @@ function initOrgPanel(thePage) {
 
       // 设置任务面板
       const { Orgs } = res.data
+      Orgs.map(function(o){
+        if (o.OrgAvater == null) o.OrgAvatar = "/images/home_1.png"
+      })
+      Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
+      Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
       thePage.setData({ OrgEntries: Orgs });
 
     },

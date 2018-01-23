@@ -20,6 +20,7 @@ const DB = require('knex')({
  */
 var TABLE_USERS = "sy_users";
 var TABLE_MEMBERS = "sy_members";
+var TABLE_ORGS = "sy_orgs";
 
 var TABLE_TASKS = "sy_tasks";
 var TABLE_MEMBER_TASKS = "sy_member_tasks";
@@ -32,6 +33,9 @@ var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as N
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
 var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_TASKS}.title  as TaskTitle`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`];
+
+var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id'];
+
 
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
 
@@ -104,13 +108,21 @@ async function addMember(oid, uid, mt, name) {
 /**
  * 激活成员
  */
-async function activeMember(mid , mt , isActived){
+async function activeMember(mid, mt, isActived) {
   await DB(TABLE_MEMBERS).update({
     status: isActived,
-    type:mt,
+    type: mt,
   })
 }
 
+////////////////////////// 组织 //////////////////////////////
+
+/**
+ * 获得用户所在的组织
+ */
+async function getOrgs(user, limit) {
+  return await DB(TABLE_MEMBERS).select(MEMBER_ORG_ITEM).where({ user_id: user.id }).limit(limit).leftJoin(`${TABLE_ORGS}`, `${TABLE_MEMBERS}.org_id`, `${TABLE_ORGS}.id`);
+}
 
 ////////////////////////// 任务 //////////////////////////////
 
@@ -130,11 +142,11 @@ async function getAllTasksAssignToUser(uid, isDone) {
 async function logMemberJoin(member, way, introucerId, rawDate) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
   await DB(LOG_MEMBER_JOIN).insert({
-    member_id:member.id,
+    member_id: member.id,
     user_id: member.user_id,
     org_id: member.org_id,
-    join_on:dt,
-    join_way:way,
+    join_on: dt,
+    join_way: way,
     introducer_id: introucerId,
     raw_date: rawDate
   });
@@ -143,7 +155,7 @@ async function logMemberJoin(member, way, introucerId, rawDate) {
 /**
  * 用户注册
  */
-async function logUserRegist(user){
+async function logUserRegist(user) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
   await DB(LOG_USER_LOGIN).insert({
     user_id: user.id,
@@ -155,12 +167,16 @@ module.exports = {
   findUserByWx,
   findUserByUid,
   createNewUserFromWx,
+
   findMemberByUserId,
   findMemberByMemberId,
   addMember,
   activeMember,
 
+  getOrgs,
+
   getAllTasksAssignToUser,
+
   logMemberJoin,
   logUserRegist,
 }

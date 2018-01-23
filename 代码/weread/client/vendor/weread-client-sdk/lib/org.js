@@ -67,11 +67,14 @@ function createNewTask(options) {
 /**
  * 获得小组
  * @param {Object} options 函数配置
+ * @param {Object} options.pms 调用的参数
  * @param {Function} options.success(result) 成功后的回调函数 const { TaskId } = result.data
  * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
  */
 function getOrgs(options){
-
+  options.method = "POST";
+  options.data = options.pms;
+  
   // 自动登录
   options.login = true;
   options.url = `${service.baseUrl}/getorgs`;
