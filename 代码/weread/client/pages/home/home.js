@@ -36,7 +36,7 @@ function onLoad(options) {
 
     afterHasAuth(userInfo) {
       thePage.setData({ UserInfo: userInfo })
-      initSummaryPanel(thePage)
+      doRegistUser(thePage)
     },
 
     fail(err) {
@@ -49,11 +49,29 @@ function onLoad(options) {
 }
 
 /**
+ * 注册用户
+ */
+function doRegistUser(thePage){
+  // 显示载入动画
+  wxutil.showLoading();
+
+  org.registUser({
+
+    success(result) {
+      // 注册成功后的转向
+      initSummaryPanel(thePage);
+    },
+    fail(error) {
+      wxutil.showModel('用户注册失败', error);
+      console.log('用户注册失败', error);
+    }
+  })
+}
+
+/**
  * 初始化统计面板 STEP:1
  */
 function initSummaryPanel(thePage) {
-  // 显示载入动画
-  wxutil.showLoading();
 
   org.getSummaryInfo({
     options: {},

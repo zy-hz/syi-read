@@ -28,7 +28,6 @@ async function registUser(ctx, next) {
     // 登记用户注册的路径
     const { scene } = ctx.request.body;
     var join_raw_data = JSON.stringify(ctx.request.body);
-
     await dbv.logMemberJoin(member, scene, 0, join_raw_data);
   }
 

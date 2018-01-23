@@ -8,7 +8,7 @@
   <view class='page__ft'>
     <view class="weui-btn-area">
       <button  class="weui-btn"  type='primary' open-type='getUserInfo' bindgetuserinfo='doGetUserInfo' disabled='{{hasAuthorized}}'>前往授权</button>
-      <button  class="weui-btn"  type='default' bindtap='doRegistUser'>测试取消</button>
+      <button  class="weui-btn"  type='default'>取消</button>
     </view>
   </view>
 
