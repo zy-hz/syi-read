@@ -45,15 +45,15 @@ function onLoad(options) {
     }
 
   })
-  
+
 }
 
 /**
- * 载入首页的
+ * 载入任务面板
  */
 function initTaskPanel(thePage) {
   org.getTasks({
-    options: {},
+    options: { Limit: 3, OrderBy: "IsDone" },
 
     success(res) {
       // 设置任务面板
@@ -81,7 +81,7 @@ function initOrgPanel(thePage) {
 /**
  * 初始化统计面板
  */
-function initSummaryPanel(thePage){
+function initSummaryPanel(thePage) {
   org.getSummaryInfo({
     options: {},
 

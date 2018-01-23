@@ -98,8 +98,8 @@ async function addMember(oid, uid, mt, name) {
  * 指派给用户的所有任务
  */
 async function getAllTasksAssignToUser(uid, isDone) {
-  return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone })
-    .leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
+  
+  //return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone }).leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
 }
 
 module.exports = {

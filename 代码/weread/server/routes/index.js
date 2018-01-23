@@ -39,7 +39,7 @@ router.get('/registuser', validationMiddleware, controllers.org.registUser)
 // 任务的方法
 router.get('/gettasks', validationMiddleware, controllers.org.getTasks)
 
-// 合计的方法
+// 统计的方法
 router.get('/getsummaryinfo', validationMiddleware, controllers.org.getSummaryInfo)
 
 module.exports = router
