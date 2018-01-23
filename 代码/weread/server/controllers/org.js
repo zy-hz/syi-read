@@ -61,6 +61,11 @@ async function getTasks(ctx, next) {
   ctx.body = { Tasks };
 }
 
+async function getOrgs(ctx,next){
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+}
+
 /**
  * 获得用户的合计信息
  */
@@ -73,5 +78,6 @@ module.exports = {
   createOrg,
   registUser,
   getTasks,
+  getOrgs,
   getSummaryInfo
 };

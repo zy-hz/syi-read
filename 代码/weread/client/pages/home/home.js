@@ -104,8 +104,24 @@ function initTaskPanel(thePage) {
  * 初始化组织面板 STEP:3
  */
 function initOrgPanel(thePage) {
-  // 关闭载入动画
-  wxutil.hideLoading();
 
+  org.getOrgs({
+    options: { Limit: 4 },
+
+    success(res) {
+      // 关闭载入动画
+      wxutil.hideLoading();
+
+      // 设置任务面板
+      const { Orgs } = res.data
+      thePage.setData({ OrgEntries: Orgs });
+
+    },
+
+    fail(err) {
+      wxutil.showModel('初始化小组面板失败', err)
+      console.log('初始化小组面板失败', err)
+    }
+  })
 }
 
