@@ -1,12 +1,13 @@
 {
   "pages": [
+    "pages/home/home",
+    "pages/mine/mine",
     "pages/index/index",
     "pages/addCgi/addCgi",
     "pages/welcome/welcome",
     "pages/zzTest/zzTest",
     "pages/taskList/taskList",
-    "pages/prepareJoinOrg/prepareJoinOrg",
-    "pages/mine/mine"
+    "pages/prepareJoinOrg/prepareJoinOrg"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -18,10 +19,10 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/taskList/taskList",
-        "text": "任务",
-        "iconPath": "images/task_list_1.png",
-        "selectedIconPath": "images/task_list_1.png"
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/home_1.png",
+        "selectedIconPath": "images/home_1.png"
       },
       {
         "pagePath": "pages/mine/mine",
