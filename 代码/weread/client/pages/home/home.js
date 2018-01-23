@@ -1,5 +1,5 @@
 var wxutil = require('../../utils/z-util-wx.js')
-const { org, task } = require('../../weread.js')
+const { org } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());
@@ -9,7 +9,9 @@ function createPageObject() {
   var obj = new Object();
 
   obj.data = {
+    UserInfo: {},
     SummaryObjects: {},
+    SomeTasks: {},
     OrgEntries: {},
   };
 
@@ -27,16 +29,75 @@ function onLoad(options) {
   })
 
   var thePage = this;
-  var sobjs = [{ title: "任务", score: 122 }, { title: "小组", score: 1 }, { title: "积分", score: 2233 }];
-  this.setData({ SummaryObjects: sobjs, OrgEntries: getTestOrgEntries() });
+  org.checkUserAuth({
+    afterNoAuth() {
+      wx.reLaunch({ url: '/pages/welcome/welcome' })
+    },
+
+    afterHasAuth(userInfo) {
+      thePage.setData({ UserInfo: userInfo })
+      initSummaryPanel(thePage)
+    },
+
+    fail(err) {
+      wxutil.showModel('检查用户授权失败', err)
+      console.log('检查用户授权失败', err)
+    }
+
+  })
+  
 }
 
-function getTestOrgEntries() {
-  return [{ Name: 'LCC-1 abcdedfaggddddfaafdasfdasfasdf', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
-  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
-  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
-  { Name: 'LCC-1', Avatar: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" },
-  { Name: "发现", Avatar: "/images/find_1.png" },
-  { Name: "更多", Avatar: "/images/more_1.png" }];
+/**
+ * 载入首页的
+ */
+function initTaskPanel(thePage) {
+  org.getTasks({
+    options: {},
+
+    success(res) {
+      // 设置任务面板
+      const { Tasks } = res.data
+      thePage.setData({ SomeTasks: Tasks });
+
+      // 初始化组织面板
+      initOrgPanel(thePage)
+    },
+
+    fail(err) {
+      wxutil.showModel('初始化任务面板失败', err)
+      console.log('初始化任务面板失败', err)
+    }
+  })
+}
+
+/**
+ * 初始化组织面板
+ */
+function initOrgPanel(thePage) {
+
+}
+
+/**
+ * 初始化统计面板
+ */
+function initSummaryPanel(thePage){
+  org.getSummaryInfo({
+    options: {},
+
+    success(res) {
+      // 设置统计面板
+      const { SummaryInfo } = res.data
+      thePage.setData({ SummaryObjects: SummaryInfo });
+
+      // 初始化任务面板
+      initTaskPanel(thePage)
+    },
+
+    fail(err) {
+      wxutil.showModel('初始化任务面板失败', err)
+      console.log('初始化任务面板失败', err)
+    }
+  })
 }
 

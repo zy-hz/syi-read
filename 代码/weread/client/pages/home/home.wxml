@@ -2,10 +2,10 @@
   <view class="page__hd">
     <view class="weui-media-box weui-media-box_appmsg">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq3N5juwNUmjwZNvtElibwrsKQgVKVqpRuqSmnkibRwXmRnRPCvmVwhnwDzMTGlAasupnPOvyf6I3hQ/0" />
+        <image class="weui-media-box__thumb" src="{{UserInfo.avatarUrl}}" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">标题二</view>
+        <view class="weui-media-box__title">{{UserInfo.nickName}}</view>
       </view>
     </view>
   </view>
@@ -42,7 +42,7 @@
             <view class="weui-cell__ft" style="font-size: 13px;color: #888888;">状态</view>
           </navigator>
         </view>
-        
+
       </view>
 
       <view class="weui-panel__ft">

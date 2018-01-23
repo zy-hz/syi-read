@@ -65,7 +65,7 @@ function createNewTask(options) {
 }
 
 /**
- * 获得作业
+ * 获得任务
  * 
  * @param {Object} options 函数配置
  * @param {Function} options.success(res) 成功后的回调函数 const { Tasks } = res.data
@@ -81,4 +81,21 @@ function getTasks(options) {
   qcloud.request(options);
 }
 
-module.exports = { checkUserAuth, registUser, createNewTask, getTasks };
+/**
+ * 获得合计信息
+ * 
+ * @param {Object} options 函数配置
+ * @param {Function} options.success(res) 成功后的回调函数 const { Tasks } = res.data
+ * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
+ *
+ */
+function getSummaryInfo(options){
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/getsummaryinfo`;
+
+  qcloud.request(options);
+}
+
+module.exports = { checkUserAuth, registUser, createNewTask, getTasks, getSummaryInfo};
