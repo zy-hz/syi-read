@@ -20,7 +20,7 @@
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页",
+        "text": "读书",
         "iconPath": "images/home_1.png",
         "selectedIconPath": "images/home_1.png"
       },

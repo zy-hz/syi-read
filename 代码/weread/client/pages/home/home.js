@@ -25,7 +25,7 @@ function createPageObject() {
  */
 function onLoad(options) {
   wx.setNavigationBarTitle({
-    title: '首页',
+    title: '读书',
   })
 
   var thePage = this;
