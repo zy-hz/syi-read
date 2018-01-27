@@ -1,1 +1,26 @@
 /* pages/orgInfo/orgInfo.wxss */
+
+.org_summary {
+  font-size: 13px;
+}
+
+.org_summary image {
+  width: 42px;
+  height: 42px;
+  margin-right: 5px;
+}
+
+.org_func_list image {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  padding-top:3px;
+}
+
+.weui-cells {
+  border-top: 1rpx solid #e5e5e5;
+}
+
+.weui-cell::before {
+  left: 0px;
+}

@@ -5,18 +5,18 @@ Page({
    * 页面的初始数据
    */
   data: {
-    testText: ''
+    OrgInfo: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const { OrgId,OrgName } = options;
+    const { OrgId, OrgName } = options;
 
-    this.setData({ testText: `我的是一个组长 ${OrgId}` } );
+    this.setData({ testText: `我的是一个组长 ${OrgId}` });
     wx.setNavigationBarTitle({
-      title: decodeURI(OrgName) ,
+      title: decodeURI(OrgName),
     })
   },
 

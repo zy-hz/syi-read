@@ -1,2 +1,96 @@
-<!--pages/orgInfo/orgInfo.wxml-->
-<text>{{testText}}</text>
+<view class="page">
+
+  <view class="page__bd">
+    <!--小组概要-->
+    <view class="weui-panel">
+      <view class="weui-cell org_summary">
+        <view class="weui-cell__hd">
+          <image src='{{OrgInfo.OrgAvater}}' />
+        </view>
+        <view class="weui-cell__bd">
+          <view>{{OrgInfo.OrgName}}</view>
+          <view>{{OrgInfo.AdminName}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!--组织的功能-->
+    <view class="weui-panel org_func_list">
+      <view class="weui-panel__bd">
+        <view class="weui-cells weui-cells_in-small-appmsg">
+          
+          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image src="../../images/task_list_2.png" />
+            </view>
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>任务</view>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+
+          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image src="../../images/user_2.png" />
+            </view>
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>成员</view>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+
+          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image src="../../images/group_2.png" />
+            </view>
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>小组</view>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+
+        </view>
+      </view>
+    </view>
+
+    <!--额外功能-->
+    <view class="weui-panel org_func_list">
+      <view class="weui-panel__bd">
+        <view class="weui-cells weui-cells_in-small-appmsg">
+
+          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image src="../../images/code_2.png"  />
+            </view>
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>二维码</view>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+
+        </view>
+      </view>
+    </view>
+
+    <!--设置-->
+    <view class="weui-panel org_func_list">
+      <view class="weui-panel__bd">
+        <view class="weui-cells weui-cells_in-small-appmsg">
+
+          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image src="../../images/config_2.png" />
+            </view>
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>设置</view>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+</view>
