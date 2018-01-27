@@ -1,71 +1,45 @@
-// pages/orgInfo/orgInfo.js
-Page({
+var wxutil = require('../../utils/z-util-wx.js')
+const { org } = require('../../weread.js')
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-    OrgInfo: {}
-  },
+// 页面函数，传入一个object对象作为参数
+Page(createPageObject());
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    const { OrgId, OrgName } = options;
+// 创建页面对象
+function createPageObject() {
+  var obj = new Object();
 
-    this.setData({ testText: `我的是一个组长 ${OrgId}` });
-    wx.setNavigationBarTitle({
-      title: decodeURI(OrgName),
-    })
-  },
+  obj.data = {
+    OrgInfo: {},
+  };
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+  obj.onLoad = onLoad;
+  return obj;
+}
 
-  },
+/**
+ * 载入页面
+ */
+function onLoad(options) {
+  var orgInfo = getOrgInfoFromOptions(options);
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
+  wx.setNavigationBarTitle({
+    title: orgInfo.OrgName,
+  })
 
-  },
+  this.setData({ OrgInfo: orgInfo })
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
+  var thePage = this;
+}
 
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+/**
+ * 从传入的参数获得小组信息
+ */
+function getOrgInfoFromOptions(options) {
+  return {
+    OrgId: options.OrgId,
+    OrgName: decodeURI(options.OrgName),
+    OrgAvater: decodeURI(options.OrgAvater)
   }
-})
+}
+
+

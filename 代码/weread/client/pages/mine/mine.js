@@ -134,8 +134,7 @@ function initOrgPanel(thePage) {
       const { Orgs } = res.data
       Orgs.map(function (o) {
         if (o.OrgAvater == null) o.OrgAvatar = "/images/home_1.png";
-        var name = encodeURI(o.OrgName);
-        o.OrgUrl = `../orgInfo/orgInfo?OrgId=${o.OrgId}&OrgName=${name}`;
+        o.OrgUrl = `../orgInfo/orgInfo?OrgId=${o.OrgId}&OrgName=${encodeURI(o.OrgName)}&OrgAvater=${encodeURI(o.OrgAvatar)}`;
       })
       //Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
       //Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })

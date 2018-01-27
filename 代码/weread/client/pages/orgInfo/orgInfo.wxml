@@ -8,8 +8,8 @@
           <image src='{{OrgInfo.OrgAvater}}' />
         </view>
         <view class="weui-cell__bd">
-          <view>{{OrgInfo.OrgName}}</view>
-          <view>{{OrgInfo.AdminName}}</view>
+          <view></view>
+          <view></view>
         </view>
       </view>
     </view>
