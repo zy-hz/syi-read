@@ -18,16 +18,14 @@
     <view class="weui-panel org_func_list">
       <view class="weui-panel__bd">
         <view class="weui-cells weui-cells_in-small-appmsg">
-          
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+          <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
               <image src="../../images/task_list_2.png" />
             </view>
-            <view class="weui-cell__bd weui-cell_primary">
-              <view>组任务</view>
-            </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
+            <view class="weui-cell__bd weui-cell_primary">组任务</view>
+            <view class="weui-cell__ft"></view>
+          </view>
 
           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
@@ -36,7 +34,7 @@
             <view class="weui-cell__bd weui-cell_primary">
               <view>组成员</view>
             </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            <view class="weui-cell__ft"></view>
           </navigator>
 
           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
@@ -46,7 +44,7 @@
             <view class="weui-cell__bd weui-cell_primary">
               <view>小小组</view>
             </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            <view class="weui-cell__ft"></view>
           </navigator>
 
         </view>
@@ -60,7 +58,7 @@
 
           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
-              <image src="../../images/code_2.png"  />
+              <image src="../../images/code_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
               <view>二维码</view>

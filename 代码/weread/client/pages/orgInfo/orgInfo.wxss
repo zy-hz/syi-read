@@ -17,6 +17,9 @@
   padding-top:3px;
 }
 
+.org_func_list .weui-cell{
+  padding: 10px 15px 6px;
+}
 .weui-cells {
   border-top: 1rpx solid #e5e5e5;
 }
