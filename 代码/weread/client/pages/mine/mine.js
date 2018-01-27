@@ -137,8 +137,8 @@ function initOrgPanel(thePage) {
         var name = encodeURI(o.OrgName);
         o.OrgUrl = `../orgInfo/orgInfo?OrgId=${o.OrgId}&OrgName=${name}`;
       })
-      Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
-      Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
+      //Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
+      //Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
       thePage.setData({ OrgEntries: Orgs });
 
     },
