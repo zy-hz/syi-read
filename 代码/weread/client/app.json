@@ -1,12 +1,11 @@
 {
   "pages": [
-    "pages/home/home",
+    "pages/taskList/taskList",
     "pages/mine/mine",
     "pages/index/index",
     "pages/addCgi/addCgi",
     "pages/welcome/welcome",
     "pages/zzTest/zzTest",
-    "pages/taskList/taskList",
     "pages/prepareJoinOrg/prepareJoinOrg"
   ],
   "window": {
@@ -19,10 +18,10 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/home/home",
-        "text": "读书",
-        "iconPath": "images/home_1.png",
-        "selectedIconPath": "images/home_1.png"
+        "pagePath": "pages/taskList/taskList",
+        "text": "任务",
+        "iconPath": "images/task_list_1.png",
+        "selectedIconPath": "images/task_list_1.png"
       },
       {
         "pagePath": "pages/mine/mine",
