@@ -25,18 +25,12 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
 					"name": "welcome",
 					"pathName": "pages/welcome/welcome",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "zzTest",
-					"pathName": "pages/zzTest/zzTest",
 					"query": ""
 				},
 				{
@@ -53,9 +47,16 @@
 				},
 				{
 					"id": -1,
-					"name": "入口扫描二维码",
-					"pathName": "pages/home/home",
+					"name": "mine",
+					"pathName": "pages/mine/mine",
 					"query": "",
+					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "orgInfo",
+					"pathName": "pages/orgInfo/orgInfo",
+					"query": "OrgId=1&OrgName=我是测试组",
 					"scene": "1011"
 				}
 			]

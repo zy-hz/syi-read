@@ -62,10 +62,10 @@
 
         <view class="weui-grids org-grid">
           <block wx:for="{{OrgEntries}}" wx:key="{{item.id}}">
-            <view url="" class="weui-grid" hover-class="weui-grid_active">
+            <navigator url="{{item.OrgUrl}}" class="weui-grid" hover-class="weui-grid_active">
               <image class="weui-grid__icon" src="{{item.OrgAvatar}}" />
               <view class="weui-grid__label">{{item.OrgName}}</view>
-            </view>
+            </navigator>
           </block>
         </view>
 

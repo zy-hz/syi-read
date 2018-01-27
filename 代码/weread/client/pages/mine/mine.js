@@ -133,7 +133,9 @@ function initOrgPanel(thePage) {
       // 设置任务面板
       const { Orgs } = res.data
       Orgs.map(function (o) {
-        if (o.OrgAvater == null) o.OrgAvatar = "/images/home_1.png"
+        if (o.OrgAvater == null) o.OrgAvatar = "/images/home_1.png";
+        var name = encodeURI(o.OrgName);
+        o.OrgUrl = `../orgInfo/orgInfo?OrgId=${o.OrgId}&OrgName=${name}`;
       })
       Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
       Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
