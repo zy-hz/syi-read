@@ -1,5 +1,5 @@
 var wxutil = require('../../utils/z-util-wx.js')
-const { org } = require('../../weread.js')
+const { org , util } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());
@@ -20,7 +20,7 @@ function createPageObject() {
  * 载入页面
  */
 function onLoad(options) {
-  var orgInfo = getOrgInfoFromOptions(options);
+  var orgInfo = util.getOrgInfoFromOptions(options);
 
   wx.setNavigationBarTitle({
     title: orgInfo.OrgName,
@@ -31,15 +31,5 @@ function onLoad(options) {
   var thePage = this;
 }
 
-/**
- * 从传入的参数获得小组信息
- */
-function getOrgInfoFromOptions(options) {
-  return {
-    OrgId: options.OrgId,
-    OrgName: decodeURI(options.OrgName),
-    OrgAvater: decodeURI(options.OrgAvater)
-  }
-}
 
 

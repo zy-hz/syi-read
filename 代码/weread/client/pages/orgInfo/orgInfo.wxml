@@ -24,7 +24,7 @@
               <image src="../../images/task_list_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
-              <view>任务</view>
+              <view>组任务</view>
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
           </navigator>
@@ -34,7 +34,7 @@
               <image src="../../images/user_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
-              <view>成员</view>
+              <view>组成员</view>
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
           </navigator>
@@ -44,7 +44,7 @@
               <image src="../../images/group_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
-              <view>小组</view>
+              <view>小小组</view>
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
           </navigator>
@@ -77,7 +77,7 @@
       <view class="weui-panel__bd">
         <view class="weui-cells weui-cells_in-small-appmsg">
 
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='testClick'>
             <view class="weui-cell__hd">
               <image src="../../images/config_2.png" />
             </view>
@@ -85,7 +85,7 @@
               <view>设置</view>
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
+          </view>
 
         </view>
       </view>

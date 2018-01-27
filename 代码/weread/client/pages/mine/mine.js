@@ -1,5 +1,5 @@
 var wxutil = require('../../utils/z-util-wx.js')
-const { org } = require('../../weread.js')
+const { org ,util } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());
@@ -134,7 +134,8 @@ function initOrgPanel(thePage) {
       const { Orgs } = res.data
       Orgs.map(function (o) {
         if (o.OrgAvater == null) o.OrgAvatar = "/images/home_1.png";
-        o.OrgUrl = `../orgInfo/orgInfo?OrgId=${o.OrgId}&OrgName=${encodeURI(o.OrgName)}&OrgAvater=${encodeURI(o.OrgAvatar)}`;
+        var pms = util.buildOrgUrlParams(o);
+        o.OrgUrl = `../orgInfo/orgInfo?${pms}`;
       })
       //Orgs.push({ OrgName: '发现', OrgAvatar: "/images/find_1.png" })
       //Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
