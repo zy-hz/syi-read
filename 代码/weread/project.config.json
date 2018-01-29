@@ -34,9 +34,9 @@
 					"query": ""
 				},
 				{
-					"id": -1,
-					"name": "taskList",
-					"pathName": "pages/taskList/taskList",
+					"id": 1,
+					"name": "memberTaskList",
+					"pathName": "pages/memberTaskList/memberTaskList",
 					"query": ""
 				},
 				{

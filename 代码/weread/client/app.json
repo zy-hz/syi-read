@@ -1,12 +1,13 @@
 {
   "pages": [
-    "pages/taskList/taskList",
+    "pages/memberTaskList/memberTaskList",
     "pages/mine/mine",
     "pages/index/index",
     "pages/addCgi/addCgi",
     "pages/welcome/welcome",
     "pages/prepareJoinOrg/prepareJoinOrg",
-    "pages/orgInfo/orgInfo"
+    "pages/orgInfo/orgInfo",
+    "pages/orgTaskList/orgTaskList"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -18,7 +19,7 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/taskList/taskList",
+        "pagePath": "pages/memberTaskList/memberTaskList",
         "text": "任务",
         "iconPath": "images/task_list_1.png",
         "selectedIconPath": "images/task_list_1.png"
