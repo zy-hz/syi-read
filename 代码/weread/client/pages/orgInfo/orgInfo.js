@@ -10,6 +10,7 @@ function createPageObject() {
 
   obj.data = {
     OrgInfo: {},
+    OpUrl:{},
   };
 
   obj.onLoad = onLoad;
@@ -27,8 +28,19 @@ function onLoad(options) {
   })
 
   this.setData({ OrgInfo: orgInfo })
-
   var thePage = this;
+
+  // 获得导航url
+  var opUrl = getoOperatorUrl(orgInfo);
+  this.setData({ OpUrl: opUrl })
+}
+
+// 获得操作员的url（根据用户的权限不同，可以有不同的url）
+function getoOperatorUrl(orgInfo){
+  var orgPms = util.buildOrgUrlParams(orgInfo);
+  return {
+    OrgTaskListUrl: "../orgTaskList/orgTaskList?" + orgPms,
+  }
 }
 
 

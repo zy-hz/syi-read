@@ -51,3 +51,10 @@ page {
   font-size: 14px;
   font-style: italic;
 }
+
+.weread-navigator__footer{
+  margin-bottom: 0px;
+  bottom: 0px;
+  z-index: 999;
+  background-color: #f8f8f8;
+}

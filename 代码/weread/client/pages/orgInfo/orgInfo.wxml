@@ -19,7 +19,7 @@
       <view class="weui-panel__bd">
         <view class="weui-cells weui-cells_in-small-appmsg">
 
-          <navigator url="../orgTaskList/orgTaskList"  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <navigator url="{{OpUrl.OrgTaskListUrl}}"  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
               <image src="../../images/task_list_2.png" />
             </view>
