@@ -10,6 +10,7 @@ function createPageObject() {
 
   obj.data = {
     OrgInfo: {},
+    HiddenNoDataPanel:true,
   };
 
   obj.onLoad = onLoad;
@@ -27,7 +28,7 @@ function onLoad(options) {
   })
 
   this.setData({ OrgInfo: orgInfo })
-
+  this.setData({ HiddenNoDataPanel:false})
   var thePage = this;
 }
 

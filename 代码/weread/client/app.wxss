@@ -58,3 +58,13 @@ page {
   z-index: 999;
   background-color: #f8f8f8;
 }
+
+.weread-navigator__item{
+    padding: 0 10px;
+    text-align: center;
+    background-color: #F6F6F6;
+    height: 40px;
+    line-height: 40px;
+    color: black;
+    border-top: 1px lightgray solid;
+}
