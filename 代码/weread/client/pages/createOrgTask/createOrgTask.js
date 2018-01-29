@@ -10,8 +10,6 @@ function createPageObject() {
 
   obj.data = {
     OrgInfo: {},
-    HiddenNoDataPanel: true,
-    CreateOrgTaskUrl: null,
   };
 
   obj.onLoad = onLoad;
@@ -28,24 +26,9 @@ function onLoad(options) {
     title: orgInfo.OrgName,
   })
 
-  // 设置功能的连接
-  setFunctionUrl(this, orgInfo);
-
   this.setData({ OrgInfo: orgInfo })
-  this.setData({ HiddenNoDataPanel: false })
   var thePage = this;
 
-
-}
-
-/**
- * 设置功能连接
- */
-function setFunctionUrl(thePage, orgInfo) {
-  var orgPms = util.buildOrgUrlParams(orgInfo);
-  var url = "../createOrgTask/createOrgTask?" + orgPms;
-
-  thePage.setData({ CreateOrgTaskUrl: url });
 }
 
 

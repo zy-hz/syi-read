@@ -1,4 +1,6 @@
 <view class="page">
+
+  <!--没有数据的面板-->
   <view class="weread-contain-null__panel" hidden="{{HiddenNoDataPanel}}">
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
@@ -7,23 +9,14 @@
 
   <view class="page__bd">
 
-
-
-
     <!--底部导航栏-->
     <view class="weui-footer weui-footer_fixed-bottom weread-navigator__footer">
       <view class="weui-flex ">
         <view class="weui-flex__item">
-          <view class="weread-navigator__item">新任务</view>
+          <navigator class="weread-navigator__item" url="{{CreateOrgTaskUrl}}">新任务</navigator>
         </view>
-        <view class="weui-flex__item">
-          <view class="weread-navigator__item">编辑</view>
-        </view>
-        <view class="weui-flex__item">
-          <view class="weread-navigator__item">查找</view>
-        </view>
-        <view class="weui-flex__item">
-          <view class="weread-navigator__item">返回</view>
+        <view>
+          <navigator class="weread-navigator__item" open-type="navigateBack">返回</navigator> 
         </view>
       </view>
     </view>
