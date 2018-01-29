@@ -89,9 +89,10 @@
     </view>
 
     <view>
-    abc
+      abc
     </view>
 
+    <!--底部导航栏-->
     <view class="weui-footer weui-footer_fixed-bottom weread-navigator__footer">
       <view class="weui-footer__links">
         <navigator url="" class="weui-footer__link">WeUI首页</navigator>
@@ -99,4 +100,5 @@
       <view class="weui-footer__text">Copyright © 2008-2016 weui.io</view>
     </view>
   </view>
+
 </view>
