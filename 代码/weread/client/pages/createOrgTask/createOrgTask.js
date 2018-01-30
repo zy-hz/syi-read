@@ -11,7 +11,7 @@ function createPageObject() {
   obj.data = {
     OrgInfo: {},
     TaskKinds: {},
-    TaskInfo: {},
+    TaskInfo: { RepeatCount: 0 },
 
     BeginDateTimeSelector: {},
     BeginDateTime: null,
@@ -19,8 +19,6 @@ function createPageObject() {
     EndDateTime: null,
 
     RepeatCountArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    RepeatCount: 0,
-    TaskScore: 0,
 
     AssignOptions: [
       { name: '本小组所有成员', value: '1', checked: true },
@@ -80,10 +78,10 @@ function taskContentDone(e) {
   this.setData({ TaskInfo: task });
 }
 
-function createTaskTitle(e){
+function createTaskTitle(e) {
   var task = this.data.TaskInfo;
-  
-  task.TaskTitle = util.getTextSummary(task.TaskContent,32);
+
+  task.TaskTitle = util.getTextSummary(task.TaskContent, 32);
   this.setData({ TaskInfo: task });
 }
 
@@ -107,7 +105,10 @@ function createTaskKindSelector(thePage) {
       TaskKinds.forEach(x => {
         if (x.IsDefault && score == -1) {
           score = x.KindScore;
-          thePage.setData({ TaskScore: score });
+
+          var task = thePage.data.TaskInfo;
+          task.TaskScore = score;
+          thePage.setData({ TaskInfo: task });
         }
       })
 
@@ -123,15 +124,18 @@ function createTaskKindSelector(thePage) {
 function taskKindsChange(e) {
 
   var radioItems = this.data.TaskKinds;
+  var task = this.data.TaskInfo;
+
   var taskScore = 0;
   for (var i = 0, len = radioItems.length; i < len; ++i) {
     radioItems[i].IsDefault = radioItems[i].KindId == e.detail.value;
     if (radioItems[i].IsDefault) taskScore = radioItems[i].KindScore;
   }
 
+  task.TaskScore = taskScore;
   this.setData({
     TaskKinds: radioItems,
-    TaskScore: taskScore,
+    TaskInfo: task,
   });
 }
 
@@ -242,7 +246,9 @@ function changeEndDateTimeColumn(e) {
  * 重复次数
  */
 function bindRepeatChange(e) {
-  this.setData({ RepeatCount: e.detail.value });
+  var task = this.data.TaskInfo;
+  task.RepeatCount = e.detail.value;
+  this.setData({ TaskInfo: task });
 }
 
 /**
@@ -256,16 +262,23 @@ function onCancel() {
  * 提交
  */
 function onSubmit() {
+  // 数据检查
   if (!verifyInputContent(this)) {
     this.setData({ showTopTips: true })
     return;
   }
+  var task = getTaskInfoFromInput(thePage);
 
   setSubmitState(this, true);
 }
 
 function verifyInputContent(thePage) {
   return true;
+}
+
+function getTaskInfoFromInput(thePage){
+  var task = thePage.data.TaskInfo;
+  return task;
 }
 
 function setSubmitState(thePage, begin) {
