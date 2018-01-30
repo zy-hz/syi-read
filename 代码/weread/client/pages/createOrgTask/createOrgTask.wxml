@@ -27,7 +27,7 @@
         <label class="weui-cell weui-check__label" wx:for="{{TaskKinds}}" wx:key="value">
           <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
 
-          <view class="weui-cell__bd">{{item.name}}</view>
+          <view class="weui-cell__bd">{{item.KindName}}</view>
           <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
             <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
           </view>
