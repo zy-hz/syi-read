@@ -48,15 +48,27 @@ function onLoad(options) {
 function createDateTimeSelector(thePage) {
 
   // 开始时间
+  createBeginDateTimeSelector(thePage);
+
+  // 截至时间
+  createEndDateTimeSelector(thePage);
+
+}
+
+function createBeginDateTimeSelector(thePage){
+
   var begin = dateTimePicker.dateTimePicker(2011, 2100);
   // 精确到分的处理，将数组的秒去掉
   begin.dateTimeArray.pop();
   begin.dateTime.pop();
 
-  thePage.setData({ BeginDateTimeSelector: begin.dateTimeArray, BeginDateTime: begin.dateTime});
+  thePage.setData({ BeginDateTimeSelector: begin.dateTimeArray, BeginDateTime: begin.dateTime });
+}
+
+function createEndDateTimeSelector(thePage,dtString){
 
   // 截至时间
-  var end = dateTimePicker.dateTimePicker(2011, 2100,"2018-02-01 11:22:33");
+  var end = dateTimePicker.dateTimePicker(2011, 2100, dtString);
   // 精确到分的处理，将数组的秒去掉
   end.dateTimeArray.pop();
   end.dateTime.pop();
