@@ -9,6 +9,18 @@
     <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">错误提示</view>
 
 
+    <view class="weui-cells__title">任务内容</view>
+    <view class="weui-cells weui-cells_after-title">
+
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" />
+          <view class="weui-textarea-counter">0/200</view>
+        </view>
+      </view>
+
+    </view>
+
     <view class="weui-cells__title">任务类型</view>
     <view class="weui-cells weui-cells_after-title">
       <radio-group bindchange="radioChange">
@@ -88,17 +100,6 @@
 
     </view>
 
-    <view class="weui-cells__title">任务说明</view>
-    <view class="weui-cells weui-cells_after-title">
-
-      <view class="weui-cell">
-        <view class="weui-cell__bd">
-          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 13.3em" />
-          <view class="weui-textarea-counter">0/200</view>
-        </view>
-      </view>
-
-    </view>
 
     <checkbox-group bindchange="bindAgreeChange">
       <label class="weui-agree" for="weuiAgree">
@@ -108,7 +109,6 @@
             <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
           </view>
           阅读并同意
-          <navigator url="" class="weui-agree__link">《相关条款》</navigator>
         </view>
       </label>
     </checkbox-group>

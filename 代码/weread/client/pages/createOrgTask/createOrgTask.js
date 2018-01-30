@@ -50,8 +50,9 @@ function createDateTimeSelector(thePage) {
   // 开始时间
   createBeginDateTimeSelector(thePage);
 
-  // 截至时间
-  createEndDateTimeSelector(thePage);
+  // 截至时间 ,默认三天后
+  var end = util.addDay(Date.now(),3);
+  createEndDateTimeSelector(thePage, util.formatDate2String(end,'yyyy-MM-dd HH:mm:ss'));
 
 }
 
