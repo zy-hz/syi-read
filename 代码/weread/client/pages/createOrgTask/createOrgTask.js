@@ -10,7 +10,7 @@ function createPageObject() {
 
   obj.data = {
     OrgInfo: {},
-    TaskKinds:{},
+    TaskKinds: {},
 
     BeginDateTimeSelector: {},
     BeginDateTime: null,
@@ -53,8 +53,20 @@ function onLoad(options) {
 /**
  * 任务类型选择器
  */
-function createTaskKindSelector(thePage){
-  
+function createTaskKindSelector(thePage) {
+  org.getTaskKinds({
+    OrgId: thePage.data.OrgInfo.OrgId,
+
+    success(result) {
+      // 获得任务类型
+      const { TaskKinds } = result.data;
+      thePage.setData({ TaskKinds });
+    },
+    fail(error) {
+      wxutil.showModel('获得任务类型失败', error);
+      console.log('获得任务类型失败', error);
+    }
+  })
 }
 
 /**

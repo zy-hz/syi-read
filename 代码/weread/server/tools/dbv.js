@@ -24,6 +24,7 @@ var TABLE_ORGS = "sy_orgs";
 
 var TABLE_TASKS = "sy_tasks";
 var TABLE_MEMBER_TASKS = "sy_member_tasks";
+var TABLE_TASK_KINDS = "sy_task_kinds"
 
 var LOG_MEMBER_JOIN = "sy_log_member_join";
 var LOG_USER_LOGIN = "sy_log_user_login";
@@ -36,6 +37,7 @@ var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_
 
 var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id'];
 
+var ORG_TASK_KIND_ITEM = [`${TABLE_TASK_KINDS}.id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASK_KINDS}.score as KindScore`];
 
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
 
@@ -134,6 +136,13 @@ async function getAllTasksAssignToUser(uid, isDone) {
   //return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone }).leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
 }
 
+/**
+ * 为组织找到任务类型
+ */
+async function getTaskKinds4Org(oid) {
+  return await DB(TABLE_ORGS).select(ORG_TASK_KIND_ITEM).where(`${TABLE_ORGS}.id`, oid).leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASK_KINDS}.id`, , `${TABLE_ORGS}.root_org_id`);
+}
+
 ////////////////////////// 日志 //////////////////////////////
 
 /**
@@ -176,6 +185,7 @@ module.exports = {
   getOrgs,
 
   getAllTasksAssignToUser,
+  getTaskKinds4Org,
 
   logMemberJoin,
   logUserRegist,

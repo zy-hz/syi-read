@@ -60,9 +60,9 @@ async function getOrgs(ctx, next) {
 
   // 获得查询参数
   const { Limit } = ctx.request.body;
-  
+
   // 获得组织
-  var Orgs = await dbv.getOrgs(user,Limit);
+  var Orgs = await dbv.getOrgs(user, Limit);
 
   // 返回用户对象
   ctx.body = { Orgs };
@@ -103,6 +103,19 @@ async function getTasks(ctx, next) {
 }
 
 /**
+ * 获得任务类型
+ */
+async function getTaskKinds(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+
+  const { OrgId } = ctx.query;
+  var TaskKinds = await dbv.getTaskKinds4Org(OrgId);
+  
+  ctx.body = { TaskKinds };
+}
+
+/**
  * 获得用户的合计信息
  */
 function getSummaryInfo(ctx, next) {
@@ -115,5 +128,6 @@ module.exports = {
   registUser,
   getTasks,
   getOrgs,
+  getTaskKinds,
   getSummaryInfo
 };

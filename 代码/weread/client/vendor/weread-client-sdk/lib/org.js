@@ -16,7 +16,7 @@ function checkUserAuth(options) {
       } else {
         // 已经授权
         wx.getUserInfo({
-          success(res){
+          success(res) {
             options.afterHasAuth(res.userInfo);
           },
 
@@ -71,10 +71,10 @@ function createNewTask(options) {
  * @param {Function} options.success(result) 成功后的回调函数 const { TaskId } = result.data
  * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
  */
-function getOrgs(options){
+function getOrgs(options) {
   options.method = "POST";
   options.data = options.pms;
-  
+
   // 自动登录
   options.login = true;
   options.url = `${service.baseUrl}/getorgs`;
@@ -100,6 +100,26 @@ function getTasks(options) {
 }
 
 /**
+ * 获得任务种类
+ * 
+ * @param {Object} options 函数配置
+ * @param {Function} options.success(res) 成功后的回调函数 const { TaskKinds } = result.data
+ * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
+ *
+ * 
+ */
+function getTaskKinds(options) {
+
+  const { OrgId } = options;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/gettaskkinds?OrgId=${OrgId}`;
+
+  qcloud.request(options);
+}
+
+/**
  * 获得合计信息
  * 
  * @param {Object} options 函数配置
@@ -107,7 +127,7 @@ function getTasks(options) {
  * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
  *
  */
-function getSummaryInfo(options){
+function getSummaryInfo(options) {
 
   // 自动登录
   options.login = true;
@@ -116,8 +136,10 @@ function getSummaryInfo(options){
   qcloud.request(options);
 }
 
-module.exports = { 
-  checkUserAuth, registUser, 
-  createNewTask, getTasks, 
+module.exports = {
+  checkUserAuth, registUser,
+  createNewTask, getTasks,
   getOrgs,
-  getSummaryInfo};
+  getTaskKinds,
+  getSummaryInfo
+};

@@ -41,6 +41,9 @@ router.post('/getorgs', validationMiddleware, controllers.org.getOrgs)
 // 任务的方法
 router.get('/gettasks', validationMiddleware, controllers.org.getTasks)
 
+// 任务类型
+router.get('/gettaskkinds', validationMiddleware, controllers.org.getTaskKinds)
+
 // 统计的方法
 router.get('/getsummaryinfo', validationMiddleware, controllers.org.getSummaryInfo)
 
