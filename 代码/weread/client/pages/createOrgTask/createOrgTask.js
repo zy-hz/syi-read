@@ -19,14 +19,18 @@ function createPageObject() {
 
     RepeatCountArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     RepeatCount: 0,
+    TaskScore: 0,
 
-    TaskScore: 1,
-
-    checkboxItems: [
-      { name: 'standard is dealt for u.', value: '0', checked: true },
-      { name: 'standard is dealicient for u.', value: '1' }
+    AssignOptions: [
+      { name: '本小组所有成员', value: '1', checked: true },
+      { name: '下属小组组长', value: '2' },
+      { name: '下属小组所有成员', value: '4' }
     ],
 
+    PublishWays: [
+      { name: '立刻发布', value: '1', checked: true },
+      { name: '暂不发布', value: '2' }
+    ]
   };
 
   obj.onLoad = onLoad;
@@ -37,6 +41,12 @@ function createPageObject() {
 
   obj.bindRepeatChange = bindRepeatChange;
   obj.taskKindsChange = taskKindsChange;
+  obj.assignOptionsChange = assignOptionsChange;
+  obj.publishWaysChange = publishWaysChange;
+
+  obj.onCancel = onCancel;
+  obj.onSubmit = onSubmit;
+
   return obj;
 }
 
@@ -68,6 +78,16 @@ function createTaskKindSelector(thePage) {
       // 获得任务类型
       const { TaskKinds } = result.data;
       thePage.setData({ TaskKinds });
+
+      // 获得默认类型的积分
+      var score = -1;
+      TaskKinds.forEach(x => {
+        if (x.IsDefault && score == -1) {
+          score = x.KindScore;
+          thePage.setData({ TaskScore: score });
+        }
+      })
+
     },
     fail(error) {
       wxutil.showModel('获得任务类型失败', error);
@@ -79,8 +99,6 @@ function createTaskKindSelector(thePage) {
 
 function taskKindsChange(e) {
 
-  console.log(e);
-
   var radioItems = this.data.TaskKinds;
   var taskScore = 0;
   for (var i = 0, len = radioItems.length; i < len; ++i) {
@@ -91,6 +109,43 @@ function taskKindsChange(e) {
   this.setData({
     TaskKinds: radioItems,
     TaskScore: taskScore,
+  });
+}
+
+/**
+ * 指派类型
+ */
+function assignOptionsChange(e) {
+
+  var checkboxItems = this.data.AssignOptions, values = e.detail.value;
+  for (var i = 0, lenI = checkboxItems.length; i < lenI; ++i) {
+    checkboxItems[i].checked = false;
+
+    for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
+      if (checkboxItems[i].value == values[j]) {
+        checkboxItems[i].checked = true;
+        break;
+      }
+    }
+  }
+
+  this.setData({
+    AssignOptions: checkboxItems
+  });
+}
+
+/**
+ * 发布方式
+ */
+function publishWaysChange(e) {
+
+  var radioItems = this.data.PublishWays;
+  for (var i = 0, len = radioItems.length; i < len; ++i) {
+    radioItems[i].checked = radioItems[i].value == e.detail.value;
+  }
+
+  this.setData({
+    PublishWays: radioItems
   });
 }
 
@@ -165,4 +220,31 @@ function changeEndDateTimeColumn(e) {
  */
 function bindRepeatChange(e) {
   this.setData({ RepeatCount: e.detail.value });
+}
+
+/**
+ * 取消
+ */
+function onCancel() {
+  wx.navigateBack();
+}
+
+/**
+ * 提交
+ */
+function onSubmit() {
+  if (!verifyInputContent(this)) {
+    this.setData({ showTopTips:true})
+    return;
+  }
+
+  setSubmitState(this, true);
+}
+
+function verifyInputContent(thePage) {
+  return true;
+}
+
+function setSubmitState(thePage, begin) {
+  thePage.setData({ BeginSubmit: begin })
 }

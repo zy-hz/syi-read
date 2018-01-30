@@ -1,1 +1,7 @@
-/* pages/createOrgTask/createOrgTask.wxss */
+.weui-btn-area{
+  margin-top: 40px;
+}
+
+.page__bd{
+  padding-bottom: 20px;
+}
