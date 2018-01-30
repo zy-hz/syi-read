@@ -10,11 +10,17 @@ function createPageObject() {
 
   obj.data = {
     OrgInfo: {},
+    TaskKinds:{},
 
     BeginDateTimeSelector: {},
-    BeginDateTime:null,
+    BeginDateTime: null,
     EndDateTimeSelector: {},
     EndDateTime: null,
+
+    RepeatCountArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    RepeatCount: 0,
+
+    TaskScore: 1,
   };
 
   obj.onLoad = onLoad;
@@ -22,7 +28,8 @@ function createPageObject() {
   obj.changeBeginDateTime = changeBeginDateTime;
   obj.changeEndDateTimeColumn = changeEndDateTimeColumn;
   obj.changeEndDateTime = changeEndDateTime;
-  
+
+  obj.bindRepeatChange = bindRepeatChange;
   return obj;
 }
 
@@ -40,6 +47,14 @@ function onLoad(options) {
   var thePage = this;
 
   createDateTimeSelector(this);
+  createTaskKindSelector(this);
+}
+
+/**
+ * 任务类型选择器
+ */
+function createTaskKindSelector(thePage){
+  
 }
 
 /**
@@ -51,12 +66,11 @@ function createDateTimeSelector(thePage) {
   createBeginDateTimeSelector(thePage);
 
   // 截至时间 ,默认三天后
-  var end = util.addDay(Date.now(),3);
-  createEndDateTimeSelector(thePage, util.formatDate2String(end,'yyyy-MM-dd HH:mm:ss'));
-
+  var end = util.addDay(Date.now(), 3);
+  createEndDateTimeSelector(thePage, util.formatDate2String(end, 'yyyy-MM-dd HH:mm:ss'));
 }
 
-function createBeginDateTimeSelector(thePage){
+function createBeginDateTimeSelector(thePage) {
 
   var begin = dateTimePicker.dateTimePicker(2011, 2100);
   // 精确到分的处理，将数组的秒去掉
@@ -66,7 +80,7 @@ function createBeginDateTimeSelector(thePage){
   thePage.setData({ BeginDateTimeSelector: begin.dateTimeArray, BeginDateTime: begin.dateTime });
 }
 
-function createEndDateTimeSelector(thePage,dtString){
+function createEndDateTimeSelector(thePage, dtString) {
 
   // 截至时间
   var end = dateTimePicker.dateTimePicker(2011, 2100, dtString);
@@ -107,4 +121,11 @@ function changeEndDateTimeColumn(e) {
     EndDateTimeSelector: dateArr,
     EndDateTime: arr
   });
+}
+
+/**
+ * 重复次数
+ */
+function bindRepeatChange(e) {
+  this.setData({ RepeatCount: e.detail.value });
 }
