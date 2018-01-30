@@ -21,5 +21,6 @@ module.exports = function init(options) {
     service,
     util: require('./lib/util'),
     org: require('./lib/org'),
+    dateTimePicker: require('./lib/dateTimePicker'),
   }
 }

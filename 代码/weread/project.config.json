@@ -72,6 +72,12 @@
 					"pathName": "pages/createOrgTask/createOrgTask",
 					"query": "OrgId=1&OrgName=%E9%B2%81%E8%BF%85%E8%AF%BB%E4%B9%A6%E7%BE%A4&OrgAvater=/images/home_1.png",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "zzTest",
+					"pathName": "pages/zzTest/zzTest",
+					"query": ""
 				}
 			]
 		}
