@@ -104,9 +104,21 @@ function getDay_zh(obj) {
   return "星期天";
 }
 
+//
+// 字符串 相关
+//
+
+/**
+ * 获得一个文件的简介
+ */
+function getTextSummary(txt, len) {
+  if (txt == null) return "";
+  txt = txt.trim();
+  
+  return txt.substr(0, len);
+}
 
 // -----------------------------------------------------
-
 
 // 构建连接带入对象参数,使用json
 function buildUrlWithObjectParams(url, obj) {
@@ -139,8 +151,8 @@ function getOrgInfoFromOptions(options) {
 /**
  * 构建组织的url参数
  */
-function buildOrgUrlParams(o){
-  return `OrgId = ${o.OrgId}&OrgName=${encodeURI(o.OrgName)}&OrgAvater=${encodeURI(o.OrgAvatar)}`;
+function buildOrgUrlParams(o) {
+  return `OrgId=${o.OrgId}&OrgName=${encodeURI(o.OrgName)}&OrgAvater=${encodeURI(o.OrgAvatar)}`;
 }
 
 module.exports = {
@@ -148,5 +160,7 @@ module.exports = {
   getOrgInfoFromOptions,
   formatDate2String,
   addDay,
+
+  getTextSummary,
 }
 

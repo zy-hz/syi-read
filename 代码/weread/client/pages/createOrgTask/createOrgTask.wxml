@@ -8,14 +8,12 @@
     <!--提示信息-->
     <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">输入有错，请检查！</view>
 
-
     <view class="weui-cells__title">任务内容</view>
     <view class="weui-cells weui-cells_after-title">
-
       <view class="weui-cell">
         <view class="weui-cell__bd">
-          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" />
-          <view class="weui-textarea-counter">0/200</view>
+          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskInfo.TaskContent}}' />
+          <!--view class="weui-textarea-counter">0/200</view-->
         </view>
       </view>
 
@@ -35,7 +33,12 @@
       </radio-group>
     </view>
 
-    <view class="weui-cells__title">任务参数</view>
+    <view class="weui-cells__title weui-cells__title-more">
+      <view class='weui-cell'>
+        <view class='weui-cell__bd'>任务参数</view>
+        <view class='weui-cell__ft' style='color:green' bindtap='createTaskTitle'>自动标题</view>
+      </view>
+    </view>
     <view class="weui-cells weui-cells_after-title">
 
       <view class="weui-cell weui-cell_input">
@@ -43,7 +46,7 @@
           <view class="weui-label">标题</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="不超过64个字" />
+          <input class="weui-input" placeholder="不超过64个字" value='{{TaskInfo.TaskTitle}}' />
         </view>
       </view>
 

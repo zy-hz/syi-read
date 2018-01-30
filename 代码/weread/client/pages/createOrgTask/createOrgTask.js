@@ -11,6 +11,7 @@ function createPageObject() {
   obj.data = {
     OrgInfo: {},
     TaskKinds: {},
+    TaskInfo: {},
 
     BeginDateTimeSelector: {},
     BeginDateTime: null,
@@ -34,6 +35,7 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
+  obj.taskContentDone = taskContentDone;
   obj.changeBeginDateTimeColumn = changeBeginDateTimeColumn;
   obj.changeBeginDateTime = changeBeginDateTime;
   obj.changeEndDateTimeColumn = changeEndDateTimeColumn;
@@ -44,6 +46,7 @@ function createPageObject() {
   obj.assignOptionsChange = assignOptionsChange;
   obj.publishWaysChange = publishWaysChange;
 
+  obj.createTaskTitle = createTaskTitle;
   obj.onCancel = onCancel;
   obj.onSubmit = onSubmit;
 
@@ -68,13 +71,33 @@ function onLoad(options) {
 }
 
 /**
+ * 任务内容完成
+ */
+function taskContentDone(e) {
+  var task = this.data.TaskInfo;
+  task.TaskContent = e.detail.value;
+
+  this.setData({ TaskInfo: task });
+}
+
+function createTaskTitle(e){
+  var task = this.data.TaskInfo;
+  
+  task.TaskTitle = util.getTextSummary(task.TaskContent,32);
+  this.setData({ TaskInfo: task });
+}
+
+/**
  * 任务类型选择器
  */
 function createTaskKindSelector(thePage) {
+  wxutil.showLoading();
+
   org.getTaskKinds({
     OrgId: thePage.data.OrgInfo.OrgId,
 
     success(result) {
+      wxutil.hideLoading();
       // 获得任务类型
       const { TaskKinds } = result.data;
       thePage.setData({ TaskKinds });
@@ -234,7 +257,7 @@ function onCancel() {
  */
 function onSubmit() {
   if (!verifyInputContent(this)) {
-    this.setData({ showTopTips:true})
+    this.setData({ showTopTips: true })
     return;
   }
 
