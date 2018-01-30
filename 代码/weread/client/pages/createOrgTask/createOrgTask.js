@@ -21,6 +21,12 @@ function createPageObject() {
     RepeatCount: 0,
 
     TaskScore: 1,
+
+    checkboxItems: [
+      { name: 'standard is dealt for u.', value: '0', checked: true },
+      { name: 'standard is dealicient for u.', value: '1' }
+    ],
+
   };
 
   obj.onLoad = onLoad;
@@ -30,6 +36,7 @@ function createPageObject() {
   obj.changeEndDateTime = changeEndDateTime;
 
   obj.bindRepeatChange = bindRepeatChange;
+  obj.taskKindsChange = taskKindsChange;
   return obj;
 }
 
@@ -67,6 +74,24 @@ function createTaskKindSelector(thePage) {
       console.log('获得任务类型失败', error);
     }
   })
+
+}
+
+function taskKindsChange(e) {
+
+  console.log(e);
+
+  var radioItems = this.data.TaskKinds;
+  var taskScore = 0;
+  for (var i = 0, len = radioItems.length; i < len; ++i) {
+    radioItems[i].IsDefault = radioItems[i].KindId == e.detail.value;
+    if (radioItems[i].IsDefault) taskScore = radioItems[i].KindScore;
+  }
+
+  this.setData({
+    TaskKinds: radioItems,
+    TaskScore: taskScore,
+  });
 }
 
 /**
