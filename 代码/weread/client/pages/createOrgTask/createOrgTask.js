@@ -280,6 +280,8 @@ function getTaskInfoFromInput(thePage) {
   task.TaskTitle = thePage.data.TaskTitle;
   task.TaskScore = thePage.data.TaskScore;
   task.RepeatCount = thePage.data.RepeatCount;
+  task.BeginDateTime = thePage.data.BeginDateTime;
+  task.EndDateTime = thePage.data.EndDateTime;
   task.IsPublished = thePage.data.IsPublished;
 
   return task;
