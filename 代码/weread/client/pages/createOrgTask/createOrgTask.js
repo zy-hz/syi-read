@@ -27,16 +27,16 @@ function createPageObject() {
 
     AssignOptions: [
       { name: '本小组所有成员', value: '1', attr: "ToMemberOrg", checked: true },
-      { name: '由下属小组组长转发', value: '2', attr: "ToMemberAll"},
+      { name: '由下属小组组长转发', value: '2', attr: "ToMemberAll" },
       { name: '下属小组所有成员', value: '4', attr: "ToSubOrg" }
     ],
 
-    VisiableForRange:[
+    VisiableForRange: [
       { name: '无', value: '0' },
-      { name: '同组成员', value: '1', checked: true},
+      { name: '同组成员', value: '1', checked: true },
       { name: '参与任务的所有成员', value: '2' }
     ],
-    VisiableFor:0,
+    VisiableFor: 0,
 
     PublishWays: [
       { name: '立刻发布', value: '1', checked: true },
@@ -182,7 +182,7 @@ function publishWaysChange(e) {
 /**
  * 任务交流范围
  */
-function visiableForRangeChange(e){
+function visiableForRangeChange(e) {
 
   var radioItems = this.data.VisiableForRange;
   var vf = -1;
@@ -289,6 +289,22 @@ function onSubmit() {
   var task = getTaskInfoFromInput(this);
 
   setSubmitState(this, true);
+  var thePage = this;
+
+  org.createNewTask({
+    Task: task,
+    success(result) {
+      // 创建任务成功
+      const { TaskId } = result.data;
+      console.log(TaskId);
+    },
+    fail(error) {
+      wxutil.showModel('创建任务失败', error);
+      console.log('创建任务失败', error);
+
+      setSubmitState(thePage, false);
+    }
+  })
 }
 
 function verifyInputContent(thePage) {
@@ -308,9 +324,10 @@ function getTaskInfoFromInput(thePage) {
   task.RepeatCount = thePage.data.RepeatCount;
   task.BeginDateTime = thePage.data.BeginDateTime;
   task.EndDateTime = thePage.data.EndDateTime;
+  task.VisiableFor = thePage.data.VisiableFor;
   task.IsPublished = thePage.data.IsPublished;
 
-  task = setTaskAssignOptions(thePage,task);
+  task = setTaskAssignOptions(thePage, task);
   return task;
 }
 
@@ -321,11 +338,11 @@ function getSelectedTaskKind(thePage) {
   })
 }
 
-function setTaskAssignOptions(thePage , task){
+function setTaskAssignOptions(thePage, task) {
   var opts = thePage.data.AssignOptions;
-  opts.forEach(x=>{
+  opts.forEach(x => {
     var attr = x.attr
-    var result = x.checked == true ? 1:0;
+    var result = x.checked == true ? 1 : 0;
     task[attr] = result;
   })
 

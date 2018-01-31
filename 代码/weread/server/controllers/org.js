@@ -103,6 +103,25 @@ async function getTasks(ctx, next) {
 }
 
 /**
+ * 创建新任务
+ */
+async function createNewTask(ctx, next){
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+  const { OrgId } = ctx.request.body;
+
+  // TODO::验证用户授权
+
+  // 创建新人物
+  var TaskId = await dbv.createNewTask(ctx.request.body, user.id);
+
+  ctx.state.code = -1
+}
+
+/**
  * 获得任务类型
  */
 async function getTaskKinds(ctx, next) {
@@ -127,6 +146,7 @@ module.exports = {
   createOrg,
   registUser,
   getTasks,
+  createNewTask,
   getOrgs,
   getTaskKinds,
   getSummaryInfo

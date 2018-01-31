@@ -61,7 +61,14 @@ function registUser(options) {
  * 
  */
 function createNewTask(options) {
+  options.method = "POST";
+  options.data = options.Task;
 
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/createnewtask`;
+
+  qcloud.request(options);
 }
 
 /**

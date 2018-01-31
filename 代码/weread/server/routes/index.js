@@ -40,6 +40,7 @@ router.post('/getorgs', validationMiddleware, controllers.org.getOrgs)
 
 // 任务的方法
 router.get('/gettasks', validationMiddleware, controllers.org.getTasks)
+router.post('/createnewtask', validationMiddleware, controllers.org.createNewTask)
 
 // 任务类型
 router.get('/gettaskkinds', validationMiddleware, controllers.org.getTaskKinds)
