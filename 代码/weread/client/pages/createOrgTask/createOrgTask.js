@@ -26,10 +26,17 @@ function createPageObject() {
     RepeatCount: 0,
 
     AssignOptions: [
-      { name: '本小组所有成员', value: '1', checked: true },
-      { name: '下属小组组长', value: '2' },
-      { name: '下属小组所有成员', value: '4' }
+      { name: '本小组所有成员', value: '1', attr: "ToMemberOrg", checked: true },
+      { name: '由下属小组组长转发', value: '2', attr: "ToMemberAll"},
+      { name: '下属小组所有成员', value: '4', attr: "ToSubOrg" }
     ],
+
+    VisiableForRange:[
+      { name: '无', value: '0' },
+      { name: '同组成员', value: '1', checked: true},
+      { name: '参与任务的所有成员', value: '2' }
+    ],
+    VisiableFor:0,
 
     PublishWays: [
       { name: '立刻发布', value: '1', checked: true },
@@ -48,6 +55,7 @@ function createPageObject() {
   obj.bindRepeatChange = bindRepeatChange;
   obj.taskKindsChange = taskKindsChange;
   obj.assignOptionsChange = assignOptionsChange;
+  obj.visiableForRangeChange = visiableForRangeChange;
   obj.publishWaysChange = publishWaysChange;
 
   obj.createTaskTitle = createTaskTitle;
@@ -172,6 +180,24 @@ function publishWaysChange(e) {
 }
 
 /**
+ * 任务交流范围
+ */
+function visiableForRangeChange(e){
+
+  var radioItems = this.data.VisiableForRange;
+  var vf = -1;
+  for (var i = 0, len = radioItems.length; i < len; ++i) {
+    radioItems[i].checked = radioItems[i].value == e.detail.value;
+    if (radioItems[i].checked) vf = radioItems[i].value;
+  }
+
+  this.setData({
+    VisiableForRange: radioItems,
+    VisiableFor: vf
+  });
+}
+
+/**
  * 创建时间日期选择器
  */
 function createDateTimeSelector(thePage) {
@@ -284,6 +310,7 @@ function getTaskInfoFromInput(thePage) {
   task.EndDateTime = thePage.data.EndDateTime;
   task.IsPublished = thePage.data.IsPublished;
 
+  task = setTaskAssignOptions(thePage,task);
   return task;
 }
 
@@ -292,6 +319,17 @@ function getSelectedTaskKind(thePage) {
   return taskKinds.find(x => {
     return x.IsDefault;
   })
+}
+
+function setTaskAssignOptions(thePage , task){
+  var opts = thePage.data.AssignOptions;
+  opts.forEach(x=>{
+    var attr = x.attr
+    var result = x.checked == true ? 1:0;
+    task[attr] = result;
+  })
+
+  return task;
 }
 
 function setSubmitState(thePage, begin) {
