@@ -12,7 +12,7 @@
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell">
         <view class="weui-cell__bd">
-          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskInfo.TaskContent}}' />
+          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskContent}}' />
           <!--view class="weui-textarea-counter">0/200</view-->
         </view>
       </view>
@@ -46,7 +46,7 @@
           <view class="weui-label">标题</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="不超过64个字" value='{{TaskInfo.TaskTitle}}' />
+          <input class="weui-input" placeholder="不超过64个字" value='{{TaskTitle}}' />
         </view>
       </view>
 
@@ -79,7 +79,7 @@
           <view class="weui-label">积分</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskInfo.TaskScore}}" />
+          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskScore}}" />
         </view>
         <view class="weui-cell__ft">
         </view>
@@ -90,8 +90,8 @@
           <view class="weui-label">允许重复</view>
         </view>
         <view class="weui-cell__bd">
-          <picker bindchange="bindRepeatChange" value="{{TaskInfo.RepeatCount}}" range="{{RepeatCountArray}}">
-            <view class="weui-select weui-select_in-select-after">{{RepeatCountArray[TaskInfo.RepeatCount]}} 次</view>
+          <picker bindchange="bindRepeatChange" value="{{RepeatCount}}" range="{{RepeatCountArray}}">
+            <view class="weui-select weui-select_in-select-after">{{RepeatCountArray[RepeatCount]}} 次</view>
           </picker>
         </view>
       </view>

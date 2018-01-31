@@ -11,7 +11,11 @@ function createPageObject() {
   obj.data = {
     OrgInfo: {},
     TaskKinds: {},
-    TaskInfo: { RepeatCount: 0 },
+    TaskInfo: {},
+
+    TaskContent: '',
+    TaskTitle: '',
+    TaskScore: 0,
 
     BeginDateTimeSelector: {},
     BeginDateTime: null,
@@ -19,6 +23,7 @@ function createPageObject() {
     EndDateTime: null,
 
     RepeatCountArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    RepeatCount: 0,
 
     AssignOptions: [
       { name: '本小组所有成员', value: '1', checked: true },
@@ -28,8 +33,9 @@ function createPageObject() {
 
     PublishWays: [
       { name: '立刻发布', value: '1', checked: true },
-      { name: '暂不发布', value: '2' }
-    ]
+      { name: '暂不发布', value: '0' }
+    ],
+    IsPublished: 1,
   };
 
   obj.onLoad = onLoad;
@@ -72,17 +78,12 @@ function onLoad(options) {
  * 任务内容完成
  */
 function taskContentDone(e) {
-  var task = this.data.TaskInfo;
-  task.TaskContent = e.detail.value;
-
-  this.setData({ TaskInfo: task });
+  this.setData({ TaskContent: e.detail.value });
 }
 
 function createTaskTitle(e) {
-  var task = this.data.TaskInfo;
-
-  task.TaskTitle = util.getTextSummary(task.TaskContent, 32);
-  this.setData({ TaskInfo: task });
+  var title = util.getTextSummary(this.data.TaskContent, 32);
+  this.setData({ TaskTitle: title });
 }
 
 /**
@@ -101,16 +102,8 @@ function createTaskKindSelector(thePage) {
       thePage.setData({ TaskKinds });
 
       // 获得默认类型的积分
-      var score = -1;
-      TaskKinds.forEach(x => {
-        if (x.IsDefault && score == -1) {
-          score = x.KindScore;
-
-          var task = thePage.data.TaskInfo;
-          task.TaskScore = score;
-          thePage.setData({ TaskInfo: task });
-        }
-      })
+      var kind = getSelectedTaskKind(thePage);
+      thePage.setData({ TaskScore: kind.KindScore });
 
     },
     fail(error) {
@@ -132,10 +125,9 @@ function taskKindsChange(e) {
     if (radioItems[i].IsDefault) taskScore = radioItems[i].KindScore;
   }
 
-  task.TaskScore = taskScore;
   this.setData({
     TaskKinds: radioItems,
-    TaskInfo: task,
+    TaskScore: taskScore,
   });
 }
 
@@ -167,12 +159,15 @@ function assignOptionsChange(e) {
 function publishWaysChange(e) {
 
   var radioItems = this.data.PublishWays;
+  var isPublished = -1;
   for (var i = 0, len = radioItems.length; i < len; ++i) {
     radioItems[i].checked = radioItems[i].value == e.detail.value;
+    if (radioItems[i].checked) isPublished = radioItems[i].value;
   }
 
   this.setData({
-    PublishWays: radioItems
+    PublishWays: radioItems,
+    IsPublished: isPublished
   });
 }
 
@@ -246,9 +241,7 @@ function changeEndDateTimeColumn(e) {
  * 重复次数
  */
 function bindRepeatChange(e) {
-  var task = this.data.TaskInfo;
-  task.RepeatCount = e.detail.value;
-  this.setData({ TaskInfo: task });
+  this.setData({ RepeatCount: e.detail.value });
 }
 
 /**
@@ -267,7 +260,7 @@ function onSubmit() {
     this.setData({ showTopTips: true })
     return;
   }
-  var task = getTaskInfoFromInput(thePage);
+  var task = getTaskInfoFromInput(this);
 
   setSubmitState(this, true);
 }
@@ -276,9 +269,27 @@ function verifyInputContent(thePage) {
   return true;
 }
 
-function getTaskInfoFromInput(thePage){
+function getTaskInfoFromInput(thePage) {
   var task = thePage.data.TaskInfo;
+  task.OrgId = thePage.data.OrgInfo.OrgId;
+
+  var kind = getSelectedTaskKind(thePage);
+  task.KindId = kind.KindId;
+
+  task.TaskContent = thePage.data.TaskContent;
+  task.TaskTitle = thePage.data.TaskTitle;
+  task.TaskScore = thePage.data.TaskScore;
+  task.RepeatCount = thePage.data.RepeatCount;
+  task.IsPublished = thePage.data.IsPublished;
+
   return task;
+}
+
+function getSelectedTaskKind(thePage) {
+  var taskKinds = thePage.data.TaskKinds;
+  return taskKinds.find(x => {
+    return x.IsDefault;
+  })
 }
 
 function setSubmitState(thePage, begin) {
