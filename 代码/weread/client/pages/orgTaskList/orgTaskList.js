@@ -12,6 +12,9 @@ function createPageObject() {
     OrgInfo: {},
     HiddenNoDataPanel: true,
     CreateOrgTaskUrl: null,
+
+    // 列表中最小的任务编号
+    MinTaskId:-1,
   };
 
   obj.onLoad = onLoad;
@@ -51,14 +54,23 @@ function setFunctionUrl(thePage, orgInfo) {
 /**
  * 载入任务
  */
-function doLoadTasks(thePage){
+function doLoadTasks(thePage) {
+  // 载入的参数
+  var pms = {
+    OrgId: thePage.data.OrgInfo.OrgId,
+    Limit: 20,
+    MinTaskId: thePage.data.MinTaskId,
+  }
+
   wxutil.showLoading();
   org.getTasks({
-    success(result) {
+    pms,
 
+    success(result) {
       wxutil.hideLoading();
 
       // 载入任务列表
+      const { Tasks } = result.data
     },
     fail(error) {
       wxutil.showModel('载入任务列表失败', error);

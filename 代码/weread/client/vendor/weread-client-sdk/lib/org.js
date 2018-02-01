@@ -93,12 +93,14 @@ function getOrgs(options) {
  * 获得任务
  * 
  * @param {Object} options 函数配置
- * @param {Function} options.success(res) 成功后的回调函数 const { Tasks } = res.data
+ * @param {Function} options.success(res) 成功后的回调函数 const { Tasks } = result.data
  * @param {Function} options.fail(error) 失败后的回调函数，参数 error 错误信息
  *
  */
 function getTasks(options) {
-
+  options.method = "POST";
+  options.data = options.pms;
+  
   // 自动登录
   options.login = true;
   options.url = `${service.baseUrl}/gettasks`;
