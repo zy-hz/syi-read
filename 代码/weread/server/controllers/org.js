@@ -91,15 +91,22 @@ async function joinOneOrg(uid, oid, mt, name) {
   return member;
 }
 
+/**
+ * 获得组任务
+ */
 async function getTasks(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
 
-  var uid = ctx.state.$wxInfo.userinfo.openId;
-  const { AllOrg, InOrgs, IsDone } = ctx.query;
+  const { OrgId, Limit, MinTaskId } = ctx.request.body;
 
-  var Tasks = dbv.getAllTasksAssignToUser(uid, IsDone);
-  ctx.body = { Tasks };
+  try {
+    var Tasks = await dbv.findTasksByOrgId(OrgId, Limit, MinTaskId);
+    ctx.body = { Tasks };
+  }
+  catch (err) {
+    console.log(err)
+  }
 }
 
 /**

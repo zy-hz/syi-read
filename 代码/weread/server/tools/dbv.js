@@ -37,6 +37,8 @@ var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_
 
 var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id'];
 
+var ORG_TASK_ITEM = [`${TABLE_TASKS}.id as TaskId`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.content as TaskContent`, `${TABLE_MEMBERS}.name as AuthorName`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASKS}.task_score as TaskScore`, `${TABLE_TASKS}.allow_repeat_cnt as RepeatCount`, `${TABLE_TASKS}.created_on as CreateDateTime`, `${TABLE_TASKS}.publish_on as PublishDateTime`, `${TABLE_TASKS}.begin_on as BeginDateTime`, `${TABLE_TASKS}.end_on as EndDateTime`, `${TABLE_TASKS}.visible_for as VisiableFor`, `${TABLE_TASKS}.to_member_org as ToMemberOrg`, `${TABLE_TASKS}.to_member_all as ToMemberAll`, `${TABLE_TASKS}.to_sub_org as ToSubOrg`, `${TABLE_TASKS}.is_published as IsPublished`];
+
 var ORG_TASK_KIND_ITEM = [`${TABLE_TASK_KINDS}.id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASK_KINDS}.score as KindScore`, `${TABLE_TASK_KINDS}.is_default as IsDefault`];
 
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
@@ -135,6 +137,24 @@ async function getOrgs(user, limit) {
 }
 
 ////////////////////////// 任务 //////////////////////////////
+
+/** 
+ * 
+ * 查找组任务 
+ * 
+ */
+async function findTasksByOrgId(oid, maxCount, beginId) {
+  return await DB(TABLE_TASKS).select(ORG_TASK_ITEM)
+    .where(`${TABLE_TASKS}.org_id`, oid)
+    .where(`${TABLE_TASKS}.id`, beginId > 0 ? '<' : '>', beginId)
+    .orderBy(`${TABLE_TASKS}.id`, 'desc')
+    .limit(maxCount)
+    .leftJoin(`${TABLE_MEMBERS}`, function () {
+      this.on(`${TABLE_TASKS}.org_id`, '=', `${TABLE_MEMBERS}.org_id`)
+        .on(`${TABLE_TASKS}.author_id`, '=', `${TABLE_MEMBERS}.user_id`)
+    })
+    .leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASKS}.kind_id`, `${TABLE_TASK_KINDS}.id`);
+}
 
 /**
  * 指派给用户的所有任务
@@ -254,6 +274,7 @@ module.exports = {
 
   getOrgs,
 
+  findTasksByOrgId,
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,

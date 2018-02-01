@@ -14,7 +14,7 @@ function createPageObject() {
     CreateOrgTaskUrl: null,
 
     // 列表中最小的任务编号
-    MinTaskId:-1,
+    MinTaskId:10,
   };
 
   obj.onLoad = onLoad;
