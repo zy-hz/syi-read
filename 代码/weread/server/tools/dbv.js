@@ -146,12 +146,12 @@ async function getTaskKinds4Org(oid) {
 /**
  * 用户创建任务
  */
-async function addTask(task, uid) {
+async function addTask(task) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
   var result = await DB(TABLE_TASKS).returning('id').insert({
     title: task.TaskTitle,
-    content:task.TaskContent,
-    author_id: uid,
+    content: task.TaskContent,
+    author_id: task.AuthorId,
     org_id: task.OrgId,
     kind_id: task.KindId,
     task_score: task.TaskScore,
@@ -167,6 +167,14 @@ async function addTask(task, uid) {
   });
 
   return result.lenght == 0 ? null : result[0];
+}
+
+/**
+ * 设置任务的发布时间
+ */
+async function setTaskPublishDateTime(tid) {
+  var dt = new Date().toString(DATETIME_LONGSTRING);
+  await DB(TABLE_TASKS).update({ publish_on: dt }).where('id', tid);
 }
 
 ////////////////////////// 日志 //////////////////////////////
@@ -213,6 +221,7 @@ module.exports = {
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,
+  setTaskPublishDateTime,
 
   logMemberJoin,
   logUserRegist,

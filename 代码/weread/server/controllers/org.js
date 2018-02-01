@@ -115,15 +115,35 @@ async function createNewTask(ctx, next) {
 
   // TODO::验证用户授权
 
-  try {
-    // 创建新任务
-    var TaskId = await dbv.addTask(ctx.request.body, user.id);
+  // 创建新任务
+  var task = ctx.request.body;
+  task.AuthorId = user.id;
+  var TaskId = await dbv.addTask(task);
+  task.id = TaskId;
 
-    ctx.body = { TaskId };
+  // 尝试发布任务
+  tryPublishTask(task);
+
+  ctx.body = { TaskId };
+}
+
+/**
+ * 发布任务
+ */
+async function tryPublishTask(task) {
+  if (!task.IsPublished) return;
+
+  if (task.ToMemberOrg){
+
   }
-  catch (err) {
-    console.log(err)
+  if (task.ToMemberOrg) {
+
   }
+  if (task.ToMemberOrg) {
+
+  }
+
+  await dbv.setTaskPublishDateTime(task.id);
 }
 
 /**

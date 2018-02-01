@@ -36,7 +36,7 @@ function createPageObject() {
       { name: '同组成员', value: '1', checked: true },
       { name: '参与任务的所有成员', value: '2' }
     ],
-    VisiableFor: 0,
+    VisiableFor: 1,
 
     PublishWays: [
       { name: '立刻发布', value: '1', checked: true },
@@ -322,12 +322,12 @@ function getTaskInfoFromInput(thePage) {
 
   task.TaskContent = thePage.data.TaskContent;
   task.TaskTitle = thePage.data.TaskTitle;
-  task.TaskScore = thePage.data.TaskScore;
-  task.RepeatCount = thePage.data.RepeatCount;
+  task.TaskScore = parseInt(thePage.data.TaskScore);
+  task.RepeatCount = parseInt(thePage.data.RepeatCount);
   task.BeginDateTime = getDateTimeFromSelector(thePage.data.BeginDateTimeSelector,thePage.data.BeginDateTime);
   task.EndDateTime = getDateTimeFromSelector(thePage.data.EndDateTimeSelector, thePage.data.EndDateTime);
-  task.VisiableFor = thePage.data.VisiableFor;
-  task.IsPublished = thePage.data.IsPublished;
+  task.VisiableFor = parseInt(thePage.data.VisiableFor);
+  task.IsPublished = parseInt(thePage.data.IsPublished); 
 
   task = setTaskAssignOptions(thePage, task);
   return task;
