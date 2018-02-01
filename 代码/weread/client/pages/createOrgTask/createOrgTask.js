@@ -294,6 +294,8 @@ function onSubmit() {
   org.createNewTask({
     Task: task,
     success(result) {
+      setSubmitState(thePage, false);
+      
       // 创建任务成功
       const { TaskId } = result.data;
       console.log(TaskId);

@@ -105,7 +105,7 @@ async function getTasks(ctx, next) {
 /**
  * 创建新任务
  */
-async function createNewTask(ctx, next){
+async function createNewTask(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
 
@@ -115,10 +115,10 @@ async function createNewTask(ctx, next){
 
   // TODO::验证用户授权
 
-  // 创建新人物
-  var TaskId = await dbv.createNewTask(ctx.request.body, user.id);
+  // 创建新任务
+  var TaskId = await dbv.addTask(ctx.request.body, user.id);
 
-  ctx.state.code = -1
+  ctx.body = { TaskId };
 }
 
 /**
@@ -130,7 +130,7 @@ async function getTaskKinds(ctx, next) {
 
   const { OrgId } = ctx.query;
   var TaskKinds = await dbv.getTaskKinds4Org(OrgId);
-  
+
   ctx.body = { TaskKinds };
 }
 

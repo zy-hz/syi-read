@@ -143,6 +143,22 @@ async function getTaskKinds4Org(oid) {
   return await DB(TABLE_ORGS).select(ORG_TASK_KIND_ITEM).where(`${TABLE_ORGS}.id`, oid).leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASK_KINDS}.org_id`, `${TABLE_ORGS}.root_org_id`);
 }
 
+/**
+ * 用户创建任务
+ */
+async function addTask(task,uid){
+  var result = await DB(TABLE_TASKS).returning('id').insert({
+    title:task.TaskTitle,
+    author_id: uid,
+    org_id: task.OrgId,
+    kind_id: task.KindId,
+    task_score: task.TaskScore,
+    allow_repeat_cnt: task.RepeatCount,
+  });
+
+  return result.lenght == 0 ? null : result[0];
+}
+
 ////////////////////////// 日志 //////////////////////////////
 
 /**
@@ -186,6 +202,7 @@ module.exports = {
 
   getAllTasksAssignToUser,
   getTaskKinds4Org,
+  addTask,
 
   logMemberJoin,
   logUserRegist,
