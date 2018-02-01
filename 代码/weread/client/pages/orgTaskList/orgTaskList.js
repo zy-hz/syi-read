@@ -33,9 +33,9 @@ function onLoad(options) {
 
   this.setData({ OrgInfo: orgInfo })
   this.setData({ HiddenNoDataPanel: false })
-  var thePage = this;
 
-
+  // 载入任务列表
+  doLoadTasks(this);
 }
 
 /**
@@ -48,5 +48,22 @@ function setFunctionUrl(thePage, orgInfo) {
   thePage.setData({ CreateOrgTaskUrl: url });
 }
 
+/**
+ * 载入任务
+ */
+function doLoadTasks(thePage){
+  wxutil.showLoading();
+  org.getTasks({
+    success(result) {
 
+      wxutil.hideLoading();
+
+      // 载入任务列表
+    },
+    fail(error) {
+      wxutil.showModel('载入任务列表失败', error);
+      console.log('载入任务列表失败', error);
+    }
+  })
+}
 

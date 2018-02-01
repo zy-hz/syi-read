@@ -27,8 +27,8 @@ function createPageObject() {
 
     AssignOptions: [
       { name: '本小组所有成员', value: '1', attr: "ToMemberOrg", checked: true },
-      { name: '由下属小组组长转发', value: '2', attr: "ToMemberAll" },
-      { name: '下属小组所有成员', value: '4', attr: "ToSubOrg" }
+      //{ name: '由下属小组组长转发', value: '2', attr: "ToMemberAll" },
+      //{ name: '下属小组所有成员', value: '4', attr: "ToSubOrg" }
     ],
 
     VisiableForRange: [
