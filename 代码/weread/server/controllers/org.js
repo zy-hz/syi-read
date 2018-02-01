@@ -115,10 +115,15 @@ async function createNewTask(ctx, next) {
 
   // TODO::验证用户授权
 
-  // 创建新任务
-  var TaskId = await dbv.addTask(ctx.request.body, user.id);
+  try {
+    // 创建新任务
+    var TaskId = await dbv.addTask(ctx.request.body, user.id);
 
-  ctx.body = { TaskId };
+    ctx.body = { TaskId };
+  }
+  catch (err) {
+    console.log(err)
+  }
 }
 
 /**

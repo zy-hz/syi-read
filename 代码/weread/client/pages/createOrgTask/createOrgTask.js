@@ -295,7 +295,7 @@ function onSubmit() {
     Task: task,
     success(result) {
       setSubmitState(thePage, false);
-      
+
       // 创建任务成功
       const { TaskId } = result.data;
       console.log(TaskId);
@@ -324,8 +324,8 @@ function getTaskInfoFromInput(thePage) {
   task.TaskTitle = thePage.data.TaskTitle;
   task.TaskScore = thePage.data.TaskScore;
   task.RepeatCount = thePage.data.RepeatCount;
-  task.BeginDateTime = thePage.data.BeginDateTime;
-  task.EndDateTime = thePage.data.EndDateTime;
+  task.BeginDateTime = getDateTimeFromSelector(thePage.data.BeginDateTimeSelector,thePage.data.BeginDateTime);
+  task.EndDateTime = getDateTimeFromSelector(thePage.data.EndDateTimeSelector, thePage.data.EndDateTime);
   task.VisiableFor = thePage.data.VisiableFor;
   task.IsPublished = thePage.data.IsPublished;
 
@@ -338,6 +338,10 @@ function getSelectedTaskKind(thePage) {
   return taskKinds.find(x => {
     return x.IsDefault;
   })
+}
+
+function getDateTimeFromSelector(BeginDateTimeSelector, BeginDateTime) {
+  return `${BeginDateTimeSelector[0][BeginDateTime[0]]}-${BeginDateTimeSelector[1][BeginDateTime[1]]}-${BeginDateTimeSelector[2][BeginDateTime[2]]} ${BeginDateTimeSelector[3][BeginDateTime[3]]}:${BeginDateTimeSelector[4][BeginDateTime[4]]}:00`;
 }
 
 function setTaskAssignOptions(thePage, task) {

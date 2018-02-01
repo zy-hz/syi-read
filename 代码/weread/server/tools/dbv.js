@@ -146,14 +146,24 @@ async function getTaskKinds4Org(oid) {
 /**
  * 用户创建任务
  */
-async function addTask(task,uid){
+async function addTask(task, uid) {
+  var dt = new Date().toString(DATETIME_LONGSTRING);
   var result = await DB(TABLE_TASKS).returning('id').insert({
-    title:task.TaskTitle,
+    title: task.TaskTitle,
+    content:task.TaskContent,
     author_id: uid,
     org_id: task.OrgId,
     kind_id: task.KindId,
     task_score: task.TaskScore,
     allow_repeat_cnt: task.RepeatCount,
+    created_on: dt,
+    begin_on: task.BeginDateTime,
+    end_on: task.EndDateTime,
+    visible_for: task.VisiableFor,
+    to_member_org: task.ToMemberOrg,
+    to_member_all: task.ToMemberAll,
+    to_sub_org: task.ToSubOrg,
+    is_published: task.IsPublished
   });
 
   return result.lenght == 0 ? null : result[0];

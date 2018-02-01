@@ -4,7 +4,7 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{9C563C1C-6C71-4357-8D96-DD66C34F0A6C}" Name="syi-mysql" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="syi.pdm"/>
+		<Model Expanded="Yes" ID="{9C563C1C-6C71-4357-8D96-DD66C34F0A6C}" Name="syi-mysql" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="syi.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>
