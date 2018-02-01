@@ -41,7 +41,7 @@ var ORG_TASK_KIND_ITEM = [`${TABLE_TASK_KINDS}.id as KindId`, `${TABLE_TASK_KIND
 
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
 
-
+////////////////////////// 用户 //////////////////////////////
 
 /**
  * 根据微信标记查询用户
@@ -87,10 +87,18 @@ async function findMemberByUserId(oid, uid) {
   return result.lenght == 0 ? null : result[0];
 }
 
+/**
+ * 根据成员类型查询
+ */
+async function findMemberByType(oid, mts) {
+  return await DB(TABLE_MEMBERS).select(MEMBER_ITEM).where({ org_id: oid }).whereIn('type', mts);
+}
+
 async function findMemberByMemberId(mid) {
   var result = await DB(TABLE_MEMBERS).select(MEMBER_ITEM).where({ id: mid });
   return result.lenght == 0 ? null : result[0];
 }
+
 
 /**
  * 向一个组织添加成员
@@ -170,11 +178,38 @@ async function addTask(task) {
 }
 
 /**
+ * 添加成员任务(批量)
+ */
+async function addMemberTasks(mTasks) {
+  var chunkSize = 1000;
+  DB.transaction(function (tr) {
+    return DB.batchInsert(TABLE_MEMBER_TASKS, mTasks, chunkSize)
+      .transacting(tr)
+  })
+    .then(function (inserts) {
+      console.log(inserts.length + ' new books saved.');
+    })
+    .catch(function (error) {
+      // If we get here, that means that neither the 'Old Books' catalogues insert,
+      // nor any of the books inserts will have taken place.
+      console.error(error);
+    })
+}
+
+/**
  * 设置任务的发布时间
  */
 async function setTaskPublishDateTime(tid) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
   await DB(TABLE_TASKS).update({ publish_on: dt }).where('id', tid);
+}
+
+/**
+ * 根据成员的类型构建成员任务
+ */
+async function buildMemberTaskByMemberType(oid, mts, tid) {
+  var col = DB.raw(`${tid} as task_id`);
+  return await DB(TABLE_MEMBERS).select('user_id as assign_to_user', 'org_id as assign_to_org', 'id as assign_to_member', col).where({ org_id: oid }).whereIn('type', mts);
 }
 
 ////////////////////////// 日志 //////////////////////////////
@@ -213,6 +248,7 @@ module.exports = {
 
   findMemberByUserId,
   findMemberByMemberId,
+  findMemberByType,
   addMember,
   activeMember,
 
@@ -221,7 +257,9 @@ module.exports = {
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,
+  addMemberTasks,
   setTaskPublishDateTime,
+  buildMemberTaskByMemberType,
 
   logMemberJoin,
   logUserRegist,

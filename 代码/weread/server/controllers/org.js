@@ -133,16 +133,20 @@ async function createNewTask(ctx, next) {
 async function tryPublishTask(task) {
   if (!task.IsPublished) return;
 
-  if (task.ToMemberOrg){
-
+  var mTasks = {};
+  if (task.ToMemberOrg) {
+    // 查找本组的成员和管理员
+    mTasks = await dbv.buildMemberTaskByMemberType(task.OrgId, [4, 8], task.id);
+  }
+  if (task.ToMemberOrg) {
   }
   if (task.ToMemberOrg) {
 
   }
-  if (task.ToMemberOrg) {
 
-  }
-
+  // 添加成员任务
+  await dbv.addMemberTasks(mTasks);
+  // 设置更新时间
   await dbv.setTaskPublishDateTime(task.id);
 }
 
