@@ -14,7 +14,7 @@ function createPageObject() {
     CreateOrgTaskUrl: null,
 
     // 列表中最小的任务编号
-    MinTaskId:10,
+    MinTaskId:-1,
   };
 
   obj.onLoad = onLoad;
@@ -71,6 +71,7 @@ function doLoadTasks(thePage) {
 
       // 载入任务列表
       const { Tasks } = result.data
+      console.log(Tasks);
     },
     fail(error) {
       wxutil.showModel('载入任务列表失败', error);
