@@ -11,7 +11,7 @@
 
     <!--作业列表区-->
     <view class="weui-cells weread-list weread-list__first">
-      <navigator url="/pages/taskItemList/taskItemList?BlockId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
+      <view class="weui-cell" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
 
         <view class="weui-cell__hd">
           <image src="/images/task_list_2.png" />
@@ -22,7 +22,10 @@
           <view class="weread-list__item-memo">{{item.KindName}}</view>
         </view>
 
-      </navigator>
+        <view class="weui-cell__ft">
+          <view class="weread-list__item-memo">已发布</view>
+        </view>
+      </view>
     </view>
 
     <!--底部导航栏-->
