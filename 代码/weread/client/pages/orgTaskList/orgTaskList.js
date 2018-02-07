@@ -20,6 +20,8 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
+  obj.onReachBottom = onReachBottom;
+
   return obj;
 }
 
@@ -41,6 +43,13 @@ function onLoad(options) {
 
   // 载入任务列表
   doLoadTasks(this);
+}
+
+/**
+ * 页面滚到到底部了
+ */
+function onReachBottom() {
+  console.log("on bottom");
 }
 
 /**
