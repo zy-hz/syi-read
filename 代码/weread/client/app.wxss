@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-} 
+}
 
 page {
   background-color: #f8f8f8;
@@ -52,21 +52,45 @@ page {
   font-style: italic;
 }
 
-.weread-navigator__footer{
+.weread-list .weui-cell::before {
+  left: 0px;
+}
+
+.weread-list__first {
+  margin-top: 0px;
+}
+
+.weread-list .weui-cell__hd {
+  position: relative;
+  margin-right: 10px;
+}
+
+.weread-list .weui-cell__hd image{
+  width: 50px; 
+  height: 50px; 
+  display: block;
+}
+
+.weread-list__item-memo {
+  font-size: 12px;
+  color: #888;
+}
+
+.weread-navigator__footer {
   margin-bottom: 0px;
   bottom: 0px;
   z-index: 999;
   background-color: #f8f8f8;
 }
 
-.weread-navigator__item{
-    padding: 0 10px;
-    text-align: center;
-    background-color: #F6F6F6;
-    height: 40px;
-    line-height: 40px;
-    color: black;
-    border-top: 1px lightgray solid;
+.weread-navigator__item {
+  padding: 0 10px;
+  text-align: center;
+  background-color: #f6f6f6;
+  height: 40px;
+  line-height: 40px;
+  color: black;
+  border-top: 1px lightgray solid;
 }
 
 .weread-navigator__footer .navigator-hover {
@@ -74,6 +98,6 @@ page {
   opacity: 0.7;
 }
 
-.weui-cells__title-more .weui-cell{
+.weui-cells__title-more .weui-cell {
   padding: 0px;
 }

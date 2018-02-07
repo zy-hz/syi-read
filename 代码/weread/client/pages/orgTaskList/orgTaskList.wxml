@@ -9,6 +9,20 @@
 
   <view class="page__bd">
 
+    <view class="weui-cells weread-list weread-list__first">
+      <navigator url="/pages/taskItemList/taskItemList?BlockId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
+        <view class="weui-cell__hd">
+          <image src="/images/task_list_2.png" />
+        </view>
+
+        <view class="weui-cell__bd">
+          <view>{{item.TaskTitle}}</view>
+          <view class="weread-list__item-memo">{{item.KindName}}</view>
+        </view>
+
+      </navigator>
+    </view>
+
     <!--底部导航栏-->
     <view class="weui-footer weui-footer_fixed-bottom weread-navigator__footer">
       <view class="weui-flex ">
@@ -16,7 +30,7 @@
           <navigator class="weread-navigator__item" url="{{CreateOrgTaskUrl}}">新任务</navigator>
         </view>
         <view>
-          <navigator class="weread-navigator__item" open-type="navigateBack">返回</navigator> 
+          <navigator class="weread-navigator__item" open-type="navigateBack">返回</navigator>
         </view>
       </view>
     </view>

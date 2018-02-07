@@ -14,7 +14,9 @@ function createPageObject() {
     CreateOrgTaskUrl: null,
 
     // 列表中最小的任务编号
-    MinTaskId:-1,
+    MinTaskId: -1,
+    // 任务列表
+    Tasks: {}
   };
 
   obj.onLoad = onLoad;
@@ -71,6 +73,10 @@ function doLoadTasks(thePage) {
 
       // 载入任务列表
       const { Tasks } = result.data
+      if (Tasks != null && Tasks.length > 0) {
+        thePage.setData({ Tasks, HiddenNoDataPanel: true })
+      }
+
       console.log(Tasks);
     },
     fail(error) {
