@@ -98,10 +98,23 @@ async function getTasks(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
 
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
   const { OrgId, Limit, MinTaskId } = ctx.request.body;
 
   try {
-    var Tasks = await dbv.findTasksByOrgId(OrgId, Limit, MinTaskId);
+    var Tasks = {};
+    if (OrgId > 0) {
+      
+      // 获得小组发布的任务
+      Tasks = await dbv.findTasksByOrgId(OrgId, Limit, MinTaskId);
+    }
+    else {
+      // 获得该用户需要执行的任务
+      Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, MinTaskId);
+    }
+
     ctx.body = { Tasks };
   }
   catch (err) {

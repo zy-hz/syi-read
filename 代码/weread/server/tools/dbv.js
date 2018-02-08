@@ -33,7 +33,7 @@ var LOG_USER_LOGIN = "sy_log_user_login";
 var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
-var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_TASKS}.title  as TaskTitle`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`];
+var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_ORGS}.name as OrgName`];
 
 var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id'];
 
@@ -144,6 +144,7 @@ async function getOrgs(user, limit) {
  * 
  */
 async function findTasksByOrgId(oid, maxCount, beginId) {
+
   return await DB(TABLE_TASKS).select(ORG_TASK_ITEM)
     .where(`${TABLE_TASKS}.org_id`, oid)
     .where(`${TABLE_TASKS}.id`, beginId > 0 ? '<' : '>', beginId)
@@ -159,9 +160,15 @@ async function findTasksByOrgId(oid, maxCount, beginId) {
 /**
  * 指派给用户的所有任务
  */
-async function getAllTasksAssignToUser(uid, isDone) {
+async function getAllTasksAssignToUser(uid, maxCount, beginId) {
 
-  //return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM).where({ UserId: uid, is_done: isDone }).leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, , `${TABLE_TASKS}.id`);
+  return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_ITEM)
+    .where(`${TABLE_MEMBER_TASKS}.assign_to_user`, uid)
+    .where(`${TABLE_MEMBER_TASKS}.id`, beginId > 0 ? '<' : '>', beginId)
+    .limit(maxCount)
+    .leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, `${TABLE_TASKS}.id`)
+    .leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASKS}.kind_id`, `${TABLE_TASK_KINDS}.id`)
+    .leftJoin(`${TABLE_ORGS}`, `${TABLE_MEMBER_TASKS}.assign_to_org`, `${TABLE_ORGS}.id`);
 }
 
 /**
