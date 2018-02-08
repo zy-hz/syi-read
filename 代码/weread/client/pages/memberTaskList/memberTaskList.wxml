@@ -7,9 +7,9 @@
     </view>
   </view>
 
-  <view class="page__bd">
+  <!--作业列表区-->
+  <view class="page__bd" hidden="{{!HiddenNoDataPanel}}">
 
-    <!--作业列表区-->
     <view class="weui-cells weread-list weread-list__first">
       <navigator url="/pages/taskItemList/taskItemList?BlockId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
 
@@ -27,7 +27,6 @@
         </view>
       </navigator>
     </view>
-
 
   </view>
 
