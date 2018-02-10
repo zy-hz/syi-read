@@ -9,6 +9,7 @@
     "pages/orgInfo/orgInfo",
     "pages/orgTaskList/orgTaskList",
     "pages/createOrgTask/createOrgTask",
+    "pages/memberTaskChat/memberTaskChat",
     "pages/zzTest/zzTest"
   ],
   "window": {

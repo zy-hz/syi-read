@@ -35,8 +35,8 @@
     flex-direction: row-reverse;
 }
 .avatar {
-    width: 84rpx;
-    height: 84rpx;
+    width: 64rpx;
+    height: 64rpx;
     border: #a5a5a7 1rpx solid;
     display: inline-block;
     vertical-align: top;
@@ -60,8 +60,8 @@
     border: #ccc 1rpx solid;
     border-radius: 4px;
     background: #fff;
-    font-size: 36rpx;
-    line-height: 36rpx;
+    font-size: 32rpx;
+    line-height: 46rpx;
     padding: 20rpx;
     position: relative;
 }
