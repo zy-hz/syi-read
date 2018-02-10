@@ -146,6 +146,7 @@
     margin-right: 20rpx;
     box-sizing: border-box;
     padding: 0 10rpx;
+    font-size: 16px;
 }
 .send-btn {
     width: 160rpx;
