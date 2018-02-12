@@ -41,7 +41,7 @@ Page({
      */
     data: {
         messages: [],
-        inputContent: '大家好啊',
+        inputContent: '大家好啊，我是一个长文件的测试，看看是否图片被压缩了；大家好啊，我是一个长文件的测试，看看是否图片被压缩了；大家好啊，我是一个长文件的测试，看看是否图片被压缩了；',
         lastMessageId: 'none',
     },
 
