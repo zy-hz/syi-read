@@ -50,7 +50,7 @@ Page({
     wx.setNavigationBarTitle({ title: '任务交流区' });
     const { MemberTaskId } = options;
 
-    doLoadMemberTask(this, MemberTaskId, this.pushMessage);
+    this.memberTaskId = MemberTaskId;
   },
 
   /**
@@ -112,7 +112,7 @@ Page({
    * 连接到聊天室信道服务
    */
   connect() {
-    this.amendMessage(createSystemMessage('正在加入群聊...'));
+    this.amendMessage(createSystemMessage('正在加入任务...'));
 
     // 创建信道
     var tunnel = this.tunnel = new qcloud.Tunnel(config.service.tunnelUrl);
@@ -125,9 +125,10 @@ Page({
       const { total, enter, leave } = people;
 
       if (enter) {
-        this.pushMessage(createSystemMessage(`${enter.nickName}已加入群聊，当前共 ${total} 人`));
+        this.pushMessage(createSystemMessage(`${enter.nickName}已加入任务，当前共 ${total} 人`));
+        doLoadMemberTask(this, this.memberTaskId, this.pushMessage);
       } else {
-        this.pushMessage(createSystemMessage(`${leave.nickName}已退出群聊，当前共 ${total} 人`));
+        this.pushMessage(createSystemMessage(`${leave.nickName}已退出任务，当前共 ${total} 人`));
       }
     });
 
@@ -139,7 +140,7 @@ Page({
 
     // 信道关闭后，显示退出群聊
     tunnel.on('close', () => {
-      this.pushMessage(createSystemMessage('您已退出群聊'));
+      this.pushMessage(createSystemMessage('您已退出任务'));
     });
 
     // 重连提醒
