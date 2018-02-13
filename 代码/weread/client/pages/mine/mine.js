@@ -99,7 +99,7 @@ function initSummaryPanel(thePage) {
 function initTaskPanel(thePage) {
 
   org.getTasks({
-    options: { Limit: 3, OrderBy: "IsDone" },
+    pms: { Limit: 3, OrderBy: "IsDone" },
 
     success(res) {
 

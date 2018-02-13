@@ -1,7 +1,5 @@
-/**
- * @fileOverview 聊天室综合 Demo 示例
- */
-
+var wxutil = require('../../utils/z-util-wx.js')
+const { org, util } = require('../../weread.js')
 
 // 引入 QCloud 小程序增强 SDK
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
@@ -52,7 +50,7 @@ Page({
     wx.setNavigationBarTitle({ title: '任务交流区' });
     const { MemberTaskId } = options;
 
-    
+    doLoadMemberTask(this, MemberTaskId, this.pushMessage);
   },
 
   /**
@@ -229,3 +227,37 @@ Page({
     });
   },
 });
+
+/**
+ * 载入当前的成员任务
+ */
+function doLoadMemberTask(thePage, mtid, showMessage) {
+
+  var pms = {
+    MemberTaskId: mtid
+  }
+
+  wxutil.showLoading();
+  org.getTasks({
+    pms,
+
+    success(result) {
+      wxutil.hideLoading();
+
+      // 载入任务列表
+      const { Tasks } = result.data
+      if (Tasks != null && Tasks.length > 0) {
+        var task = Tasks[0];
+
+        showMessage(createUserMessage(task.TaskContent, null, false));
+      }
+
+      console.log(Tasks)
+
+    },
+    fail(error) {
+      wxutil.showModel('载入任务列表失败', error);
+      console.log('载入任务列表失败', error);
+    }
+  })
+}

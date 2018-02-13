@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
@@ -80,10 +80,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 8,
 					"name": "memberTaskChat",
 					"pathName": "pages/memberTaskChat/memberTaskChat",
-					"query": "",
+					"query": "MemberTaskId=1",
 					"scene": "1011"
 				}
 			]

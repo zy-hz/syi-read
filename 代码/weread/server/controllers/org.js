@@ -101,25 +101,24 @@ async function getTasks(ctx, next) {
   // 操作微信用户对应的平台用户编号
   var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
-  const { OrgId, Limit, MinTaskId } = ctx.request.body;
+  const { OrgId, Limit, MinTaskId, MemberTaskId } = ctx.request.body;
+  var beginId = MinTaskId || -1;
 
-  try {
-    var Tasks = {};
-    if (OrgId > 0) {
-      
-      // 获得小组发布的任务
-      Tasks = await dbv.findTasksByOrgId(OrgId, Limit, MinTaskId);
-    }
-    else {
-      // 获得该用户需要执行的任务
-      Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, MinTaskId);
-    }
+  var Tasks = {};
+  if (OrgId > 0) {
+    // 获得小组发布的任务
+    Tasks = await dbv.findTasksByOrgId(OrgId, Limit, beginId);
+  }
+  else if (MemberTaskId > 0) {
+    // 获得指定的MemberTask
+    Tasks = await dbv.findMemberTasksById(MemberTaskId);
+  }
+  else {
+    // 获得该用户需要执行的任务
+    Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, beginId);
+  }
 
-    ctx.body = { Tasks };
-  }
-  catch (err) {
-    console.log(err)
-  }
+  ctx.body = { Tasks };
 }
 
 /**

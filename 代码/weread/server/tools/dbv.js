@@ -35,6 +35,8 @@ var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
 var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_ORGS}.name as OrgName`];
 
+var MEMBER_TASK_DETAIL = MEMBER_TASK_ITEM.concat([`${TABLE_TASKS}.content as TaskContent`]);
+
 var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id'];
 
 var ORG_TASK_ITEM = [`${TABLE_TASKS}.id as TaskId`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.content as TaskContent`, `${TABLE_MEMBERS}.name as AuthorName`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASKS}.task_score as TaskScore`, `${TABLE_TASKS}.allow_repeat_cnt as RepeatCount`, `${TABLE_TASKS}.created_on as CreateDateTime`, `${TABLE_TASKS}.publish_on as PublishDateTime`, `${TABLE_TASKS}.begin_on as BeginDateTime`, `${TABLE_TASKS}.end_on as EndDateTime`, `${TABLE_TASKS}.visible_for as VisiableFor`, `${TABLE_TASKS}.to_member_org as ToMemberOrg`, `${TABLE_TASKS}.to_member_all as ToMemberAll`, `${TABLE_TASKS}.to_sub_org as ToSubOrg`, `${TABLE_TASKS}.is_published as IsPublished`];
@@ -143,7 +145,7 @@ async function getOrgs(user, limit) {
  * 查找组任务 
  * 
  */
-async function findTasksByOrgId(oid, maxCount, beginId) {
+async function findTasksByOrgId(oid, maxCount, beginId = -1) {
 
   return await DB(TABLE_TASKS).select(ORG_TASK_ITEM)
     .where(`${TABLE_TASKS}.org_id`, oid)
@@ -155,6 +157,17 @@ async function findTasksByOrgId(oid, maxCount, beginId) {
         .on(`${TABLE_TASKS}.author_id`, '=', `${TABLE_MEMBERS}.user_id`)
     })
     .leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASKS}.kind_id`, `${TABLE_TASK_KINDS}.id`);
+}
+
+/**
+ * 获得成员任务
+ */
+async function findMemberTasksById(mtid) {
+  return await DB(TABLE_MEMBER_TASKS).select(MEMBER_TASK_DETAIL)
+    .where(`${TABLE_MEMBER_TASKS}.id`, mtid)
+    .leftJoin(`${TABLE_TASKS}`, `${TABLE_MEMBER_TASKS}.task_id`, `${TABLE_TASKS}.id`)
+    .leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASKS}.kind_id`, `${TABLE_TASK_KINDS}.id`)
+    .leftJoin(`${TABLE_ORGS}`, `${TABLE_MEMBER_TASKS}.assign_to_org`, `${TABLE_ORGS}.id`);
 }
 
 /**
@@ -282,6 +295,7 @@ module.exports = {
   getOrgs,
 
   findTasksByOrgId,
+  findMemberTasksById,
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,
