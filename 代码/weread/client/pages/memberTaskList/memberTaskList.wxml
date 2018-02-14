@@ -14,7 +14,7 @@
       <navigator url="/pages/memberTaskChat/memberTaskChat?MemberTaskId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
 
         <view class="weui-cell__hd">
-          <image src="/images/task_list_2.png" />
+          <image src="/images/task_kind_bible.png" />
         </view>
 
         <view class="weui-cell__bd">

@@ -51,6 +51,8 @@ Page({
     const { MemberTaskId } = options;
 
     this.memberTaskId = MemberTaskId;
+
+    //doLoadMemberTask(this, this.memberTaskId, this.pushMessage);
   },
 
   /**
