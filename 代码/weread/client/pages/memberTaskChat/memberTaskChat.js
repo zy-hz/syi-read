@@ -39,7 +39,7 @@ Page({
    */
   data: {
     messages: [],
-    inputContent: '大家好啊，我是一个长文件的测试，看看是否图片被压缩了；大家好啊，我是一个长文件的测试，看看是否图片被压缩了；大家好啊，我是一个长文件的测试，看看是否图片被压缩了；',
+    inputContent: '',
     lastMessageId: 'none',
   },
 
@@ -251,6 +251,10 @@ function doLoadMemberTask(thePage, mtid, showMessage) {
         var task = Tasks[0];
 
         showMessage(createUserMessage(task.TaskContent, null, false));
+        thePage.memberTask = task;
+
+        var inputContent = `${thePage.me.nickName}+0102+1`;
+        thePage.setData({ inputContent })
       }
 
       console.log(Tasks)

@@ -1,0 +1,7 @@
+<!--pages/orgQrCode/orgQrCode.wxml-->
+<view class='weui-flex'>
+  <view class='weui-flex__item placeholder'>
+    <image src="{{QrCodeUrl}}" style='width:320px;height:320px;' />
+  </view>
+</view>
+
