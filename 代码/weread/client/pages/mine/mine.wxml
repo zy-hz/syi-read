@@ -59,7 +59,7 @@
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">
         <view class='weui-cell'>
-          <view class='weui-cell__bd'>我的小组</view>
+          <view class='weui-cell__bd'>我的小群</view>
           <view class='weui-cell__ft'>
           <image src='../../images/find_1.png'/>
           </view>

@@ -23,7 +23,7 @@
             <view class="weui-cell__hd">
               <image src="../../images/task_list_2.png" />
             </view>
-            <view class="weui-cell__bd weui-cell_primary">组任务</view>
+            <view class="weui-cell__bd weui-cell_primary">群任务</view>
             <view class="weui-cell__ft"></view>
           </navigator>
 
@@ -32,7 +32,7 @@
               <image src="../../images/user_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
-              <view>组成员</view>
+              <view>群成员</view>
             </view>
             <view class="weui-cell__ft"></view>
           </navigator>
@@ -42,7 +42,7 @@
               <image src="../../images/group_2.png" />
             </view>
             <view class="weui-cell__bd weui-cell_primary">
-              <view>小小组</view>
+              <view>小小群</view>
             </view>
             <view class="weui-cell__ft"></view>
           </navigator>
