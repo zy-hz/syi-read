@@ -49,7 +49,7 @@ async function createSubOrg(ctx, next) {
   // 操作微信用户对应的平台用户编号
   var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
-  const { ParentOrgId, SubOrgName, AdminId, Mode } = ctx.request.body;
+  const { ParentOrgId, SubOrgName, AdminId, AdminName, Mode } = ctx.request.body;
   if (await dbv.countStopWords(SubOrgName) > 0) {
     ctx.body = { IsSuccess: false, ErrorMessage: '群命包含敏感词' };
     return;
@@ -57,13 +57,15 @@ async function createSubOrg(ctx, next) {
 
   try {
     var oid = await dbv.createOrg(ParentOrgId, SubOrgName);
-    ctx.body = { SubOrgId:oid, IsSuccess: true };
+    await dbv.addMember(oid, AdminId, 8, AdminName); // 管理员加入
+
+    ctx.body = { SubOrgId: oid, IsSuccess: true };
   }
   catch (e) {
     ctx.body = { IsSuccess: false, ErrorMessage: e };
   }
 
-  
+
 }
 
 /**
@@ -82,6 +84,7 @@ async function getOrgs(ctx, next) {
   var Orgs = {};
   if (OrgId > 0) {
     // 获得组的下辖组
+    Orgs = await dbv.getSubOrgs(OrgId);
   }
   else {
     // 获得用户的组

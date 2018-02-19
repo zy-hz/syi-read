@@ -9,21 +9,21 @@
 
   <view class="page__bd">
 
-    <!--作业列表区-->
+    <!--小群列表-->
     <view class="weui-cells weread-list weread-list__first"  hidden="{{!HiddenNoDataPanel}}">
-      <view class="weui-cell" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
+      <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{SubOrgs}}" wx:key="{{item.id}}" bindtap='onEditOrg' data-orgid='{{item.OrgId}}'>
 
         <view class="weui-cell__hd">
-          <image src="/images/task_list_2.png" />
+          <image src="/images/group_2.png" />
         </view>
 
         <view class="weui-cell__bd">
-          <view>{{item.TaskTitle}}</view>
-          <view class="weread-list__item-memo">{{item.KindName}}</view>
+          <view>{{item.OrgName}}</view>
+          <view class="weread-list__item-memo"></view>
         </view>
 
         <view class="weui-cell__ft">
-          <view class="weread-list__item-memo">已发布</view>
+          <view class="weread-list__item-memo"></view>
         </view>
       </view>
     </view>

@@ -56,7 +56,7 @@ function onShow(options) {
   var theApp = getApp();
   if (null == theApp.selectedMember) return;
 
-  this.setData({ AdminName: theApp.selectedMember.name, AdminId: theApp.selectedMember.id });
+  this.setData({ AdminName: theApp.selectedMember.name, AdminId: theApp.selectedMember.user_id });
 
   console.log(theApp.selectedMember);
   theApp.selectedMember = null;
@@ -105,6 +105,7 @@ function doCreateNew(thePage) {
       ParentOrgId: thePage.data.ParentOrgId,
       SubOrgName: thePage.data.SubOrgName,
       AdminId: thePage.data.AdminId,
+      AdminName: thePage.data.AdminName,
       Mode: thePage.mode
     },
 
@@ -113,7 +114,12 @@ function doCreateNew(thePage) {
 
       const { IsSuccess, ErrorMessage, SubOrgId, SubOrgName } = result.data
       if (IsSuccess) {
-        console.log(IsSuccess, ErrorMessage, SubOrgId, SubOrgName);
+        var theApp = getApp();
+        theApp.createdNewOrg = {
+          OrgId: SubOrgId,
+          OrgName: thePage.data.SubOrgName,
+        }
+        wx.navigateBack();
       }
       else {
         showErrorMessage(thePage, ErrorMessage);

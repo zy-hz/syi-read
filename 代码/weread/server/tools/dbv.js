@@ -39,7 +39,7 @@ var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_
 
 var MEMBER_TASK_DETAIL = MEMBER_TASK_ITEM.concat([`${TABLE_TASKS}.content as TaskContent`]);
 
-var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id','family_tree'];
+var MEMBER_ORG_ITEM = [`${TABLE_ORGS}.id as OrgId`, `${TABLE_ORGS}.name as OrgName`, 'parent_org_id', 'root_org_id', 'family_tree'];
 
 var ORG_TASK_ITEM = [`${TABLE_TASKS}.id as TaskId`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.content as TaskContent`, `${TABLE_MEMBERS}.name as AuthorName`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASKS}.task_score as TaskScore`, `${TABLE_TASKS}.allow_repeat_cnt as RepeatCount`, `${TABLE_TASKS}.created_on as CreateDateTime`, `${TABLE_TASKS}.publish_on as PublishDateTime`, `${TABLE_TASKS}.begin_on as BeginDateTime`, `${TABLE_TASKS}.end_on as EndDateTime`, `${TABLE_TASKS}.visible_for as VisiableFor`, `${TABLE_TASKS}.to_member_org as ToMemberOrg`, `${TABLE_TASKS}.to_member_all as ToMemberAll`, `${TABLE_TASKS}.to_sub_org as ToSubOrg`, `${TABLE_TASKS}.is_published as IsPublished`];
 
@@ -149,17 +149,24 @@ async function getOrgs(user, limit) {
 }
 
 /**
+ * 获得子群
+ */
+async function getSubOrgs(parentOid) {
+  return await DB(TABLE_ORGS).select(MEMBER_ORG_ITEM).where({ parent_org_id: parentOid });
+}
+
+/**
  * 根据编号查询组织
  */
-async function findOrgByOid(oid){
-  var result = await DB(TABLE_ORGS).select(MEMBER_ORG_ITEM).where({id:oid});
-  return result.length == 0 ? null:result[0];
+async function findOrgByOid(oid) {
+  var result = await DB(TABLE_ORGS).select(MEMBER_ORG_ITEM).where({ id: oid });
+  return result.length == 0 ? null : result[0];
 }
 
 /**
  * 同组中是否存在相同的群名
  */
-async function isExistOrgName(parentOid, oname){
+async function isExistOrgName(parentOid, oname) {
   var result = await DB(TABLE_ORGS).select(MEMBER_ORG_ITEM).where({ parent_org_id: parentOid, name: oname });
   return result.length == 0 ? false : true;
 }
@@ -170,23 +177,23 @@ async function isExistOrgName(parentOid, oname){
 async function createOrg(parentOid, oname) {
   var parentOrg = await findOrgByOid(parentOid);
   if (null == parentOrg) throw `父组织不存在。(${parentOid})`;
-  
+
   if (await isExistOrgName(parentOid, oname)) throw `群名已经存在。`;
-  
+
   var result = await DB(TABLE_ORGS).returning('id').insert({
-    name:oname,
+    name: oname,
     parent_org_id: parentOid,
     root_org_id: parentOrg.root_org_id == 0 ? parentOid : parentOrg.root_org_id,
   })
   result = result.lenght == 0 ? null : result[0];
-  
-  var fTree ;
-  if (parentOrg.family_tree == null || parentOrg.family_tree == ''){
+
+  var fTree;
+  if (parentOrg.family_tree == null || parentOrg.family_tree == '') {
     fTree = `>${result}`;
-  }else{
+  } else {
     fTree = `${parentOrg.family_tree}.${result}`;
   }
-  await DB(TABLE_ORGS).update({ family_tree:fTree}).where('id',result);
+  await DB(TABLE_ORGS).update({ family_tree: fTree }).where('id', result);
   return result;
 
 }
@@ -357,6 +364,7 @@ module.exports = {
   activeMember,
 
   getOrgs,
+  getSubOrgs,
   createOrg,
 
   findTasksByOrgId,
