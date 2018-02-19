@@ -59,10 +59,18 @@ async function getOrgs(ctx, next) {
   var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
   // 获得查询参数
-  const { Limit } = ctx.request.body;
+  const { OrgId, Limit } = ctx.request.body;
 
   // 获得组织
-  var Orgs = await dbv.getOrgs(user, Limit);
+  var Orgs = {};
+  if (OrgId > 0){
+    // 获得组的下辖组
+  }
+  else{
+    // 获得用户的组
+    Orgs = await dbv.getOrgs(user, Limit);
+  }
+  
 
   // 返回用户对象
   ctx.body = { Orgs };
@@ -94,7 +102,7 @@ async function joinOneOrg(uid, oid, mt, name) {
 /**
  * 获得权限
  */
-async function getPermission(ctx, next){
+async function getPermission(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
   // 操作微信用户对应的平台用户编号
@@ -106,8 +114,8 @@ async function getPermission(ctx, next){
   var member = await dbv.findMemberByUserId(OrgId, user.id);
 
   var Permission = {};
-  if (member!=null){
-    if(member.type==8){
+  if (member != null) {
+    if (member.type == 8) {
       Permission.ShowGroupManagerPanel = true;
     }
   }

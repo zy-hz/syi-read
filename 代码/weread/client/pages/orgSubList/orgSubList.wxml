@@ -1,2 +1,45 @@
-<!--pages/orgSubList/orgSubList.wxml-->
-<text>pages/orgSubList/orgSubList.wxml</text>
+<view class="page">
+
+  <!--没有数据的面板-->
+  <view class="weread-contain-null__panel" hidden="{{HiddenNoDataPanel}}">
+    <view class="weui-loadmore weui-loadmore_line">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
+    </view>
+  </view>
+
+  <view class="page__bd">
+
+    <!--作业列表区-->
+    <view class="weui-cells weread-list weread-list__first"  hidden="{{!HiddenNoDataPanel}}">
+      <view class="weui-cell" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
+
+        <view class="weui-cell__hd">
+          <image src="/images/task_list_2.png" />
+        </view>
+
+        <view class="weui-cell__bd">
+          <view>{{item.TaskTitle}}</view>
+          <view class="weread-list__item-memo">{{item.KindName}}</view>
+        </view>
+
+        <view class="weui-cell__ft">
+          <view class="weread-list__item-memo">已发布</view>
+        </view>
+      </view>
+    </view>
+
+    <!--底部导航栏-->
+    <view class="weui-footer weui-footer_fixed-bottom weread-navigator__footer">
+      <view class="weui-flex ">
+        <view class="weui-flex__item">
+          <navigator class="weread-navigator__item" url="{{CreateOrgTaskUrl}}">新建</navigator>
+        </view>
+        <view>
+          <navigator class="weread-navigator__item" open-type="navigateBack">返回</navigator>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+</view>
