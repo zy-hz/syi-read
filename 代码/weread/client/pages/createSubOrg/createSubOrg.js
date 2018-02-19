@@ -112,8 +112,13 @@ function doCreateNew(thePage) {
       wxutil.hideLoading();
 
       const { IsSuccess, ErrorMessage, SubOrgId, SubOrgName } = result.data
+      if (IsSuccess) {
+        console.log(IsSuccess, ErrorMessage, SubOrgId, SubOrgName);
+      }
+      else {
+        showErrorMessage(thePage, ErrorMessage);
+      }
 
-      console.log(IsSuccess, ErrorMessage, SubOrgId,SubOrgName);
     },
 
     fail(error) {

@@ -46,9 +46,24 @@ async function registUser(ctx, next) {
 async function createSubOrg(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
-  const { ParentOrgId, SubOrgName, AdminId, Mode } = ctx.query;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
-  ctx.body = { ParentOrgId, SubOrgName, AdminId, Mode,IsSuccess:true,ErrorMessage:'存在敏感字' };
+  const { ParentOrgId, SubOrgName, AdminId, Mode } = ctx.request.body;
+  if (await dbv.countStopWords(SubOrgName) > 0) {
+    ctx.body = { IsSuccess: false, ErrorMessage: '群命包含敏感词' };
+    return;
+  }
+
+  try {
+    var oid = await dbv.createOrg(ParentOrgId, SubOrgName);
+    ctx.body = { SubOrgId:oid, IsSuccess: true };
+  }
+  catch (e) {
+    ctx.body = { IsSuccess: false, ErrorMessage: e };
+  }
+
+  
 }
 
 /**

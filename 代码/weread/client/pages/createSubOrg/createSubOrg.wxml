@@ -21,7 +21,7 @@
           <view class="weui-label">群名</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="不超过8个字" value='{{SubOrgName}}' bindinput='onInputOrgName' />
+          <input class="weui-input" placeholder="最多10个中文英文数字字符" value='{{SubOrgName}}' bindinput='onInputOrgName' />
         </view>
       </view>
 
