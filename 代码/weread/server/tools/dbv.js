@@ -103,6 +103,13 @@ async function findMemberByMemberId(mid) {
   return result.lenght == 0 ? null : result[0];
 }
 
+/**
+ * 获得组成员
+ */
+async function findMemberByOrgId(oid){
+  var result = await DB(TABLE_MEMBERS).select(MEMBER_ITEM).where({ org_id: oid });
+  return result
+}
 
 /**
  * 向一个组织添加成员
@@ -289,6 +296,7 @@ module.exports = {
   findMemberByUserId,
   findMemberByMemberId,
   findMemberByType,
+  findMemberByOrgId,
   addMember,
   activeMember,
 

@@ -88,7 +88,7 @@ async function getMembers(ctx, next) {
   // 获得查询参数
   const { OrgId } = ctx.request.body;
 
-  var Members = { 'aaa': 123 };
+  var Members = await dbv.findMemberByOrgId(OrgId);
   ctx.body = { Members };
 }
 
