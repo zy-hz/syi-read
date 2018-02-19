@@ -21,7 +21,7 @@
           <view class="weui-label">群名</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="不超过8个字" value='{{TaskTitle}}' />
+          <input class="weui-input" placeholder="不超过8个字" value='{{SubOrgName}}' />
         </view>
       </view>
 
@@ -31,9 +31,9 @@
             <view class="weui-label">群主</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择 ..." />
+            <input class="weui-input" placeholder="请选择 ..." disabled='true' value='{{AdminName}}' />
           </view>
-          <view class="weui-cell__ft">
+          <view class="weui-cell__ft" bindtap='doSelectAdmin'>
             <icon type="search" size="23" color="#B2B2B2"></icon>
           </view>
         </view>

@@ -41,6 +41,9 @@ router.post('/registuser', validationMiddleware, controllers.org.registUser)
 router.get('/registuser', validationMiddleware, controllers.org.registUser)
 router.post('/getorgs', validationMiddleware, controllers.org.getOrgs)
 
+// 成员的方法
+router.post('/getmembers', validationMiddleware, controllers.org.getMembers)
+
 // 任务的方法
 router.post('/gettasks', validationMiddleware, controllers.org.getTasks)
 router.post('/createnewtask', validationMiddleware, controllers.org.createNewTask)

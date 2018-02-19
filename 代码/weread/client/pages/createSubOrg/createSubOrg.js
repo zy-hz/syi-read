@@ -9,12 +9,19 @@ function createPageObject() {
   var obj = new Object();
 
   obj.data = {
-    OrgInfo: {},
-    OpUrl: {},
+    ParentOrgId: {},
+    SubOrgId: {},
+    SubOrgName: {},
+    AdminId: {},
+    AdminName: {},
   };
 
   obj.onLoad = onLoad;
+  obj.onShow = onShow;
   obj.onCancel = function () { wx.navigateBack() };
+  obj.onSubmit = onSubmit;
+  obj.doSelectAdmin = doSelectAdmin;
+
   return obj;
 }
 
@@ -22,52 +29,64 @@ function createPageObject() {
  * 载入页面
  */
 function onLoad(options) {
-  var orgInfo = util.getOrgInfoFromOptions(options);
 
-  const { IsCreateNew } = options;
+  const { ParentOrgId, SubOrgId, SubOrgName, AdminId, AdminName, IsCreateNew } = options;
   this.mode = IsCreateNew == null || IsCreateNew == true ? 'Create' : 'Edit';
+  var subOrgId = SubOrgId || 0;
+  var subOrgName = SubOrgName || '';
+  var adminId = AdminId || '';
+  var adminName = AdminName || '';
 
   wx.setNavigationBarTitle({
     title: this.mode == 'Create' ? '新建' : '编辑',
   })
 
-  this.setData({ OrgInfo: orgInfo })
+  this.setData({
+    ParentOrgId,
+    SubOrgId: subOrgId,
+    SubOrgName: subOrgName,
+    AdminId: adminName,
+    AdminName: adminName
+  })
+}
+
+function onShow(options) {
+  var theApp = getApp();
+  console.log(theApp.selectedMember);
+  theApp.selectedMember = null;
+}
+
+// 创建或者编辑
+function onSubmit() {
   var thePage = this;
 
-  // 获得导航url
-  var opUrl = getoOperatorUrl(orgInfo);
-  this.setData({ OpUrl: opUrl })
-
-  // 根据权限设置可见
   wxutil.showLoading();
-  org.getPermission({
+  org.createSubOrg({
     pms: { OrgId: orgInfo.OrgId },
 
     success(result) {
       wxutil.hideLoading();
 
-      // 载入任务列表
       const { Permission } = result.data
 
-      var isAdmin = Permission.ShowGroupManagerPanel == true ? true : false;
-      thePage.setData({ IsAdmin: isAdmin });
       console.log(Permission);
     },
+
     fail(error) {
-      wxutil.showModel('载入权限列表失败', error);
-      console.log('载入权限列表失败', error);
+      wxutil.showModel('创建小小组失败', error);
+      console.log('创建小小组失败', error);
     }
   })
 }
 
-// 获得操作员的url（根据用户的权限不同，可以有不同的url）
-function getoOperatorUrl(orgInfo) {
-  var orgPms = util.buildOrgUrlParams(orgInfo);
-  return {
-    OrgTaskListUrl: "../orgTaskList/orgTaskList?" + orgPms,
-    QrCodeUrl: "../orgQrCode/orgQrCode?" + orgPms,
-    OrgSubListUrl: "../orgSubList/orgSubList?" + orgPms,
-  }
+/**
+ * 选择管理员
+ */
+function doSelectAdmin() {
+  var title = encodeURI('选择群主');
+  wx.navigateTo({
+    url: `/pages/memberSelector/memberSelector?OrgId=${this.data.ParentOrgId}&Title=${title}`,
+  })
 }
 
 

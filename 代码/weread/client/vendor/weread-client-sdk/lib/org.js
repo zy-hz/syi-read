@@ -118,6 +118,20 @@ function getOrgs(options) {
 }
 
 /**
+ * 获得成员
+ */
+function getMembers(options) {
+  options.method = "POST";
+  options.data = options.pms;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/getmembers`;
+
+  qcloud.request(options);
+}
+
+/**
  * 获得任务
  * 
  * @param {Object} options 函数配置
@@ -179,6 +193,7 @@ module.exports = {
   createNewTask, getTasks,
   createSubOrg,
   getOrgs,
+  getMembers,
   getTaskKinds,
   getSummaryInfo
 };

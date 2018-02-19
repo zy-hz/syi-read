@@ -63,17 +63,33 @@ async function getOrgs(ctx, next) {
 
   // 获得组织
   var Orgs = {};
-  if (OrgId > 0){
+  if (OrgId > 0) {
     // 获得组的下辖组
   }
-  else{
+  else {
     // 获得用户的组
     Orgs = await dbv.getOrgs(user, Limit);
   }
-  
+
 
   // 返回用户对象
   ctx.body = { Orgs };
+}
+
+/**
+ * 获得成员
+ */
+async function getMembers(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  // 获得查询参数
+  const { OrgId } = ctx.request.body;
+
+  var Members = { 'aaa': 123 };
+  ctx.body = { Members };
 }
 
 /**
@@ -228,6 +244,7 @@ module.exports = {
   getTasks,
   createNewTask,
   getOrgs,
+  getMembers,
   getTaskKinds,
   getSummaryInfo
 };

@@ -54,9 +54,7 @@ function onReachBottom() {
  * 设置功能连接
  */
 function setFunctionUrl(thePage, orgInfo) {
-  var orgPms = util.buildOrgUrlParams(orgInfo);
-  var url = "../createSubOrg/createSubOrg?" + orgPms;
-
+  var url = "../createSubOrg/createSubOrg?ParentOrgId=" + orgInfo.OrgId;
   thePage.setData({ CreateSubOrgUrl: url });
 }
 
