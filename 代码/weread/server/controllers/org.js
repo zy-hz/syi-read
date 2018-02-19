@@ -43,10 +43,12 @@ async function registUser(ctx, next) {
 /** 
  * 创建组织
  */
-async function createOrg(ctx, next) {
+async function createSubOrg(ctx, next) {
   // 微信用户身份验证
   if (util.verify_request(ctx) == -1) return;
-  const { FolderId, BlockName, CreateDate, DeliverDate } = ctx.query;
+  const { ParentOrgId, SubOrgName, AdminId, Mode } = ctx.query;
+
+  ctx.body = { ParentOrgId, SubOrgName, AdminId, Mode,IsSuccess:true,ErrorMessage:'存在敏感字' };
 }
 
 /**
@@ -89,6 +91,15 @@ async function getMembers(ctx, next) {
   const { OrgId } = ctx.request.body;
 
   var Members = await dbv.findMemberByOrgId(OrgId);
+  Members.map(x => {
+    var typeName = '未知';
+    if (x.type == 8) typeName = '管理员';
+    if (x.type == 4) typeName = '';
+    if (x.type == 2) typeName = '访客';
+    if (x.type == 1) typeName = '游客';
+    x.TypeName = typeName;
+
+  });
   ctx.body = { Members };
 }
 
@@ -239,11 +250,11 @@ function getSummaryInfo(ctx, next) {
 
 module.exports = {
   getPermission,
-  createOrg,
   registUser,
   getTasks,
   createNewTask,
   getOrgs,
+  createSubOrg,
   getMembers,
   getTaskKinds,
   getSummaryInfo

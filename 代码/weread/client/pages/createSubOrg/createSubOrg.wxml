@@ -6,7 +6,7 @@
 
   <view class="page__bd">
     <!--提示信息-->
-    <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">输入有错，请检查！</view>
+    <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMessage}}</view>
 
     <view class="weui-cells__title weui-cells__title-more">
       <view class='weui-cell'>
@@ -21,7 +21,7 @@
           <view class="weui-label">群名</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="不超过8个字" value='{{SubOrgName}}' />
+          <input class="weui-input" placeholder="不超过8个字" value='{{SubOrgName}}' bindinput='onInputOrgName' />
         </view>
       </view>
 

@@ -1,2 +1,26 @@
-<!--pages/memberSelector/memberSelector.wxml-->
-<text>pages/memberSelector/memberSelector.wxml</text>
+<view class="page">
+
+  <!--成员列表区-->
+  <view class="page__bd" >
+
+    <view class="weui-cells weread-list weread-list__first">
+      <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{Members}}" wx:key="{{item.id}}" data-member="{{item}}" bindtap='onSelected'>
+
+        <view class="weui-cell__hd">
+          <image src="/images/man_1.png" />
+        </view>
+
+        <view class="weui-cell__bd">
+          <view>{{item.name}}</view>
+          <view class="weread-list__item-memo"></view>
+        </view>
+
+        <view class="weui-cell__ft">
+          <view class="weread-list__item-memo">{{item.TypeName}}</view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+</view>

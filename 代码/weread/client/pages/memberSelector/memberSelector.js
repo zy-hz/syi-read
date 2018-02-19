@@ -13,7 +13,7 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
-
+  obj.onSelected = onSelected;
   return obj;
 }
 
@@ -37,7 +37,7 @@ function onLoad(options) {
 
       const { Members } = result.data
       thePage.setData({ Members});
-      
+
       console.log(Members);
     },
 
@@ -48,7 +48,11 @@ function onLoad(options) {
   })
 }
 
-
+function onSelected(options){
+  var theApp = getApp();
+  theApp.selectedMember = options.currentTarget.dataset.member;
+  wx.navigateBack();
+}
 
 
 

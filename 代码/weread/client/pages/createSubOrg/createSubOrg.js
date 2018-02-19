@@ -2,18 +2,18 @@ var wxutil = require('../../utils/z-util-wx.js')
 const { org, util } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
-Page(createPageObject());
+Page(createPageObject(this));
 
 // 创建页面对象
-function createPageObject() {
+function createPageObject(thePage) {
   var obj = new Object();
 
   obj.data = {
     ParentOrgId: {},
     SubOrgId: {},
-    SubOrgName: {},
+    SubOrgName: '',
     AdminId: {},
-    AdminName: {},
+    AdminName: '',
   };
 
   obj.onLoad = onLoad;
@@ -21,9 +21,11 @@ function createPageObject() {
   obj.onCancel = function () { wx.navigateBack() };
   obj.onSubmit = onSubmit;
   obj.doSelectAdmin = doSelectAdmin;
+  obj.onInputOrgName = onInputOrgName;
 
   return obj;
 }
+
 
 /**
  * 载入页面
@@ -52,31 +54,29 @@ function onLoad(options) {
 
 function onShow(options) {
   var theApp = getApp();
+  if (null == theApp.selectedMember) return;
+
+  this.setData({ AdminName: theApp.selectedMember.name, AdminId: theApp.selectedMember.id });
+
   console.log(theApp.selectedMember);
   theApp.selectedMember = null;
 }
 
 // 创建或者编辑
 function onSubmit() {
-  var thePage = this;
+  showErrorMessage(this, '');
 
-  wxutil.showLoading();
-  org.createSubOrg({
-    pms: { OrgId: orgInfo.OrgId },
+  if (this.data.SubOrgName == '') {
+    showErrorMessage(this, '请输入群名');
+    return;
+  }
 
-    success(result) {
-      wxutil.hideLoading();
+  if (this.data.AdminName == '') {
+    showErrorMessage(this, '请选择群主');
+    return;
+  }
 
-      const { Permission } = result.data
-
-      console.log(Permission);
-    },
-
-    fail(error) {
-      wxutil.showModel('创建小小组失败', error);
-      console.log('创建小小组失败', error);
-    }
-  })
+  doCreateNew(this);
 }
 
 /**
@@ -89,5 +89,46 @@ function doSelectAdmin() {
   })
 }
 
+
+function onInputOrgName(options) {
+  this.setData({ SubOrgName: options.detail.value })
+}
+
+/**
+ * 创建新小组
+ */
+function doCreateNew(thePage) {
+
+  wxutil.showLoading();
+  org.createSubOrg({
+    pms: {
+      ParentOrgId: thePage.data.ParentOrgId,
+      SubOrgName: thePage.data.SubOrgName,
+      AdminId: thePage.data.AdminId,
+      Mode: thePage.mode
+    },
+
+    success(result) {
+      wxutil.hideLoading();
+
+      const { IsSuccess, ErrorMessage, SubOrgId, SubOrgName } = result.data
+
+      console.log(IsSuccess, ErrorMessage, SubOrgId,SubOrgName);
+    },
+
+    fail(error) {
+      wxutil.showModel('创建小小组失败', error);
+      console.log('创建小小组失败', error);
+    }
+  })
+}
+
+/**
+ * 显示错误消息
+ */
+function showErrorMessage(thePage, msg) {
+  var display = msg == '' ? false : true;
+  thePage.setData({ showTopTips: display, errorMessage: msg });
+}
 
 

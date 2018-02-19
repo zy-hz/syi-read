@@ -36,7 +36,7 @@ router.post('/message', controllers.message.post)
 router.post('/getpermission', validationMiddleware, controllers.org.getPermission)
 
 // 组织的方法
-router.get('/createorg', validationMiddleware, controllers.org.createOrg)
+router.post('/createsuborg', validationMiddleware, controllers.org.createSubOrg)
 router.post('/registuser', validationMiddleware, controllers.org.registUser)
 router.get('/registuser', validationMiddleware, controllers.org.registUser)
 router.post('/getorgs', validationMiddleware, controllers.org.getOrgs)
