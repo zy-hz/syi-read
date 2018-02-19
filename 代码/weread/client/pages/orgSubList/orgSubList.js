@@ -11,7 +11,7 @@ function createPageObject() {
   obj.data = {
     OrgInfo: {},
     HiddenNoDataPanel: true,
-    CreateOrgTaskUrl: null,
+    CreateSubOrgUrl: null,
 
     // 任务列表
     SubOrgs: {}
@@ -55,9 +55,9 @@ function onReachBottom() {
  */
 function setFunctionUrl(thePage, orgInfo) {
   var orgPms = util.buildOrgUrlParams(orgInfo);
-  var url = "../createOrgTask/createOrgTask?" + orgPms;
+  var url = "../createSubOrg/createSubOrg?" + orgPms;
 
-  thePage.setData({ CreateOrgTaskUrl: url });
+  thePage.setData({ CreateSubOrgUrl: url });
 }
 
 /**

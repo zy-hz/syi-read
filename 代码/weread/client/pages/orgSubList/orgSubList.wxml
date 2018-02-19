@@ -32,7 +32,7 @@
     <view class="weui-footer weui-footer_fixed-bottom weread-navigator__footer">
       <view class="weui-flex ">
         <view class="weui-flex__item">
-          <navigator class="weread-navigator__item" url="{{CreateOrgTaskUrl}}">新建</navigator>
+          <navigator class="weread-navigator__item" url="{{CreateSubOrgUrl}}">新建</navigator>
         </view>
         <view>
           <navigator class="weread-navigator__item" open-type="navigateBack">返回</navigator>
