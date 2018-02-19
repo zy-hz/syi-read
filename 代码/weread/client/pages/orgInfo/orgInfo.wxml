@@ -15,7 +15,7 @@
     </view>
 
     <!--组织的功能-->
-    <view class="weui-panel org_func_list">
+    <view class="weui-panel org_func_list" hidden='{{!IsAdmin}}'>
       <view class="weui-panel__bd">
         <view class="weui-cells weui-cells_in-small-appmsg">
 

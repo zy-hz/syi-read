@@ -72,6 +72,20 @@ function createNewTask(options) {
 }
 
 /**
+ * 获得用户授权
+ */
+function getPermission(options){
+  options.method = "POST";
+  options.data = options.pms;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/getpermission`;
+
+  qcloud.request(options);
+}
+
+/**
  * 获得小组
  * @param {Object} options 函数配置
  * @param {Object} options.pms 调用的参数
@@ -146,6 +160,7 @@ function getSummaryInfo(options) {
 }
 
 module.exports = {
+  getPermission,
   checkUserAuth, registUser,
   createNewTask, getTasks,
   getOrgs,

@@ -32,6 +32,9 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 
+// 权限的方法
+router.post('/getpermission', validationMiddleware, controllers.org.getPermission)
+
 // 组织的方法
 router.get('/createorg', validationMiddleware, controllers.org.createOrg)
 router.post('/registuser', validationMiddleware, controllers.org.registUser)

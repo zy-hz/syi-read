@@ -92,6 +92,29 @@ async function joinOneOrg(uid, oid, mt, name) {
 }
 
 /**
+ * 获得权限
+ */
+async function getPermission(ctx, next){
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  // 获得查询参数
+  const { OrgId } = ctx.request.body;
+  // 获得成员
+  var member = await dbv.findMemberByUserId(OrgId, user.id);
+
+  var Permission = {};
+  if (member!=null){
+    if(member.type==8){
+      Permission.ShowGroupManagerPanel = true;
+    }
+  }
+  ctx.body = { Permission };
+}
+
+/**
  * 获得组任务
  */
 async function getTasks(ctx, next) {
@@ -186,11 +209,12 @@ async function getTaskKinds(ctx, next) {
  * 获得用户的合计信息
  */
 function getSummaryInfo(ctx, next) {
-  var summaryInfo = [{ Name: "任务", Score: 10 }, { Name: "小组", Score: 1 }, { Name: "积分", Score: 2126 }];
+  var summaryInfo = [{ Name: "任务", Score: 10 }, { Name: "小群", Score: 1 }, { Name: "积分", Score: 2126 }];
   ctx.body = { SummaryInfo: summaryInfo };
 }
 
 module.exports = {
+  getPermission,
   createOrg,
   registUser,
   getTasks,
