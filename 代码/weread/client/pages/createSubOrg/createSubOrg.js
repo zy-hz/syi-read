@@ -11,10 +11,10 @@ function createPageObject() {
   obj.data = {
     OrgInfo: {},
     OpUrl: {},
-    IsAdmin: false,
   };
 
   obj.onLoad = onLoad;
+  obj.onCancel = function () { wx.navigateBack() };
   return obj;
 }
 
@@ -24,8 +24,11 @@ function createPageObject() {
 function onLoad(options) {
   var orgInfo = util.getOrgInfoFromOptions(options);
 
+  const { IsCreateNew } = options;
+  this.mode = IsCreateNew == null || IsCreateNew == true ? 'Create' : 'Edit';
+
   wx.setNavigationBarTitle({
-    title: '新建',
+    title: this.mode == 'Create' ? '新建' : '编辑',
   })
 
   this.setData({ OrgInfo: orgInfo })

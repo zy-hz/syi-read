@@ -86,6 +86,20 @@ function getPermission(options){
 }
 
 /**
+ * 创建小小群
+ */
+function createSubOrg(options) {
+  options.method = "POST";
+  options.data = options.pms;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/createsuborg`;
+
+  qcloud.request(options);
+}
+
+/**
  * 获得小组
  * @param {Object} options 函数配置
  * @param {Object} options.pms 调用的参数
@@ -163,6 +177,7 @@ module.exports = {
   getPermission,
   checkUserAuth, registUser,
   createNewTask, getTasks,
+  createSubOrg,
   getOrgs,
   getTaskKinds,
   getSummaryInfo
