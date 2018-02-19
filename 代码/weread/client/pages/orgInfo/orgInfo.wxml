@@ -37,7 +37,7 @@
             <view class="weui-cell__ft"></view>
           </navigator>
 
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <navigator url="{{OpUrl.OrgSubListUrl}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
               <image src="../../images/group_2.png" />
             </view>

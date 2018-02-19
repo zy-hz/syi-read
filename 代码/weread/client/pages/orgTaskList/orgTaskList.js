@@ -85,8 +85,6 @@ function doLoadTasks(thePage) {
       if (Tasks != null && Tasks.length > 0) {
         thePage.setData({ Tasks, HiddenNoDataPanel: true })
       }
-
-      console.log(Tasks);
     },
     fail(error) {
       wxutil.showModel('载入任务列表失败', error);

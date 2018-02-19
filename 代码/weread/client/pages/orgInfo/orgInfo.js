@@ -63,6 +63,7 @@ function getoOperatorUrl(orgInfo) {
   return {
     OrgTaskListUrl: "../orgTaskList/orgTaskList?" + orgPms,
     QrCodeUrl: "../orgQrCode/orgQrCode?" + orgPms,
+    OrgSubListUrl: "../orgSubList/orgSubList?" + orgPms,
   }
 }
 
