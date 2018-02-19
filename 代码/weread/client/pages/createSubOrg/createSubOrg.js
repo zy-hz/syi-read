@@ -32,23 +32,15 @@ function createPageObject(thePage) {
  */
 function onLoad(options) {
 
-  const { ParentOrgId, SubOrgId, SubOrgName, AdminId, AdminName, IsCreateNew } = options;
+  const { ParentOrgId,  IsCreateNew } = options;
   this.mode = IsCreateNew == null || IsCreateNew == true ? 'Create' : 'Edit';
-  var subOrgId = SubOrgId || 0;
-  var subOrgName = SubOrgName || '';
-  var adminId = AdminId || '';
-  var adminName = AdminName || '';
 
   wx.setNavigationBarTitle({
     title: this.mode == 'Create' ? '新建' : '编辑',
   })
 
   this.setData({
-    ParentOrgId,
-    SubOrgId: subOrgId,
-    SubOrgName: subOrgName,
-    AdminId: adminName,
-    AdminName: adminName
+    ParentOrgId
   })
 }
 
