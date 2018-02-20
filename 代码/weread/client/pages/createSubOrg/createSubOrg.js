@@ -107,6 +107,13 @@ function onSubmit() {
     return;
   }
 
+  // 验证输入的名称
+  var resultMsg = util.verifyInputName(this.data.SubOrgName,10);
+  if (resultMsg != ''){
+    showErrorMessage(this, resultMsg);
+    return;
+  }
+
   doCreateNew(this);
 
 }

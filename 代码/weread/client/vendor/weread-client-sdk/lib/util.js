@@ -118,6 +118,16 @@ function getTextSummary(txt, len) {
   return txt.substr(0, len);
 }
 
+/**
+ * 验证输入的字符串是否符合标准
+ */
+function verifyInputName(txt,len){
+  if (txt.length > len ) return `不能超过${len}个字符`;
+  if (txt.match(/[^\u4e00-\u9fa5A-Za-z0-9]/)) return '只能包括中文英文和数字';
+  
+  return ""
+}
+
 // -----------------------------------------------------
 
 // 构建连接带入对象参数,使用json
@@ -162,5 +172,6 @@ module.exports = {
   addDay,
 
   getTextSummary,
+  verifyInputName,
 }
 
