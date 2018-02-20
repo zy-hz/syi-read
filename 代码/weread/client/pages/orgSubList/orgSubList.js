@@ -14,7 +14,7 @@ function createPageObject() {
     CreateSubOrgUrl: null,
 
     // 小群列表
-    SubOrgs: {}
+    SubOrgs: []
   };
 
   obj.onLoad = onLoad;
@@ -57,7 +57,7 @@ function onShow() {
       if (x.OrgId == theApp.createdNewOrg.OrgId) x.OrgName = theApp.createdNewOrg.OrgName;
     });
   }
-  this.setData({ SubOrgs: orgs });
+  this.setData({ SubOrgs: orgs, HiddenNoDataPanel: true });
   theApp.createdNewOrg = null;
 }
 

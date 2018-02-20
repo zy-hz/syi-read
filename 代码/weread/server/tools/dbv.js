@@ -136,7 +136,7 @@ async function activeMember(mid, mt, isActived) {
   await DB(TABLE_MEMBERS).update({
     status: isActived,
     type: mt,
-  })
+  }).where('id',mid)
 }
 
 ////////////////////////// 组织 //////////////////////////////
@@ -204,7 +204,7 @@ async function createOrg(parentOid, oname) {
 async function updateOrgName(parentOid, oid, oname) {
   var existOid = await isExistOrgName(parentOid, oname)
   if (existOid > 0 && existOid != oid ) throw `群名已经存在。`;
-  
+
   await DB(TABLE_ORGS).update({ name: oname }).where('id', oid);
 }
 
