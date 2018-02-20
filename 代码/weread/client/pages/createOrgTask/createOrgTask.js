@@ -43,6 +43,18 @@ function createPageObject() {
       { name: '暂不发布', value: '0' }
     ],
     IsPublished: 1,
+
+    TypeView: [{
+      Label: '书目',
+      InputTips: '请选择 ...',
+      InputDisabled: true,
+    },
+    {
+      Label: '标题',
+      InputTips: '不超过10个中文英文数字字符',
+      InputDisabled: false,
+    }],
+    TypeIndex: 0,
   };
 
   obj.onLoad = onLoad;
@@ -59,6 +71,7 @@ function createPageObject() {
   obj.publishWaysChange = publishWaysChange;
 
   obj.createTaskTitle = createTaskTitle;
+  obj.onInputTaskTitle = onInputTaskTitle;
   obj.onCancel = onCancel;
   obj.onSubmit = onSubmit;
 
@@ -136,6 +149,7 @@ function taskKindsChange(e) {
   this.setData({
     TaskKinds: radioItems,
     TaskScore: taskScore,
+    TypeIndex: e.detail.value - 1,
   });
 }
 
@@ -271,6 +285,13 @@ function bindRepeatChange(e) {
 }
 
 /**
+ * 输入任务标题
+ */
+function onInputTaskTitle(options) {
+  this.setData({ TaskTitle: options.detail.value})
+}
+
+/**
  * 取消
  */
 function onCancel() {
@@ -324,10 +345,10 @@ function getTaskInfoFromInput(thePage) {
   task.TaskTitle = thePage.data.TaskTitle;
   task.TaskScore = parseInt(thePage.data.TaskScore);
   task.RepeatCount = parseInt(thePage.data.RepeatCount);
-  task.BeginDateTime = getDateTimeFromSelector(thePage.data.BeginDateTimeSelector,thePage.data.BeginDateTime);
+  task.BeginDateTime = getDateTimeFromSelector(thePage.data.BeginDateTimeSelector, thePage.data.BeginDateTime);
   task.EndDateTime = getDateTimeFromSelector(thePage.data.EndDateTimeSelector, thePage.data.EndDateTime);
   task.VisiableFor = parseInt(thePage.data.VisiableFor);
-  task.IsPublished = parseInt(thePage.data.IsPublished); 
+  task.IsPublished = parseInt(thePage.data.IsPublished);
 
   task = setTaskAssignOptions(thePage, task);
   return task;
@@ -357,4 +378,12 @@ function setTaskAssignOptions(thePage, task) {
 
 function setSubmitState(thePage, begin) {
   thePage.setData({ BeginSubmit: begin })
+}
+
+/**
+ * 显示错误消息
+ */
+function showErrorMessage(thePage, msg) {
+  var display = msg == '' ? false : true;
+  thePage.setData({ showTopTips: display, errorMessage: msg });
 }
