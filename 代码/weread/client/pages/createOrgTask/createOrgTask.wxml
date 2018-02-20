@@ -8,8 +8,8 @@
     <!--提示信息-->
     <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">输入有错，请检查！</view>
 
-    <view class="weui-cells__title">任务描述</view>
-    <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cells__title" hidden='true'>任务描述</view>
+    <view class="weui-cells weui-cells_after-title" hidden='true'>
       <view class="weui-cell">
         <view class="weui-cell__bd">
           <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskContent}}' maxlength='1024'/>
@@ -36,7 +36,7 @@
     <view class="weui-cells__title weui-cells__title-more">
       <view class='weui-cell'>
         <view class='weui-cell__bd'>任务参数</view>
-        <view class='weui-cell__ft' style='color:green' bindtap='createTaskTitle'>自动标题</view>
+        <view class='weui-cell__ft' style='color:green' bindtap='createTaskTitle'></view>
       </view>
     </view>
     <view class="weui-cells weui-cells_after-title">
@@ -79,7 +79,7 @@
           <view class="weui-label">积分</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskScore}}" />
+          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskScore}}" disabled='true'/>
         </view>
         <view class="weui-cell__ft">
         </view>
@@ -113,8 +113,8 @@
       </checkbox-group>
     </view>
 
-    <view class="weui-cells__title">交流范围</view>
-    <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cells__title" hidden='true'>交流范围</view>
+    <view class="weui-cells weui-cells_after-title" hidden='true'>
       <radio-group bindchange="visiableForRangeChange">
         <label class="weui-cell weui-check__label" wx:for="{{VisiableForRange}}" wx:key="value">
           <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
@@ -127,8 +127,8 @@
       </radio-group>
     </view>
 
-    <view class="weui-cells__title">发布方式</view>
-    <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cells__title" hidden='true'>发布方式</view>
+    <view class="weui-cells weui-cells_after-title" hidden='true'>
       <radio-group bindchange="publishWaysChange">
         <label class="weui-cell weui-check__label" wx:for="{{PublishWays}}" wx:key="value">
           <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
