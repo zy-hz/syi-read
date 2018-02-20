@@ -15,7 +15,8 @@
     "pages/orgSubList/orgSubList",
     "pages/createSubOrg/createSubOrg",
     "pages/memberSelector/memberSelector",
-    "pages/orgMemberList/orgMemberList"
+    "pages/orgMemberList/orgMemberList",
+    "pages/memberTaskForum/memberTaskForum"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

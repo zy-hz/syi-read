@@ -11,7 +11,7 @@
   <view class="page__bd" hidden="{{!HiddenNoDataPanel}}">
 
     <view class="weui-cells weread-list weread-list__first">
-      <navigator url="/pages/memberTaskChat/memberTaskChat?MemberTaskId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
+      <navigator url="/pages/memberTaskForum/memberTaskForum?MemberTaskId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
 
         <view class="weui-cell__hd">
           <image src="/images/task_kind_bible.png" />
