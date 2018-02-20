@@ -64,6 +64,9 @@ async function createSubOrg(ctx, next) {
     }
     else { // 编辑模式
       await dbv.updateOrgName(ParentOrgId,SubOrgId, SubOrgName);
+      await dbv.resetOrgAdmin(SubOrgId);
+      await joinOneOrg(AdminId, SubOrgId, 8, AdminName);
+
       ctx.body = { SubOrgId , IsSuccess: true };
     }
 

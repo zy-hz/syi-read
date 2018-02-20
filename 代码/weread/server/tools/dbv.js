@@ -168,7 +168,7 @@ async function findOrgByOid(oid) {
  */
 async function isExistOrgName(parentOid, oname) {
   var result = await DB(TABLE_ORGS).select(MEMBER_ORG_ITEM).where({ parent_org_id: parentOid, name: oname });
-  return result.length == 0 ? false : true;
+  return result.length == 0 ? -1 : result[0].OrgId;
 }
 
 /**
@@ -178,7 +178,7 @@ async function createOrg(parentOid, oname) {
   var parentOrg = await findOrgByOid(parentOid);
   if (null == parentOrg) throw `父组织不存在。(${parentOid})`;
 
-  if (await isExistOrgName(parentOid, oname)) throw `群名已经存在。`;
+  if (await isExistOrgName(parentOid, oname) > 0 ) throw `群名已经存在。`;
 
   var result = await DB(TABLE_ORGS).returning('id').insert({
     name: oname,
@@ -201,11 +201,20 @@ async function createOrg(parentOid, oname) {
 /**
  * 更新名称
  */
-async function updateOrgName(parentOid,oid, oname) {
-  if (await isExistOrgName(parentOid, oname)) throw `群名已经存在。`;
-  await DB(TABLE_ORGS).update({ name: oname }).where('id',oid);
+async function updateOrgName(parentOid, oid, oname) {
+  var existOid = await isExistOrgName(parentOid, oname)
+  if (existOid > 0 && existOid != oid ) throw `群名已经存在。`;
+  
+  await DB(TABLE_ORGS).update({ name: oname }).where('id', oid);
 }
 
+/**
+ * 重新设置组织的管理员
+ */
+async function resetOrgAdmin(oid) {
+  // 取消原管理员
+  await DB(TABLE_MEMBERS).update({ type: 4 }).where({ org_id: oid, type: 8 })
+}
 ////////////////////////// 任务 //////////////////////////////
 
 /** 
@@ -376,6 +385,7 @@ module.exports = {
   createOrg,
   findOrgByOid,
   updateOrgName,
+  resetOrgAdmin,
 
   findTasksByOrgId,
   findMemberTasksById,
