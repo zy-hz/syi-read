@@ -63,6 +63,7 @@ async function createSubOrg(ctx, next) {
       ctx.body = { SubOrgId: oid, IsSuccess: true };
     }
     else { // 编辑模式
+      await dbv.updateOrgName(ParentOrgId,SubOrgId, SubOrgName);
       ctx.body = { SubOrgId , IsSuccess: true };
     }
 

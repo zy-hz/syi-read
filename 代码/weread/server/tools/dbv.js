@@ -198,6 +198,14 @@ async function createOrg(parentOid, oname) {
 
 }
 
+/**
+ * 更新名称
+ */
+async function updateOrgName(parentOid,oid, oname) {
+  if (await isExistOrgName(parentOid, oname)) throw `群名已经存在。`;
+  await DB(TABLE_ORGS).update({ name: oname }).where('id',oid);
+}
+
 ////////////////////////// 任务 //////////////////////////////
 
 /** 
@@ -367,6 +375,7 @@ module.exports = {
   getSubOrgs,
   createOrg,
   findOrgByOid,
+  updateOrgName,
 
   findTasksByOrgId,
   findMemberTasksById,
