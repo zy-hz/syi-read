@@ -288,7 +288,7 @@ function bindRepeatChange(e) {
  * 输入任务标题
  */
 function onInputTaskTitle(options) {
-  this.setData({ TaskTitle: options.detail.value})
+  this.setData({ TaskTitle: options.detail.value })
 }
 
 /**
@@ -303,9 +303,12 @@ function onCancel() {
  */
 function onSubmit() {
   // 数据检查
-  if (!verifyInputContent(this)) {
-    this.setData({ showTopTips: true })
+  var resultMsg = verifyInputContent(this);
+  if (resultMsg != '') {
+    showErrorMessage(this, resultMsg);
     return;
+  } else {
+    showErrorMessage(this, '');
   }
   var task = getTaskInfoFromInput(this);
 
@@ -331,7 +334,8 @@ function onSubmit() {
 }
 
 function verifyInputContent(thePage) {
-  return true;
+  if (thePage.data.TaskTitle == '') return `${thePage.data.TypeView[thePage.data.TypeIndex].Label}不能为空。`;
+  return util.verifyInputName(thePage.data.TaskTitle, 10);;
 }
 
 function getTaskInfoFromInput(thePage) {
