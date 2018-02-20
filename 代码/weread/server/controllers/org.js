@@ -56,10 +56,16 @@ async function createSubOrg(ctx, next) {
   }
 
   try {
-    var oid = await dbv.createOrg(ParentOrgId, SubOrgName);
-    await dbv.addMember(oid, AdminId, 8, AdminName); // 管理员加入
+    if (Mode == 'Create') {  // 新建模式
+      var oid = await dbv.createOrg(ParentOrgId, SubOrgName);
+      await dbv.addMember(oid, AdminId, 8, AdminName); // 管理员加入
 
-    ctx.body = { SubOrgId: oid, IsSuccess: true };
+      ctx.body = { SubOrgId: oid, IsSuccess: true };
+    }
+    else { // 编辑模式
+      ctx.body = { SubOrgId , IsSuccess: true };
+    }
+
   }
   catch (e) {
     ctx.body = { IsSuccess: false, ErrorMessage: e };

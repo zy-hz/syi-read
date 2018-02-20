@@ -49,9 +49,15 @@ function onShow() {
   if (null == theApp.createdNewOrg) return;
 
   var orgs = this.data.SubOrgs;
-  orgs.push(theApp.createdNewOrg);
-  this.setData({ SubOrgs: orgs });
+  if (theApp.createdNewOrg.Mode == 'Create') {
+    orgs.push(theApp.createdNewOrg);
 
+  } else {
+    orgs.map(x => {
+      if (x.OrgId == theApp.createdNewOrg.OrgId) x.OrgName = theApp.createdNewOrg.OrgName;
+    });
+  }
+  this.setData({ SubOrgs: orgs });
   theApp.createdNewOrg = null;
 }
 
