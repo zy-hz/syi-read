@@ -61,8 +61,10 @@ function getoOperatorUrl(orgInfo) {
   var orgPms = util.buildOrgUrlParams(orgInfo);
   return {
     OrgTaskListUrl: "../orgTaskList/orgTaskList?" + orgPms,
-    QrCodeUrl: "../orgQrCode/orgQrCode?" + orgPms,
+    OrgMemberListUrl: "../orgMemberList/orgMemberList?" + orgPms,
     OrgSubListUrl: "../orgSubList/orgSubList?" + orgPms,
+
+    QrCodeUrl: "../orgQrCode/orgQrCode?" + orgPms,
   }
 }
 

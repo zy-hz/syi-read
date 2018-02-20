@@ -27,7 +27,7 @@
             <view class="weui-cell__ft"></view>
           </navigator>
 
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <navigator url="{{OpUrl.OrgMemberListUrl}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__hd">
               <image src="../../images/user_2.png" />
             </view>
