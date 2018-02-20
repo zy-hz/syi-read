@@ -1,5 +1,5 @@
 var wxutil = require('../../utils/z-util-wx.js')
-const { org ,util } = require('../../weread.js')
+const { org, util } = require('../../weread.js')
 
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());
@@ -16,7 +16,7 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
-
+  obj.onShow = onShow;
   return obj;
 }
 
@@ -45,7 +45,15 @@ function onLoad(options) {
     }
 
   })
+}
 
+/**
+ * 显现页面
+ */
+function onShow() {
+  if (this.initDone == true) {
+    initSummaryPanel(this);
+  }
 }
 
 /**
@@ -141,6 +149,8 @@ function initOrgPanel(thePage) {
       //Orgs.push({ OrgName: '更多', OrgAvatar: "/images/more_1.png" })
       thePage.setData({ OrgEntries: Orgs });
 
+      // 设置初始化完成标记
+      thePage.initDone = true;
     },
 
     fail(err) {

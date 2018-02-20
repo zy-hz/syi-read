@@ -1,66 +1,55 @@
-// pages/memberUserList/memberUserList.js
-Page({
+var wxutil = require('../../utils/z-util-wx.js')
+const { org, util } = require('../../weread.js')
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-  
-  },
+// 页面函数，传入一个object对象作为参数
+Page(createPageObject());
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
+// 创建页面对象
+function createPageObject() {
+  var obj = new Object();
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
+  obj.data = {
+    OrgInfo: {},
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
+  };
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
+  obj.onLoad = onLoad;
+  return obj;
+}
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
+/**
+ * 载入页面
+ */
+function onLoad(options) {
+  var orgInfo = util.getOrgInfoFromOptions(options);
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
+  wx.setNavigationBarTitle({
+    title: orgInfo.OrgName,
+  })
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
+  this.setData({ OrgInfo: orgInfo })
+  doLoadMember(this)
+}
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
-})
+/**
+ * 载入成员
+ */
+function doLoadMember(thePage) {
+  wxutil.showLoading();
+  org.getMembers({
+    pms: { OrgId: thePage.data.OrgInfo.OrgId },
+
+    success(result) {
+      wxutil.hideLoading();
+
+      const { Members } = result.data
+      thePage.setData({ Members });
+
+    },
+
+    fail(error) {
+      wxutil.showModel('获取成员列表失败', error);
+      console.log('获取成员列表失败', error);
+    }
+  })
+}
