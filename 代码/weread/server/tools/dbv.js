@@ -366,6 +366,7 @@ module.exports = {
   getOrgs,
   getSubOrgs,
   createOrg,
+  findOrgByOid,
 
   findTasksByOrgId,
   findMemberTasksById,

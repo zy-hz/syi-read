@@ -10,7 +10,7 @@ function createPageObject(thePage) {
 
   obj.data = {
     ParentOrgId: {},
-    SubOrgId: {},
+    SubOrgId: '',
     SubOrgName: '',
     AdminId: {},
     AdminName: '',
@@ -32,16 +32,17 @@ function createPageObject(thePage) {
  */
 function onLoad(options) {
 
-  const { ParentOrgId,  IsCreateNew } = options;
+  const { ParentOrgId, SubOrgId, IsCreateNew } = options;
   this.mode = IsCreateNew == null || IsCreateNew == true ? 'Create' : 'Edit';
 
-  wx.setNavigationBarTitle({
-    title: this.mode == 'Create' ? '新建' : '编辑',
-  })
-
-  this.setData({
-    ParentOrgId
-  })
+  if (this.mode == 'Create') {
+    wx.setNavigationBarTitle({ title: '新建' })
+    this.setData({ ParentOrgId })
+  }
+  else {
+    wx.setNavigationBarTitle({ title: '编辑' })
+    doLoadOrg(this, SubOrgId)
+  }
 }
 
 function onShow(options) {
@@ -52,6 +53,44 @@ function onShow(options) {
 
   console.log(theApp.selectedMember);
   theApp.selectedMember = null;
+}
+
+/**
+ * 载入组织的信息
+ */
+function doLoadOrg(thePage, oid) {
+
+  wxutil.showLoading();
+  org.findOrg({
+    pms: {
+      OrgId: oid,
+      Admins: {}
+    },
+
+    success(result) {
+      wxutil.hideLoading();
+
+      const { Org, Admins } = result.data
+
+      thePage.setData({
+        ParentOrgId: Org.parent_org_id,
+        SubOrgId: Org.OrgId,
+        SubOrgName: Org.OrgName
+      })
+
+      if (Admins != null && Admins.length > 0) {
+        thePage.setData({
+          AdminName: Admins[0].name,
+          AdminId: Admins[0].user_id,
+        })
+      }
+    },
+
+    fail(error) {
+      wxutil.showModel('载入组织信息失败', error);
+      console.log('载入组织信息失败', error);
+    }
+  })
 }
 
 // 创建或者编辑
@@ -69,6 +108,7 @@ function onSubmit() {
   }
 
   doCreateNew(this);
+
 }
 
 /**
@@ -95,6 +135,7 @@ function doCreateNew(thePage) {
   org.createSubOrg({
     pms: {
       ParentOrgId: thePage.data.ParentOrgId,
+      SubOrgId: thePage.data.SubOrgId,
       SubOrgName: thePage.data.SubOrgName,
       AdminId: thePage.data.AdminId,
       AdminName: thePage.data.AdminName,
@@ -110,6 +151,7 @@ function doCreateNew(thePage) {
         theApp.createdNewOrg = {
           OrgId: SubOrgId,
           OrgName: thePage.data.SubOrgName,
+          Mode: thePage.mode,
         }
         wx.navigateBack();
       }

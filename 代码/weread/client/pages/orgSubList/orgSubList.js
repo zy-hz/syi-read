@@ -74,7 +74,7 @@ function setFunctionUrl(thePage, orgInfo) {
  * 编辑小群
  */
 function onEditOrg(options) {
-  var url = `/pages/createSubOrg/createSubOrg?IsCreateNew=false&ParentOrgId=${options.currentTarget.dataset.orgid}`;
+  var url = `/pages/createSubOrg/createSubOrg?IsCreateNew=false&SubOrgId=${options.currentTarget.dataset.orgid}`;
   wx.navigateTo({
     url: url
   })

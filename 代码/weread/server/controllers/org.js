@@ -49,7 +49,7 @@ async function createSubOrg(ctx, next) {
   // 操作微信用户对应的平台用户编号
   var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
-  const { ParentOrgId, SubOrgName, AdminId, AdminName, Mode } = ctx.request.body;
+  const { ParentOrgId, SubOrgId, SubOrgName, AdminId, AdminName, Mode } = ctx.request.body;
   if (await dbv.countStopWords(SubOrgName) > 0) {
     ctx.body = { IsSuccess: false, ErrorMessage: '群命包含敏感词' };
     return;
@@ -65,11 +65,30 @@ async function createSubOrg(ctx, next) {
     ctx.body = { IsSuccess: false, ErrorMessage: e };
   }
 
-
 }
 
 /**
  * 查找组织
+ */
+async function findOrg(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  // 获得查询参数
+  const { OrgId, Admins } = ctx.request.body;
+
+  var Org = await dbv.findOrgByOid(OrgId);
+
+  var admins = {}; // 如果用户选择查看管理员，则返回管理员信息
+  if (Admins != null) admins = await dbv.findMemberByType(OrgId, [8]);
+
+  ctx.body = { Org, Admins: admins };
+}
+
+/**
+ * 获得成员所在的组织
  */
 async function getOrgs(ctx, next) {
   // 微信用户身份验证
@@ -271,6 +290,7 @@ module.exports = {
   registUser,
   getTasks,
   createNewTask,
+  findOrg,
   getOrgs,
   createSubOrg,
   getMembers,
