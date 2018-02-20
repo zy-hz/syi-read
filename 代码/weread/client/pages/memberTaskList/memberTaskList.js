@@ -18,6 +18,7 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
+  obj.onShow = onShow;
   obj.onReachBottom = onReachBottom;
 
   return obj;
@@ -29,11 +30,13 @@ function createPageObject() {
 function onLoad(options) {
 
   wx.setNavigationBarTitle({
-    title: "任务列表",
+    title: "任务",
   })
 
   this.setData({ HiddenNoDataPanel: false })
+}
 
+function onShow(){
   // 载入任务列表
   doLoadTasks(this);
 }
@@ -67,8 +70,6 @@ function doLoadTasks(thePage) {
       if (Tasks != null && Tasks.length > 0) {
         thePage.setData({ Tasks, HiddenNoDataPanel: true })
       }
-
-      console.log(Tasks);
     },
     fail(error) {
       wxutil.showModel('载入任务列表失败', error);
