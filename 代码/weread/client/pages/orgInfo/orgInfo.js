@@ -48,7 +48,6 @@ function onLoad(options) {
 
       var isAdmin = Permission.ShowGroupManagerPanel == true ? true : false;
       thePage.setData({ IsAdmin: isAdmin });
-      console.log(Permission);
     },
     fail(error) {
       wxutil.showModel('载入权限列表失败', error);

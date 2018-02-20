@@ -108,7 +108,6 @@ function doLoadSubOrgs(thePage) {
         thePage.setData({ SubOrgs: Orgs, HiddenNoDataPanel: true })
       }
 
-      console.log(Orgs)
     },
     fail(error) {
       wxutil.showModel('载入群列表失败', error);

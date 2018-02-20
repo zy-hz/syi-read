@@ -54,7 +54,7 @@ Page({
 
       success(result) {
         // 注册成功后的转向
-        wx.reLaunch({ url: '/pages/home/home' })
+        wx.reLaunch({ url: '/pages/mine/mine' })
       },
       fail(error) {
         wxutil.showModel('用户注册失败', error);
