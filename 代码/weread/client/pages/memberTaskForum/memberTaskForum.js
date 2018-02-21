@@ -22,10 +22,6 @@ function createPageObject() {
  */
 function onLoad(options) {
   const { MemberTaskId } = options;
-
-  //wx.setNavigationBarTitle({ title: orgInfo.OrgName })
-
-
   doLoadMemberTask(this, MemberTaskId)
 }
 
@@ -50,7 +46,9 @@ function doLoadMemberTask(thePage, mtid) {
       if (Tasks != null && Tasks.length > 0) {
         var task = Tasks[0];
 
-        thePage.setData({ Task: task })
+        // 初始化任务交流区
+        initTaskForum(thePage, task);
+
       }
 
       console.log(Tasks)
@@ -61,4 +59,12 @@ function doLoadMemberTask(thePage, mtid) {
       console.log('载入任务列表失败', error);
     }
   })
+}
+
+/**
+ * 初始化交流区
+ */
+function initTaskForum(thePage, task) {
+  wx.setNavigationBarTitle({ title: task.OrgName })
+  thePage.setData({ Task: task })
 }
