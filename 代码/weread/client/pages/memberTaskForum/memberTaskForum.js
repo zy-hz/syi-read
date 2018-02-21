@@ -113,10 +113,9 @@ function initTaskForum(thePage, task, author) {
 
   wx.setNavigationBarTitle({ title: task.OrgName })
 
+  // 设置初始化消息
   var messages = buildInitMessages(thePage, task, author);
   messages.forEach(x => { pushMessage(thePage, x) })
-
-  //thePage.setData({ Task: task })
 }
 
 /**
@@ -128,13 +127,13 @@ function buildInitMessages(thePage, task, author) {
   var otherMessage = '';
   if (ps == -1) {
     msgList.push(createSystemMessage('活动未开始'));
-    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskBeginOn), 'M月d日 h点m分')}`;
+    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskBeginOn), 'M月d日 H点m分')}`;
   } else if (ps == 1) {
     msgList.push(createSystemMessage('活动已结束'));
-    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskEndOn), 'M月d日 h点m分')}`;
+    otherMessage = `结束时间 ${util.formatDate2String(new Date(task.TaskEndOn), 'M月d日 H点m分')}`;
   } else {
     msgList.push(createSystemMessage('活动进行中'));
-    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskBeginOn), 'M月d日 h点m分')}`;
+    otherMessage = `截止时间 ${util.formatDate2String(new Date(task.TaskEndOn), 'M月d日 H点m分')}`;
   }
 
   var taskMessages = buildTaskMessage(task, author);
