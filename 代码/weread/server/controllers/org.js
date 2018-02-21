@@ -210,6 +210,8 @@ async function getTasks(ctx, next) {
   var beginId = MinTaskId || -1;
 
   var Tasks = {};
+  var Author = {};
+
   if (OrgId > 0) {
     // 获得小组发布的任务
     Tasks = await dbv.findTasksByOrgId(OrgId, Limit, beginId);
@@ -217,13 +219,16 @@ async function getTasks(ctx, next) {
   else if (MemberTaskId > 0) {
     // 获得指定的MemberTask
     Tasks = await dbv.findMemberTasksById(MemberTaskId);
+    if (Tasks.length>0){
+      Author = await dbv.findUserByUid(Tasks[0].TaskAuthorId);
+    }
   }
   else {
-    // 获得该用户需要执行的任务
+    // 获得该用户需要执行的所有任务
     Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, beginId);
   }
 
-  ctx.body = { Tasks };
+  ctx.body = { Tasks, Author};
 }
 
 /**
