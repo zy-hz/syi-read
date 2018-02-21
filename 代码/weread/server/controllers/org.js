@@ -63,11 +63,11 @@ async function createSubOrg(ctx, next) {
       ctx.body = { SubOrgId: oid, IsSuccess: true };
     }
     else { // 编辑模式
-      await dbv.updateOrgName(ParentOrgId,SubOrgId, SubOrgName);
+      await dbv.updateOrgName(ParentOrgId, SubOrgId, SubOrgName);
       await dbv.resetOrgAdmin(SubOrgId);
       await joinOneOrg(AdminId, SubOrgId, 8, AdminName);
 
-      ctx.body = { SubOrgId , IsSuccess: true };
+      ctx.body = { SubOrgId, IsSuccess: true };
     }
 
   }
@@ -219,7 +219,7 @@ async function getTasks(ctx, next) {
   else if (MemberTaskId > 0) {
     // 获得指定的MemberTask
     Tasks = await dbv.findMemberTasksById(MemberTaskId);
-    if (Tasks.length>0){
+    if (Tasks.length > 0) {
       Author = await dbv.findUserByUid(Tasks[0].TaskAuthorId);
     }
   }
@@ -228,7 +228,7 @@ async function getTasks(ctx, next) {
     Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, beginId);
   }
 
-  ctx.body = { Tasks, Author};
+  ctx.body = { Tasks, Author };
 }
 
 /**
@@ -280,6 +280,33 @@ async function tryPublishTask(task) {
 }
 
 /**
+ * 设置任务完成
+ */
+async function setMemberTaskDone(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  const { MemberTaskId, TaskAuthorId, KindId, RepeatNumber, TaskBaseScore, TaskBeginOn, TaskEndOn } = ctx.request.body;
+
+  // 根据重复次数计算任务得分
+  var score = calTaskScore(TaskBaseScore, RepeatNumber);
+
+  ctx.body = { IsDone: true, TaskScore: score };
+}
+
+/**
+ * 计算任务得分
+ */
+function calTaskScore(baseScore, repeatCount) {
+  for (var i = 1; i <= repeatCount - 0; i++) {
+    baseScore = baseScore + i + 1;
+  }
+  return baseScore;
+}
+
+/**
  * 获得任务类型
  */
 async function getTaskKinds(ctx, next) {
@@ -309,6 +336,7 @@ module.exports = {
   getOrgs,
   createSubOrg,
   getMembers,
+  setMemberTaskDone,
   getTaskKinds,
   getSummaryInfo
 };

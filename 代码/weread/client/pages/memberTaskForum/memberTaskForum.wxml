@@ -20,7 +20,7 @@
       </picker>
     </view>
     <view>
-      <button bindtap="sendMessage" class="send-btn">{{FuncPanel[FuncIndex].FuncName}}</button>
+      <button bindtap="onSubmit" class="send-btn" loading="{{IsSubmiting}}">{{FuncPanel[FuncIndex].FuncName}}</button>
     </view>
     <view>
       <button bindtap="onExit" class="exit-btn">离开</button>

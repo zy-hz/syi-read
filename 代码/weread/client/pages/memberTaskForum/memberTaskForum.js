@@ -55,7 +55,6 @@ function createPageObject(thePage) {
 
   obj.data = {
     messages: [],
-    inputContent: 'abc',
     lastMessageId: 'none',
 
     FuncPanel: [{
@@ -75,6 +74,7 @@ function createPageObject(thePage) {
   obj.onLoad = onLoad;
   obj.bindRepeatCountChange = bindRepeatCountChange;
   obj.onExit = () => { wx.navigateBack() };
+  obj.onSubmit = onSubmit;
 
   return obj;
 }
@@ -134,14 +134,15 @@ function initTaskForum(thePage, task, author) {
 
   // 设置操作面板
   var funcIndex = task.KindId == 1 ? 0 : 1;
-  thePage.setData({ FuncIndex: funcIndex })
 
   // 设置重复次数
   var RepeatCountArray = [];
   for (var i = 0; i <= task.AllowRepeatCount; i++) {
     RepeatCountArray.push(i + 1);
   }
-  thePage.setData({ RepeatCountArray });
+
+  // 数据设置
+  thePage.setData({ RepeatCountArray, FuncIndex: funcIndex, Task: task });
 }
 
 /**
@@ -211,4 +212,37 @@ function buildTaskMessage_2(task, author) {
  */
 function bindRepeatCountChange(options) {
   this.setData({ RepeatNumber: options.detail.value })
+}
+
+/**
+ * 提交
+ */
+function onSubmit() {
+  this.setData({ IsSubmiting: true });
+  var thePage = this;
+
+  org.setMemberTaskDone({
+    pms: {
+      MemberTaskId: thePage.data.Task.id,
+      TaskAuthorId: thePage.data.Task.TaskAuthorId,
+      KindId: thePage.data.Task.KindId,
+      RepeatNumber: thePage.data.RepeatNumber,
+      TaskBaseScore: thePage.data.Task.TaskBaseScore,
+      TaskBeginOn: thePage.data.Task.TaskBeginOn,
+      TaskEndOn: thePage.data.Task.TaskEndOn,
+    },
+
+    success(result) {
+      thePage.setData({ IsSubmiting: false });
+
+      // 打卡签到完成
+      const { IsDone, TaskScore } = result.data
+      console.log(IsDone, TaskScore)
+    },
+
+    fail(error) {
+      wxutil.showModel('标记成员任务完成失败', error);
+      console.log('标记成员任务完成失败', error);
+    }
+  })
 }

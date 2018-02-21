@@ -185,6 +185,19 @@ function getTaskKinds(options) {
 }
 
 /**
+ * 设置成员任务完成
+ */
+function setMemberTaskDone(options){
+  options.method = "POST";
+  options.data = options.pms;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/setmembertaskdone`;
+
+  qcloud.request(options);
+}
+/**
  * 获得合计信息
  * 
  * @param {Object} options 函数配置
@@ -210,5 +223,6 @@ module.exports = {
   getOrgs,
   getMembers,
   getTaskKinds,
+  setMemberTaskDone,
   getSummaryInfo
 };
