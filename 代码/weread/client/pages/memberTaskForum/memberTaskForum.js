@@ -95,10 +95,7 @@ function doLoadMemberTask(thePage, mtid) {
 
         // 初始化任务交流区
         initTaskForum(thePage, task, Author);
-
       }
-
-      console.log(Tasks, Author)
 
     },
     fail(error) {
@@ -111,21 +108,46 @@ function doLoadMemberTask(thePage, mtid) {
 /**
  * 初始化交流区
  */
-function initTaskForum(thePage, task,author) {
+function initTaskForum(thePage, task, author) {
+  console.log(task, author)
+
   wx.setNavigationBarTitle({ title: task.OrgName })
 
-  task.currentState = getTaskProcessState(task);
-  console.log(task.currentState)
-  thePage.setData({ Task: task })
+  var messages = buildInitMessages(thePage, task, author);
+  messages.forEach(x => { pushMessage(thePage, x) })
 
-  pushMessage(thePage,createSystemMessage('活动进行中'))
-  pushMessage(thePage, createUserMessage('我是测试', author,false))
+  //thePage.setData({ Task: task })
+}
+
+/**
+ * 构建初始化的消息队列
+ */
+function buildInitMessages(thePage, task, author) {
+  var msgList = [];
+  var ps = getTaskProcessState(task);
+  var otherMessage = '';
+  if (ps == -1) {
+    msgList.push(createSystemMessage('活动未开始'));
+    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskBeginOn), 'M月d日 h点m分')}`;
+  } else if (ps == 1) {
+    msgList.push(createSystemMessage('活动已结束'));
+    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskEndOn), 'M月d日 h点m分')}`;
+  } else {
+    msgList.push(createSystemMessage('活动进行中'));
+    otherMessage = `开始时间 ${util.formatDate2String(new Date(task.TaskBeginOn), 'M月d日 h点m分')}`;
+  }
+
+  var taskMessages = buildTaskMessage(task, author);
+  msgList = msgList.concat(taskMessages);
+
+  msgList.push(createSystemMessage(otherMessage));
+  return msgList;
 }
 
 /**
  * 获得任务进度阶段 -1 为开始 ，1 已完成，0 进行中
  */
-function getTaskProcessState(task){
+function getTaskProcessState(task) {
   var dt = Date.now();
 
   if (dt < new Date(task.TaskBeginOn)) return -1;
@@ -133,4 +155,29 @@ function getTaskProcessState(task){
 
   return 0;
 }
+
+/**
+ * 构建任务说明
+ */
+function buildTaskMessage(task,author) {
+  if (task.KindId == 1) return buildTaskMessage_1(task, author);
+  if (task.KindId == 2) return buildTaskMessage_2(task, author);
+
+  return createUserMessage(task.TaskTitle, author, false);
+}
+
+function buildTaskMessage_1(task, author) {
+  var msgs = [];
+  msgs.push(createUserMessage(`${task.TaskTitle}${task.KindName}`, author, false));
+  msgs.push(createUserMessage(`读完1遍获得${task.TaskBaseScore}个积分，多读可以获得额外积分，最多可以读${task.AllowRepeatCount+1}遍`, author, false));
+  return msgs;
+}
+
+function buildTaskMessage_2(task, author) {
+  var msgs = [];
+  msgs.push(createUserMessage(`${task.TaskTitle}签到`, author, false));
+  msgs.push(createUserMessage(`签到成功获得 ${task.TaskBaseScore} 个积分`, author, false));
+  return msgs;
+}
+
 

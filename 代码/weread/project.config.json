@@ -125,7 +125,7 @@
 					"id": 14,
 					"name": "memberTaskForum",
 					"pathName": "pages/memberTaskForum/memberTaskForum",
-					"query": "MemberTaskId=2",
+					"query": "MemberTaskId=4",
 					"scene": "1011"
 				}
 			]

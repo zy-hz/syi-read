@@ -47,7 +47,7 @@ function createPageObject() {
     TypeView: [{
       Label: '书目',
       InputTips: '请选择 ...',
-      InputDisabled: true,
+      InputDisabled: false,
     },
     {
       Label: '标题',
@@ -335,7 +335,8 @@ function onSubmit() {
 
 function verifyInputContent(thePage) {
   if (thePage.data.TaskTitle == '') return `${thePage.data.TypeView[thePage.data.TypeIndex].Label}不能为空。`;
-  return util.verifyInputName(thePage.data.TaskTitle, 10);;
+  var len = thePage.data.TypeIndex == 0 ? 32:10;
+  return util.verifyInputName(thePage.data.TaskTitle, len);;
 }
 
 function getTaskInfoFromInput(thePage) {

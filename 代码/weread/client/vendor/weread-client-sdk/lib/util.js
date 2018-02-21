@@ -123,7 +123,7 @@ function getTextSummary(txt, len) {
  */
 function verifyInputName(txt,len){
   if (txt.length > len ) return `不能超过${len}个字符`;
-  if (txt.match(/[^\u4e00-\u9fa5A-Za-z0-9]/)) return '只能包括中文英文和数字';
+  if (txt.match(/[^\u4e00-\u9fa5A-Za-z0-9-]/)) return '只能包括中文英文和数字';
   
   return ""
 }
