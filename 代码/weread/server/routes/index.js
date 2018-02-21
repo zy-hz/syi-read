@@ -47,6 +47,7 @@ router.post('/getmembers', validationMiddleware, controllers.org.getMembers)
 
 // 任务的方法
 router.post('/gettasks', validationMiddleware, controllers.org.getTasks)
+router.post('/getmembertaskdonelog', validationMiddleware, controllers.org.getMemberTaskDoneLog)
 router.post('/createnewtask', validationMiddleware, controllers.org.createNewTask)
 router.post('/setmembertaskdone', validationMiddleware, controllers.org.setMemberTaskDone)
 

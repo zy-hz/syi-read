@@ -165,6 +165,20 @@ function getTasks(options) {
 }
 
 /**
+ * 人物完成记录
+ */
+function getMemberTaskDoneLog(options){
+  options.method = "POST";
+  options.data = options.pms;
+
+  // 自动登录
+  options.login = true;
+  options.url = `${service.baseUrl}/getmembertaskdonelog`;
+
+  qcloud.request(options);
+}
+
+/**
  * 获得任务种类
  * 
  * @param {Object} options 函数配置
@@ -217,7 +231,7 @@ function getSummaryInfo(options) {
 module.exports = {
   getPermission,
   checkUserAuth, registUser,
-  createNewTask, getTasks,
+  createNewTask, getTasks, getMemberTaskDoneLog,
   createSubOrg,
   findOrg,
   getOrgs,

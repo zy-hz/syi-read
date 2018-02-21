@@ -1,5 +1,13 @@
 /* pages/taskList/taskList.wxss */
 
-.page__bd{
+.page__bd {
   padding-bottom: 0px;
+}
+
+.weread-task__notice {
+  background-color: #f6f5ec;
+}
+
+.weread-task__expired {
+  background-color: #f6f5ec;
 }

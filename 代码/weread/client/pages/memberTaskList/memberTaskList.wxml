@@ -11,7 +11,7 @@
   <view class="page__bd" hidden="{{!HiddenNoDataPanel}}">
 
     <view class="weui-cells weread-list weread-list__first">
-      <navigator url="/pages/memberTaskForum/memberTaskForum?MemberTaskId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
+      <navigator url="/pages/memberTaskForum/memberTaskForum?MemberTaskId={{item.id}}" class="weui-cell {{item.TaskStateClass}}" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
 
         <view class="weui-cell__hd">
           <image src="{{item.TaskImageUrl}}" />
@@ -19,11 +19,12 @@
 
         <view class="weui-cell__bd">
           <view>{{item.TaskTitle}}</view>
-          <view class="weread-list__item-memo">{{item.KindName}}</view>
+          <view class="weread-list__item-memo">{{item.KindName}} - {{item.OrgName}}</view>
         </view>
 
         <view class="weui-cell__ft">
-          <view class="weread-list__item-memo">{{item.TaskStateName}}</view>
+          <icon type="success_no_circle" size="18" hidden='{{!item.is_done}}'></icon>
+          <view class="weread-list__item-memo" hidden='{{item.is_done}}'>{{item.TaskStateName}}</view>
           <view class="weread-list__item-memo">{{item.TaskDisplayTime}}</view>
 
         </view>

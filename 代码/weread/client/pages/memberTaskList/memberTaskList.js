@@ -85,15 +85,20 @@ function doLoadTasks(thePage) {
  * 更新任务队列
  */
 function updateTasks(tasks) {
-  tasks.forEach(x=>{
+  tasks.forEach(x => {
     var ts = getTaskProcessState(x)
-    x.TaskStateId = ts.id ;
+    x.TaskStateId = ts.id;
     x.TaskStateName = ts.name;
+    x.TaskStateClass = ts.class;
 
-    x.TaskImageUrl = x.KindId == 1 ? '/images/task_kind_bible.png' : '/images/group_1.png' ;
-    x.TaskDisplayTime = util.formatDate2String(new Date(x.TaskBeginOn) , 'MM月dd日'); 
+    x.TaskImageUrl = x.KindId == 1 ? '/images/task_kind_bible.png' : '/images/group_1.png';
+    x.TaskDisplayTime = util.formatDate2String(new Date(x.TaskBeginOn), 'MM月dd日');
   })
-  return tasks
+
+  return tasks.sort(function (x, y) {
+    if (x.TaskStateId != y.TaskStateId) return x.TaskStateId - y.TaskStateId;
+    return x.TaskBeginOn > y.TaskBeginOn ? 1 : -1;
+  });
 }
 
 /**
@@ -102,8 +107,8 @@ function updateTasks(tasks) {
 function getTaskProcessState(task) {
   var dt = Date.now();
 
-  if (dt < new Date(task.TaskBeginOn)) return {id:-1,name:'预告'};
-  if (dt > new Date(task.TaskEndOn)) return { id: 1, name: '关闭' };
+  if (dt < new Date(task.TaskBeginOn)) return { id: -1, name: '预告', class: 'weread-task__notice' };
+  if (dt > new Date(task.TaskEndOn)) return { id: 1, name: '关闭', class: 'weread-task__expired' };
 
-  return { id: 0, name: '' };;
+  return { id: 0, name: '', class: 'weread-task__running' };;
 }

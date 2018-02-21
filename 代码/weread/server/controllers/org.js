@@ -232,6 +232,22 @@ async function getTasks(ctx, next) {
 }
 
 /**
+ * 获得任务完成的日志
+ */
+async function getMemberTaskDoneLog(ctx, next) {
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  const { TaskId, OrgId } = ctx.request.body;
+
+  var DoneLogs = await dbv.getMemberTaskDoneLog(TaskId, OrgId, 100);
+  ctx.body = { DoneLogs }
+}
+
+/**
  * 创建新任务
  */
 async function createNewTask(ctx, next) {
@@ -259,7 +275,7 @@ async function createNewTask(ctx, next) {
   // 尝试发布任务
   tryPublishTask(task);
 
-  ctx.body = { IsSuccess:true , TaskId };
+  ctx.body = { IsSuccess: true, TaskId };
 }
 
 /**
@@ -338,6 +354,7 @@ module.exports = {
   getPermission,
   registUser,
   getTasks,
+  getMemberTaskDoneLog,
   createNewTask,
   findOrg,
   getOrgs,

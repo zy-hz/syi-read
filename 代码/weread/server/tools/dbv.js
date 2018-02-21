@@ -45,6 +45,7 @@ var ORG_TASK_ITEM = [`${TABLE_TASKS}.id as TaskId`, `${TABLE_TASKS}.title as Tas
 
 var ORG_TASK_KIND_ITEM = [`${TABLE_TASK_KINDS}.id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_TASK_KINDS}.score as KindScore`, `${TABLE_TASK_KINDS}.is_default as IsDefault`];
 
+var LOG_MEMBER_TASK_DONE = ['assign_to_user as UserId', 'last_exec_on as ExecuteOn', 'task_score as TaskScore', 'repeat_number as RepeatNumber', 'nickname as NickName', 'wx_avatar as AvatarUrl'];
 
 var DATETIME_LONGSTRING = "yyyy-MM-dd HH:mm:ss";
 
@@ -348,6 +349,16 @@ async function setMemberTaskDone(mtid, author_id, kind_id, repeat_number, task_s
 
 }
 
+/**
+ * 获得成员任务完成的日志
+ */
+async function getMemberTaskDoneLog(tid, oid, limit) {
+  return await DB(TABLE_MEMBER_TASKS).select(LOG_MEMBER_TASK_DONE)
+    .where({ task_id: tid, assign_to_org: oid ,is_done:true})
+    .leftJoin(`${TABLE_USERS}`, `${TABLE_USERS}.id`, `${TABLE_MEMBER_TASKS}.assign_to_user`)
+    .orderBy('last_exec_on', 'desc')
+    .limit(limit);
+}
 ////////////////////////// 日志 //////////////////////////////
 
 /**
@@ -415,6 +426,7 @@ module.exports = {
   setTaskPublishDateTime,
   buildMemberTaskByMemberType,
   setMemberTaskDone,
+  getMemberTaskDoneLog,
 
   logMemberJoin,
   logUserRegist,

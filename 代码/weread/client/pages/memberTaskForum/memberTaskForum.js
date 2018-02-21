@@ -121,6 +121,9 @@ function doLoadMemberTask(thePage, mtid) {
 
         // 初始化任务交流区
         initTaskForum(thePage, task, Author);
+
+        // 载入历史
+        doLoadTaskHistory(thePage, task);
       }
 
       thePage.Me = Me;
@@ -134,11 +137,43 @@ function doLoadMemberTask(thePage, mtid) {
 }
 
 /**
+ * 载入历史
+ */
+function doLoadTaskHistory(thePage, task) {
+
+  wxutil.showLoading();
+  org.getMemberTaskDoneLog({
+    pms: {
+      TaskId: task.TaskId,
+      OrgId: task.OrgId,
+    },
+
+    success(result) {
+      wxutil.hideLoading();
+
+      // 载入任务列表
+      const { DoneLogs } = result.data
+      if (DoneLogs != null && DoneLogs.length > 0) {
+        DoneLogs.reverse();
+
+        // 设置历史消息
+        var messages = buildHistoryMessages(thePage, DoneLogs);
+        messages.forEach(x => { pushMessage(thePage, x) })
+
+      }
+
+    },
+    fail(error) {
+      wxutil.showModel('载入历史列表失败', error);
+      console.log('载入历史列表失败', error);
+    }
+  })
+}
+
+/**
  * 初始化交流区
  */
 function initTaskForum(thePage, task, author) {
-  console.log(task, author)
-
   wx.setNavigationBarTitle({ title: task.OrgName })
 
   // 设置初始化消息
@@ -190,6 +225,21 @@ function buildInitMessages(thePage, task, author) {
 
   msgList.push(createSystemMessage(otherMessage));
   return msgList;
+}
+
+/**
+ * 历史信息
+ */
+function buildHistoryMessages(thePage, hisLogs) {
+  if (hisLogs.length == 0) return [];
+
+  return hisLogs.map(x => {
+    var txt = createCheckInMessage(x.NickName, new Date(x.ExecuteOn), x.RepeatNumber - 0 + 1);
+    var isMe = thePage.Me.id == x.UserId ? true : false;
+    var msg = createUserMessage(txt, { NickName: x.NickName, AvatarUrl: x.AvatarUrl }, isMe);
+
+    return msg;
+  })
 }
 
 /**
