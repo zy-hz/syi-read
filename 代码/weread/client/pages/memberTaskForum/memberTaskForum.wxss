@@ -176,6 +176,21 @@
   font-size: 48rpx;
 }
 
+.input-panel .weui-cell{
+  padding: 5px 0px 5px;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.input-panel .weui-cell image{
+  height: 23px;
+  width: 23px;
+}
+
+.input-panel .weui-cell__bd{
+  margin-left: 1px;
+}
+
 @media (max-width : 360px) {
     .avatar {
         width: 100rpx;

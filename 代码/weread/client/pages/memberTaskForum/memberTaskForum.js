@@ -62,6 +62,7 @@ function createPageObject(thePage) {
   var obj = new Object();
 
   obj.data = {
+    IsTaskClose: false,
     messages: [],
     lastMessageId: 'none',
 
@@ -77,6 +78,7 @@ function createPageObject(thePage) {
 
     RepeatCountArray: [],
     RepeatNumber: 0,
+
   };
 
   obj.onLoad = onLoad;
@@ -265,4 +267,10 @@ function onTaskDone(thePage, score) {
   var txt = createCheckInMessage(thePage.Me.NickName, new Date(), thePage.data.RepeatNumber - 0 + 1);
   var msg = createUserMessage(txt, thePage.Me, true);
   pushMessage(thePage, msg);
+
+  var task = thePage.data.Task;
+  task.TaskScore = score;
+
+  // 设置任务关闭
+  thePage.setData({ IsTaskClose: true, Task: task })
 }

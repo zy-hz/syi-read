@@ -13,7 +13,9 @@
       </view>
     </view>
   </scroll-view>
-  <view class="input-panel">
+
+  <!--任务操作区-->
+  <view class="input-panel" hidden='{{IsTaskClose}}'>
     <view class="weui-flex__item">
       <picker bindchange="bindRepeatCountChange" value="{{RepeatNumber}}" range="{{RepeatCountArray}}">
         <view class="repeat-picker" hidden='{{!FuncPanel[FuncIndex].ShowRepeatSelector}}'>+{{RepeatNumber-0+1}}</view>
@@ -26,4 +28,24 @@
       <button bindtap="onExit" class="exit-btn">离开</button>
     </view>
   </view>
+
+  <!--任务完成-->
+  <view class="input-panel" hidden='{{!IsTaskClose}}'>
+    <view>
+      <view class='weui-cell'>
+        <icon type='success_no_circle'></icon>
+        <view class='weui-cell__bd'>+{{RepeatNumber-0+1}}</view>
+      </view>
+    </view>
+    <view class="weui-flex__item">
+      <view class='weui-cell'>
+        <image src='/images/metal_1.png'></image>
+        <view class='weui-cell__bd'>+{{Task.TaskScore}}</view>
+      </view>
+    </view>
+    <view>
+      <button bindtap="onExit" class="exit-btn">离开</button>
+    </view>
+  </view>
+
 </view>
