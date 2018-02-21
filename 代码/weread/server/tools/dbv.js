@@ -265,7 +265,8 @@ async function getAllTasksAssignToUser(uid, maxCount, beginId) {
  * 为组织找到任务类型
  */
 async function getTaskKinds4Org(oid) {
-  return await DB(TABLE_ORGS).select(ORG_TASK_KIND_ITEM).where(`${TABLE_ORGS}.id`, oid).leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASK_KINDS}.org_id`, `${TABLE_ORGS}.root_org_id`);
+  return await DB(TABLE_TASK_KINDS).select(ORG_TASK_KIND_ITEM);
+  //return await DB(TABLE_ORGS).select(ORG_TASK_KIND_ITEM).where(`${TABLE_ORGS}.id`, oid).leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASK_KINDS}.org_id`, `${TABLE_ORGS}.root_org_id`);
 }
 
 /**

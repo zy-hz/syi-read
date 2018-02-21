@@ -20,6 +20,7 @@ function createPageObject() {
   };
 
   obj.onLoad = onLoad;
+  obj.onShow = onShow;
   obj.onReachBottom = onReachBottom;
 
   return obj;
@@ -40,7 +41,12 @@ function onLoad(options) {
 
   this.setData({ OrgInfo: orgInfo })
   this.setData({ HiddenNoDataPanel: false })
+}
 
+/**
+ * 载入任务列表
+ */
+function onShow(){
   // 载入任务列表
   doLoadTasks(this);
 }

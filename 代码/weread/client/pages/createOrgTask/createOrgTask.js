@@ -322,7 +322,7 @@ function onSubmit() {
 
       // 创建任务成功
       const { TaskId } = result.data;
-      console.log(TaskId);
+      wx.navigateBack();
     },
     fail(error) {
       wxutil.showModel('创建任务失败', error);
@@ -335,7 +335,7 @@ function onSubmit() {
 
 function verifyInputContent(thePage) {
   if (thePage.data.TaskTitle == '') return `${thePage.data.TypeView[thePage.data.TypeIndex].Label}不能为空。`;
-  var len = thePage.data.TypeIndex == 0 ? 32:10;
+  var len = thePage.data.TypeIndex == 0 ? 32 : 10;
   return util.verifyInputName(thePage.data.TaskTitle, len);;
 }
 
