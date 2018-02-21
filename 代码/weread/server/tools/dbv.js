@@ -32,7 +32,7 @@ var LOG_MEMBER_JOIN = "sy_log_member_join";
 var LOG_USER_LOGIN = "sy_log_user_login";
 
 
-var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName','wx_avatar as AvatarUrl'];
+var USER_ITEM = ['id', 'created_on', 'last_login_on', 'language', 'nickname as NickName', 'wx_avatar as AvatarUrl'];
 var MEMBER_ITEM = ['id', 'name', 'user_id', 'org_id', 'type'];
 
 var MEMBER_TASK_ITEM = [`${TABLE_MEMBER_TASKS}.id`, `${TABLE_MEMBER_TASKS}.task_id as TaskId`, `${TABLE_MEMBER_TASKS}.is_done`, `${TABLE_MEMBER_TASKS}.assign_to_user as UserId`, `${TABLE_MEMBER_TASKS}.assign_to_org as OrgId`, `${TABLE_MEMBER_TASKS}.assign_to_member as MemberId`, `${TABLE_MEMBER_TASKS}.repeat_number as RepeatNumber`, `${TABLE_MEMBER_TASKS}.last_exec_on as LastExecuteDateTime`, `${TABLE_TASKS}.author_id as TaskAuthorId`, `${TABLE_TASKS}.title as TaskTitle`, `${TABLE_TASKS}.begin_on as TaskBeginOn`, `${TABLE_TASKS}.end_on as TaskEndOn`, `${TABLE_TASKS}.allow_repeat_cnt as AllowRepeatCount`, `${TABLE_TASKS}.task_score as TaskBaseScore`, `${TABLE_TASKS}.kind_id as KindId`, `${TABLE_TASK_KINDS}.name as KindName`, `${TABLE_ORGS}.name as OrgName`];
@@ -136,7 +136,7 @@ async function activeMember(mid, mt, isActived) {
   await DB(TABLE_MEMBERS).update({
     status: isActived,
     type: mt,
-  }).where('id',mid)
+  }).where('id', mid)
 }
 
 ////////////////////////// 组织 //////////////////////////////
@@ -178,7 +178,7 @@ async function createOrg(parentOid, oname) {
   var parentOrg = await findOrgByOid(parentOid);
   if (null == parentOrg) throw `父组织不存在。(${parentOid})`;
 
-  if (await isExistOrgName(parentOid, oname) > 0 ) throw `群名已经存在。`;
+  if (await isExistOrgName(parentOid, oname) > 0) throw `群名已经存在。`;
 
   var result = await DB(TABLE_ORGS).returning('id').insert({
     name: oname,
@@ -203,7 +203,7 @@ async function createOrg(parentOid, oname) {
  */
 async function updateOrgName(parentOid, oid, oname) {
   var existOid = await isExistOrgName(parentOid, oname)
-  if (existOid > 0 && existOid != oid ) throw `群名已经存在。`;
+  if (existOid > 0 && existOid != oid) throw `群名已经存在。`;
 
   await DB(TABLE_ORGS).update({ name: oname }).where('id', oid);
 }
@@ -329,6 +329,24 @@ async function buildMemberTaskByMemberType(oid, mts, tid) {
   return await DB(TABLE_MEMBERS).select('user_id as assign_to_user', 'org_id as assign_to_org', 'id as assign_to_member', col).where({ org_id: oid }).whereIn('type', mts);
 }
 
+/**
+ * 设置任务完成
+ */
+async function setMemberTaskDone(mtid, author_id, kind_id, repeat_number, task_score, task_begin_on, task_expired_on) {
+  var dt = new Date().toString(DATETIME_LONGSTRING);
+  var beg = new Date(task_begin_on).toString(DATETIME_LONGSTRING);
+  var end = new Date(task_expired_on).toString(DATETIME_LONGSTRING);
+
+  await DB(TABLE_MEMBER_TASKS).update({
+    author_id, kind_id, repeat_number, task_score,
+    task_begin_on: beg,
+    task_expired_on: end,
+    is_done: true,
+    last_exec_on: dt,
+  }).where('id', mtid);
+
+}
+
 ////////////////////////// 日志 //////////////////////////////
 
 /**
@@ -395,6 +413,7 @@ module.exports = {
   addMemberTasks,
   setTaskPublishDateTime,
   buildMemberTaskByMemberType,
+  setMemberTaskDone,
 
   logMemberJoin,
   logUserRegist,

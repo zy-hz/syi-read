@@ -228,7 +228,7 @@ async function getTasks(ctx, next) {
     Tasks = await dbv.getAllTasksAssignToUser(user.id, Limit, beginId);
   }
 
-  ctx.body = { Tasks, Author };
+  ctx.body = { Tasks, Author, Me: user };
 }
 
 /**
@@ -292,6 +292,7 @@ async function setMemberTaskDone(ctx, next) {
 
   // 根据重复次数计算任务得分
   var score = calTaskScore(TaskBaseScore, RepeatNumber);
+  await dbv.setMemberTaskDone(MemberTaskId, TaskAuthorId, KindId, RepeatNumber, score, TaskBeginOn, TaskEndOn);
 
   ctx.body = { IsDone: true, TaskScore: score };
 }

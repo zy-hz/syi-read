@@ -46,6 +46,14 @@ function createUserMessage(content, user, isMe) {
   return { id: msgUuid(), type: 'speak', content, user, isMe };
 }
 
+/**
+ * 创建签到的信息
+ */
+function createCheckInMessage(name, dt, cnt) {
+  var dtString = util.formatDate2String(new Date(dt), 'MMdd');
+  return `${name}+${dtString}+${cnt}`;
+}
+
 // 页面函数，传入一个object对象作为参数
 Page(createPageObject());
 
@@ -104,13 +112,15 @@ function doLoadMemberTask(thePage, mtid) {
       wxutil.hideLoading();
 
       // 载入任务列表
-      const { Tasks, Author } = result.data
+      const { Tasks, Author, Me } = result.data
       if (Tasks != null && Tasks.length > 0) {
         var task = Tasks[0];
 
         // 初始化任务交流区
         initTaskForum(thePage, task, Author);
       }
+
+      thePage.Me = Me;
 
     },
     fail(error) {
@@ -237,7 +247,7 @@ function onSubmit() {
 
       // 打卡签到完成
       const { IsDone, TaskScore } = result.data
-      console.log(IsDone, TaskScore)
+      if (IsDone == true) onTaskDone(thePage, TaskScore);
     },
 
     fail(error) {
@@ -245,4 +255,14 @@ function onSubmit() {
       console.log('标记成员任务完成失败', error);
     }
   })
+}
+
+/**
+ * 任务完成
+ */
+function onTaskDone(thePage, score) {
+  //  推送成功的消息
+  var txt = createCheckInMessage(thePage.Me.NickName, new Date(), thePage.data.RepeatNumber - 0 + 1);
+  var msg = createUserMessage(txt, thePage.Me, true);
+  pushMessage(thePage, msg);
 }
