@@ -57,9 +57,20 @@ function createPageObject(thePage) {
     messages: [],
     inputContent: 'abc',
     lastMessageId: 'none',
+
+    FuncPanel: [{
+      FuncName: '打卡',
+      ShowRepeatSelector: true
+    },
+    {
+      FuncName: '签到',
+      ShowRepeatSelector: false
+    }],
+    FuncIndex: 1,
   };
 
   obj.onLoad = onLoad;
+  obj.onExit = () => { wx.navigateBack() };
 
   return obj;
 }
@@ -116,14 +127,19 @@ function initTaskForum(thePage, task, author) {
   // 设置初始化消息
   var messages = buildInitMessages(thePage, task, author);
   messages.forEach(x => { pushMessage(thePage, x) })
+
+  // 设置操作面板
+  var funcIndex = task.KindId == 1 ? 0 : 1;
+  thePage.setData({ FuncIndex: funcIndex })
 }
 
 /**
  * 构建初始化的消息队列
  */
 function buildInitMessages(thePage, task, author) {
-  var msgList = [];
   var ps = getTaskProcessState(task);
+
+  var msgList = [];
   var otherMessage = '';
   if (ps == -1) {
     msgList.push(createSystemMessage('活动未开始'));
@@ -158,7 +174,7 @@ function getTaskProcessState(task) {
 /**
  * 构建任务说明
  */
-function buildTaskMessage(task,author) {
+function buildTaskMessage(task, author) {
   if (task.KindId == 1) return buildTaskMessage_1(task, author);
   if (task.KindId == 2) return buildTaskMessage_2(task, author);
 
@@ -168,7 +184,7 @@ function buildTaskMessage(task,author) {
 function buildTaskMessage_1(task, author) {
   var msgs = [];
   msgs.push(createUserMessage(`${task.TaskTitle}${task.KindName}`, author, false));
-  msgs.push(createUserMessage(`读完1遍获得${task.TaskBaseScore}个积分，多读可以获得额外积分，最多可以读${task.AllowRepeatCount+1}遍`, author, false));
+  msgs.push(createUserMessage(`读完1遍获得${task.TaskBaseScore}个积分，多读可以获得额外积分，最多可以读${task.AllowRepeatCount + 1}遍`, author, false));
   return msgs;
 }
 

@@ -155,8 +155,25 @@
     background-color: #a0e75a;
     font-size: 28rpx;
 }
+.exit-btn {
+    width: 160rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+    font-size: 28rpx;
+    margin-left: 10px;
+}
 .me .nickname {
     display: none;
+}
+
+.repeat-picker {
+  padding: 0 10px;
+  text-align: center;
+  background-color: #f6f6f6;
+  height: 40px;
+  line-height: 40px;
+  color: black;
+  font-size: 48rpx;
 }
 
 @media (max-width : 360px) {
