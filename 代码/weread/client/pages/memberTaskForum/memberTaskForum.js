@@ -67,9 +67,13 @@ function createPageObject(thePage) {
       ShowRepeatSelector: false
     }],
     FuncIndex: 1,
+
+    RepeatCountArray: [],
+    RepeatNumber: 0,
   };
 
   obj.onLoad = onLoad;
+  obj.bindRepeatCountChange = bindRepeatCountChange;
   obj.onExit = () => { wx.navigateBack() };
 
   return obj;
@@ -131,6 +135,13 @@ function initTaskForum(thePage, task, author) {
   // 设置操作面板
   var funcIndex = task.KindId == 1 ? 0 : 1;
   thePage.setData({ FuncIndex: funcIndex })
+
+  // 设置重复次数
+  var RepeatCountArray = [];
+  for (var i = 0; i <= task.AllowRepeatCount; i++) {
+    RepeatCountArray.push(i + 1);
+  }
+  thePage.setData({ RepeatCountArray });
 }
 
 /**
@@ -195,4 +206,9 @@ function buildTaskMessage_2(task, author) {
   return msgs;
 }
 
-
+/**
+ * 重复次数
+ */
+function bindRepeatCountChange(options) {
+  this.setData({ RepeatNumber: options.detail.value })
+}

@@ -14,9 +14,9 @@
     </view>
   </scroll-view>
   <view class="input-panel">
-    <view class="weui-flex__item" >
-      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}" >
-        <view class="repeat-picker" hidden='{{!FuncPanel[FuncIndex].ShowRepeatSelector}}'>+1</view>
+    <view class="weui-flex__item">
+      <picker bindchange="bindRepeatCountChange" value="{{RepeatNumber}}" range="{{RepeatCountArray}}">
+        <view class="repeat-picker" hidden='{{!FuncPanel[FuncIndex].ShowRepeatSelector}}'>+{{RepeatNumber-0+1}}</view>
       </picker>
     </view>
     <view>
