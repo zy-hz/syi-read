@@ -321,8 +321,13 @@ function onSubmit() {
       setSubmitState(thePage, false);
 
       // 创建任务成功
-      const { TaskId } = result.data;
-      wx.navigateBack();
+      const { IsSuccess, TaskId, ErrorMessage } = result.data;
+      if (IsSuccess) {
+        wx.navigateBack();
+      } else {
+        showErrorMessage(thePage, ErrorMessage);
+      }
+
     },
     fail(error) {
       wxutil.showModel('创建任务失败', error);

@@ -247,13 +247,19 @@ async function createNewTask(ctx, next) {
   // 创建新任务
   var task = ctx.request.body;
   task.AuthorId = user.id;
+
+  if (await dbv.countStopWords(task.TaskTitle) > 0) {
+    ctx.body = { IsSuccess: false, ErrorMessage: '标题包含敏感词' };
+    return;
+  }
+
   var TaskId = await dbv.addTask(task);
   task.id = TaskId;
 
   // 尝试发布任务
   tryPublishTask(task);
 
-  ctx.body = { TaskId };
+  ctx.body = { IsSuccess:true , TaskId };
 }
 
 /**
