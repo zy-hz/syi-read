@@ -74,6 +74,7 @@ page {
 .weread-list__item-memo {
   font-size: 12px;
   color: #888;
+  margin-bottom: 3px;
 }
 
 .weread-navigator__footer {

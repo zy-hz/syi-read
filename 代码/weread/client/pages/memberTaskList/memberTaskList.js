@@ -36,7 +36,7 @@ function onLoad(options) {
   this.setData({ HiddenNoDataPanel: false })
 }
 
-function onShow(){
+function onShow() {
   // 载入任务列表
   doLoadTasks(this);
 }
@@ -68,7 +68,10 @@ function doLoadTasks(thePage) {
       // 载入任务列表
       const { Tasks } = result.data
       if (Tasks != null && Tasks.length > 0) {
-        thePage.setData({ Tasks, HiddenNoDataPanel: true })
+        var sortedTasks = updateTasks(Tasks);
+        thePage.setData({ Tasks: sortedTasks, HiddenNoDataPanel: true })
+
+        console.log(sortedTasks)
       }
     },
     fail(error) {
@@ -78,3 +81,29 @@ function doLoadTasks(thePage) {
   })
 }
 
+/**
+ * 更新任务队列
+ */
+function updateTasks(tasks) {
+  tasks.forEach(x=>{
+    var ts = getTaskProcessState(x)
+    x.TaskStateId = ts.id ;
+    x.TaskStateName = ts.name;
+
+    x.TaskImageUrl = x.KindId == 1 ? '/images/task_kind_bible.png' : '/images/group_1.png' ;
+    x.TaskDisplayTime = util.formatDate2String(new Date(x.TaskBeginOn) , 'MM月dd日'); 
+  })
+  return tasks
+}
+
+/**
+ * 获得任务进度阶段 -1 为开始 ，1 已完成，0 进行中
+ */
+function getTaskProcessState(task) {
+  var dt = Date.now();
+
+  if (dt < new Date(task.TaskBeginOn)) return {id:-1,name:'预告'};
+  if (dt > new Date(task.TaskEndOn)) return { id: 1, name: '关闭' };
+
+  return { id: 0, name: '' };;
+}

@@ -14,7 +14,7 @@
       <navigator url="/pages/memberTaskForum/memberTaskForum?MemberTaskId={{item.id}}" class="weui-cell" hover-class="weui-cell_active" wx:for="{{Tasks}}" wx:key="{{item.id}}">
 
         <view class="weui-cell__hd">
-          <image src="/images/task_kind_bible.png" />
+          <image src="{{item.TaskImageUrl}}" />
         </view>
 
         <view class="weui-cell__bd">
@@ -23,7 +23,9 @@
         </view>
 
         <view class="weui-cell__ft">
-          <view class="weread-list__item-memo">已发布</view>
+          <view class="weread-list__item-memo">{{item.TaskStateName}}</view>
+          <view class="weread-list__item-memo">{{item.TaskDisplayTime}}</view>
+
         </view>
       </navigator>
     </view>
