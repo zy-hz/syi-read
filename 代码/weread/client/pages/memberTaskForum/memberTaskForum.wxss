@@ -178,7 +178,7 @@
 
 .input-panel .weui-cell{
   padding: 5px 0px 5px;
-  font-size: 18px;
+  font-size: 16px;
   margin-right: 10px;
 }
 
@@ -189,78 +189,4 @@
 
 .input-panel .weui-cell__bd{
   margin-left: 1px;
-}
-
-@media (max-width : 360px) {
-    .avatar {
-        width: 100rpx;
-        height: 100rpx;
-    }
-    .text .content {
-        border: #ccc 1rpx solid;
-        border-radius: 4px;
-        background: #fff;
-        font-size: 42rpx;
-        line-height: 44rpx;
-        padding: 20rpx;
-        position: relative;
-    }
-    .user-message.other .text .content::before {
-        top: 22rpx;
-        border-right-color: #ccc;
-    }
-    .user-message.other .text .content::after {
-        border: 14rpx solid transparent;
-        top: 23rpx;
-        border-right-color: #fff;
-    }
-
-    .user-message.me .text .content::after,.user-message.me .text .content::before {
-        left: 100%;
-        border-left-style: solid;
-    }
-
-    .user-message.me .text .content::before {
-        top: 22rpx;
-        border-left-color: #70b44d;
-    }
-    .user-message.me .text .content::after {
-        border: 14rpx solid transparent;
-        top: 23rpx;
-        border-left-color: #a0e75b;
-    }
-
-    .input-panel {
-        height: 120rpx;
-        box-sizing: border-box;
-        padding: 13rpx 20rpx 0;
-        background: #f5f5f7;
-        border-top:#d7d7d9 1rpx solid;
-        box-sizing: border-box;
-        display: flex;
-    }
-    .pic-icon {
-        display: none;
-        width: 60rpx;
-        height: 44rpx;
-        margin: 25rpx 20rpx 0 0;
-        background:url(http://imgcache.qq.com/open_proj/proj_qcloud_v2/wechat_mc/pic/send.svg);
-    }
-    .send-input {
-        flex: 1;
-        height: 92rpx;
-        background: #fff;
-        border:#ddd 1rpx solid;
-        border-radius: 3px;
-        margin-right: 20rpx;
-        box-sizing: border-box;
-        padding: 0 10rpx;
-    }
-    .send-btn {
-        width: 180rpx;
-        height: 92rpx;
-        line-height: 92rpx;
-        background-color: #a0e75a;
-        font-size: 36rpx;
-    }
 }

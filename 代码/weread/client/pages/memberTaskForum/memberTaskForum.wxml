@@ -29,16 +29,33 @@
     </view>
   </view>
 
-  <!--任务完成-->
+  <!--任务状态-->
   <view class="input-panel" hidden='{{!IsTaskClose}}'>
+
+    <!--未开始-->
     <view>
-      <view class='weui-cell'>
+      <view class='weui-cell' hidden='{{ProcessState != -1}}'>
+        <icon type='waiting'></icon>
+        <view class='weui-cell__bd'> 尚未开始</view>
+      </view>
+    </view>
+    <!--进行中-->
+    <view>
+      <view class='weui-cell' hidden='{{ProcessState != 0}}'>
         <icon type='success_no_circle'></icon>
         <view class='weui-cell__bd'>+{{RepeatNumber-0+1}}</view>
       </view>
     </view>
+    <!--未已结束-->
+    <view>
+      <view class='weui-cell' hidden='{{ProcessState != 1}}'>
+        <icon type='cancel'></icon>
+        <view class='weui-cell__bd'> 任务已关闭</view>
+      </view>
+    </view>
+
     <view class="weui-flex__item">
-      <view class='weui-cell'>
+      <view class='weui-cell' hidden='{{!Task.is_done}}'>
         <image src='/images/metal_1.png'></image>
         <view class='weui-cell__bd'>+{{Task.TaskScore}}</view>
       </view>

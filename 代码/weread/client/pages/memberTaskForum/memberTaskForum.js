@@ -63,6 +63,7 @@ function createPageObject(thePage) {
 
   obj.data = {
     IsTaskClose: false,
+    ProcessState: 0,
     messages: [],
     lastMessageId: 'none',
 
@@ -155,6 +156,14 @@ function initTaskForum(thePage, task, author) {
 
   // 数据设置
   thePage.setData({ RepeatCountArray, FuncIndex: funcIndex, Task: task });
+
+  if (task.is_done) {  // 任务完成
+    thePage.setData({ IsTaskClose: true, ProcessState: 0 })
+  } else {
+    // 检查任务进度
+    var ps = getTaskProcessState(task);
+    thePage.setData({ IsTaskClose: ps == 0 ? false : true, ProcessState: ps })
+  }
 }
 
 /**
@@ -270,6 +279,7 @@ function onTaskDone(thePage, score) {
 
   var task = thePage.data.Task;
   task.TaskScore = score;
+  task.is_done = true;
 
   // 设置任务关闭
   thePage.setData({ IsTaskClose: true, Task: task })
