@@ -5,7 +5,7 @@
 }
 
 .weread-task__notice {
-  background-color: #f6f5ec;
+  background-color: #f2eada;
 }
 
 .weread-task__expired {

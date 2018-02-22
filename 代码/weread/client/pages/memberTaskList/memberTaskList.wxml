@@ -23,9 +23,10 @@
         </view>
 
         <view class="weui-cell__ft">
+          <view class="weread-list__item-memo">{{item.TaskDisplayTime}}</view>
           <icon type="success_no_circle" size="18" hidden='{{!item.is_done}}'></icon>
           <view class="weread-list__item-memo" hidden='{{item.is_done}}'>{{item.TaskStateName}}</view>
-          <view class="weread-list__item-memo">{{item.TaskDisplayTime}}</view>
+
 
         </view>
       </navigator>

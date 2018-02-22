@@ -28,16 +28,16 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/memberTaskList/memberTaskList",
-        "text": "任务",
-        "iconPath": "images/task_list_1.png",
-        "selectedIconPath": "images/task_list_1.png"
-      },
-      {
         "pagePath": "pages/mine/mine",
         "text": "我",
         "iconPath": "images/man_1.png",
         "selectedIconPath": "images/man_1.png"
+      },
+      {
+        "pagePath": "pages/memberTaskList/memberTaskList",
+        "text": "任务",
+        "iconPath": "images/task_list_1.png",
+        "selectedIconPath": "images/task_list_1.png"
       }
     ],
     "position": "bottom"
