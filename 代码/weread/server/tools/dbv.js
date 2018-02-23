@@ -19,6 +19,7 @@ const DB = require('knex')({
  * 表结构常量定义
  */
 var TABLE_USERS = "sy_users";
+var TABLE_USER_SUMMARY = "sy_user_summary";
 var TABLE_MEMBERS = "sy_members";
 var TABLE_ORGS = "sy_orgs";
 
@@ -354,10 +355,20 @@ async function setMemberTaskDone(mtid, author_id, kind_id, repeat_number, task_s
  */
 async function getMemberTaskDoneLog(tid, oid, limit) {
   return await DB(TABLE_MEMBER_TASKS).select(LOG_MEMBER_TASK_DONE)
-    .where({ task_id: tid, assign_to_org: oid ,is_done:true})
+    .where({ task_id: tid, assign_to_org: oid, is_done: true })
     .leftJoin(`${TABLE_USERS}`, `${TABLE_USERS}.id`, `${TABLE_MEMBER_TASKS}.assign_to_user`)
     .orderBy('last_exec_on', 'desc')
     .limit(limit);
+}
+
+/**
+ * 获得用户的统计信息
+ */
+async function getUserSummary(uid) {
+  var result = await DB(TABLE_USER_SUMMARY).select().where('id', uid);
+  if (result.length > 0) return result[0];
+
+  return { task_cnt: 0, org_cnt: 0, score: 0 };
 }
 ////////////////////////// 日志 //////////////////////////////
 
@@ -419,6 +430,7 @@ module.exports = {
 
   findTasksByOrgId,
   findMemberTasksById,
+  getUserSummary,
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,

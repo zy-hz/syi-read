@@ -346,7 +346,13 @@ async function getTaskKinds(ctx, next) {
  * 获得用户的合计信息
  */
 async function getSummaryInfo(ctx, next) {
-  var summaryInfo = [{ Name: "任务", Score: 10 }, { Name: "小群", Score: 1 }, { Name: "积分", Score: 2126 }];
+  // 微信用户身份验证
+  if (util.verify_request(ctx) == -1) return;
+  // 操作微信用户对应的平台用户编号
+  var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
+
+  var si = await dbv.getUserSummary(user.id);
+  var summaryInfo = [{ Name: "任务", Score: si.task_cnt }, { Name: "小群", Score: si.org_cnt }, { Name: "积分", Score: si.score }];
   ctx.body = { SummaryInfo: summaryInfo };
 }
 
