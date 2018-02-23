@@ -335,7 +335,7 @@ async function buildMemberTaskByMemberType(oid, mts, tid) {
 /**
  * 设置任务完成
  */
-async function setMemberTaskDone(mtid, author_id, kind_id, repeat_number, task_score, task_begin_on, task_expired_on) {
+async function setMemberTaskDone(mtid, user_id, author_id, kind_id, repeat_number, task_score, task_begin_on, task_expired_on) {
   var dt = new Date().toString(DATETIME_LONGSTRING);
   var beg = new Date(task_begin_on).toString(DATETIME_LONGSTRING);
   var end = new Date(task_expired_on).toString(DATETIME_LONGSTRING);
@@ -348,6 +348,13 @@ async function setMemberTaskDone(mtid, author_id, kind_id, repeat_number, task_s
     last_exec_on: dt,
   }).where('id', mtid);
 
+  // 更新用户统计信息
+  await DB(TABLE_USER_SUMMARY)
+    .update({
+      score: DB.raw(`score + ${task_score}`),
+      task_cnt: DB.raw(`task_cnt + 1`)
+    })
+    .where('user_id', user_id);
 }
 
 /**
@@ -365,7 +372,7 @@ async function getMemberTaskDoneLog(tid, oid, limit) {
  * 获得用户的统计信息
  */
 async function getUserSummary(uid) {
-  var result = await DB(TABLE_USER_SUMMARY).select().where('id', uid);
+  var result = await DB(TABLE_USER_SUMMARY).select().where('user_id', uid);
   if (result.length > 0) return result[0];
 
   return { task_cnt: 0, org_cnt: 0, score: 0 };
