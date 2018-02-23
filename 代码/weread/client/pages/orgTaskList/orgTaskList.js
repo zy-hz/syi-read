@@ -89,7 +89,10 @@ function doLoadTasks(thePage) {
       // 载入任务列表
       const { Tasks } = result.data
       if (Tasks != null && Tasks.length > 0) {
-        thePage.setData({ Tasks, HiddenNoDataPanel: true })
+        var sortedTasks = updateTasks(Tasks);
+        thePage.setData({ Tasks: sortedTasks, HiddenNoDataPanel: true })
+
+        console.log(sortedTasks)
       }
     },
     fail(error) {
@@ -97,5 +100,37 @@ function doLoadTasks(thePage) {
       console.log('载入任务列表失败', error);
     }
   })
+}
+
+/**
+ * 更新任务队列
+ */
+function updateTasks(tasks) {
+  tasks.forEach(x => {
+    var ts = getTaskProcessState(x)
+    x.TaskStateId = ts.id;
+    x.TaskStateName = ts.name;
+    x.TaskStateClass = ts.class;
+
+    x.TaskImageUrl = x.KindId == 1 ? '/images/task_kind_bible.png' : '/images/task_list_2.png';
+    x.TaskDisplayTime = util.formatDate2String(new Date(x.BeginDateTime), 'MM月dd日');
+  })
+
+  return tasks.sort(function (x, y) {
+    if (x.TaskStateId != y.TaskStateId) return x.TaskStateId - y.TaskStateId;
+    return x.BeginDateTime > y.BeginDateTime ? 1 : -1;
+  });
+}
+
+/**
+ * 获得任务进度阶段 -1 为开始 ，1 已完成，0 进行中
+ */
+function getTaskProcessState(task) {
+  var dt = Date.now();
+
+  if (dt < new Date(task.BeginDateTime)) return { id: -1, name: '预告', class: 'weread-task__notice' };
+  if (dt > new Date(task.EndDateTime)) return { id: 1, name: '关闭', class: 'weread-task__expired' };
+
+  return { id: 0, name: '', class: 'weread-task__running' };;
 }
 

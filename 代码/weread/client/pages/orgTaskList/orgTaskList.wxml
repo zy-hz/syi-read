@@ -11,10 +11,10 @@
 
     <!--作业列表区-->
     <view class="weui-cells weread-list weread-list__first"  hidden="{{!HiddenNoDataPanel}}">
-      <view class="weui-cell" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
+      <navigator url="/pages/createOrgTask/createOrgTask?OrgTaskId={{item.TaskId}}" class="weui-cell {{item.TaskStateClass}}" wx:for="{{Tasks}}" wx:key="{{item.TaskId}}">
 
         <view class="weui-cell__hd">
-          <image src="/images/task_list_2.png" />
+          <image src="{{item.TaskImageUrl}}" />
         </view>
 
         <view class="weui-cell__bd">
@@ -23,9 +23,10 @@
         </view>
 
         <view class="weui-cell__ft">
-          <view class="weread-list__item-memo">已发布</view>
+          <view class="weread-list__item-memo">{{item.TaskDisplayTime}}</view>
+          <view class="weread-list__item-memo">{{item.TaskStateName}}</view>
         </view>
-      </view>
+      </navigator>
     </view>
 
     <!--底部导航栏-->

@@ -83,16 +83,30 @@ function createPageObject() {
  */
 function onLoad(options) {
   var orgInfo = util.getOrgInfoFromOptions(options);
-
-  wx.setNavigationBarTitle({
-    title: orgInfo.OrgName,
-  })
+  const { OrgTaskId } = options;
 
   this.setData({ OrgInfo: orgInfo })
   var thePage = this;
 
   createDateTimeSelector(this);
   createTaskKindSelector(this);
+
+  // 创建模式
+  this.CreateMode = OrgTaskId == null ? true : false;
+  wx.setNavigationBarTitle({
+    title: this.CreateMode ? "新建" : "编辑"
+  })
+
+  if (!this.CreateMode) {
+    doLoadOrgTaskInfo(thePage , OrgTaskId);
+  }
+}
+
+/**
+ * 载入组织的任务
+ */
+function doLoadOrgTaskInfo(thePage,otid){
+
 }
 
 /**
