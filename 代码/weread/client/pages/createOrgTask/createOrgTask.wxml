@@ -12,7 +12,7 @@
     <view class="weui-cells weui-cells_after-title" hidden='true'>
       <view class="weui-cell">
         <view class="weui-cell__bd">
-          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskContent}}' maxlength='1024'/>
+          <textarea class="weui-textarea" placeholder="请输入文本" style="height: 15em" bindblur="taskContentDone" value='{{TaskContent}}' maxlength='1024' />
           <!--view class="weui-textarea-counter">0/200</view-->
         </view>
       </view>
@@ -46,7 +46,7 @@
           <view class="weui-label">{{TypeView[TypeIndex].Label}}</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="{{TypeView[TypeIndex].InputTips}}" value='{{TaskTitle}}' disabled='{{TypeView[TypeIndex].InputDisabled}}' bindinput='onInputTaskTitle'/>
+          <input class="weui-input" placeholder="{{TypeView[TypeIndex].InputTips}}" value='{{TaskTitle}}' disabled='{{TypeView[TypeIndex].InputDisabled}}' bindinput='onInputTaskTitle' />
         </view>
         <view class="weui-cell__ft weui-cell__ft_in-access" hidden='{{!TypeView[TypeIndex].InputDisabled}}'></view>
       </view>
@@ -80,7 +80,7 @@
           <view class="weui-label">积分</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskScore}}" disabled='true'/>
+          <input class="weui-input" placeholder="请输入任务积分" value="{{TaskScore}}" disabled='true' />
         </view>
         <view class="weui-cell__ft">
         </view>
@@ -146,7 +146,6 @@
       <button class="weui-btn" type="primary" bindtap="onSubmit" loading="{{BeginSubmit}}" disabled="{{BeginSubmit}}" hidden='{{OnlyViewMode}}'>确定</button>
       <button class="weui-btn" type="default" bindtap="onCancel">取消</button>
     </view>
-
   </view>
 
 </view>
