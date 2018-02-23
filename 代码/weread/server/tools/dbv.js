@@ -241,7 +241,7 @@ async function findTasksByOrgId(oid, maxCount, beginId = -1) {
 /**
  * 查找组织的任务
  */
-async function findOrgTasksById(otid){
+async function findOrgTasksById(otid) {
   return await DB(TABLE_TASKS).select(ORG_TASK_ITEM)
     .where(`${TABLE_TASKS}.id`, otid)
     .leftJoin(`${TABLE_MEMBERS}`, function () {
@@ -313,7 +313,7 @@ async function addTask(task) {
 /**
  * 更新任务
  */
-async function updateTask(task){
+async function updateTask(task) {
   await DB(TABLE_TASKS).update({
     title: task.TaskTitle,
     content: task.TaskContent,
@@ -323,7 +323,7 @@ async function updateTask(task){
     begin_on: task.BeginDateTime,
     end_on: task.EndDateTime,
     is_published: task.IsPublished
-  }).where('id',task.id);
+  }).where('id', task.id);
 }
 
 /**
