@@ -89,7 +89,7 @@ function onLoad(options) {
   var thePage = this;
 
   createDateTimeSelector(this);
-  createTaskKindSelector(this);
+
 
   // 创建模式
   this.CreateMode = OrgTaskId == null ? true : false;
@@ -97,16 +97,68 @@ function onLoad(options) {
     title: this.CreateMode ? "新建" : "编辑"
   })
 
+  var next;
   if (!this.CreateMode) {
-    doLoadOrgTaskInfo(thePage , OrgTaskId);
+    thePage.OrgTaskId = OrgTaskId;
+    next = doLoadOrgTaskInfo;
   }
+  createTaskKindSelector(this, next); // 任务类型是从服务器读取，所以读取后才能设置
 }
 
 /**
  * 载入组织的任务
  */
-function doLoadOrgTaskInfo(thePage,otid){
+function doLoadOrgTaskInfo(thePage) {
+  var otid = thePage.OrgTaskId;
+  wxutil.showLoading();
 
+  org.getTasks({
+    pms: { OrgTaskId: otid },
+
+    success(result) {
+      wxutil.hideLoading();
+      // 获得任务类型
+      const { Tasks } = result.data;
+      if (Tasks.length > 0) {
+        setTaskInfoPanel(thePage, Tasks[0]);
+      } else {
+        showErrorMessage(thePage, `没有找到组织的任务。（${otid}）`)
+      }
+
+      console.log(Tasks);
+
+    },
+    fail(error) {
+      wxutil.showModel('获得任务失败', error);
+      console.log('获得任务失败', error);
+    }
+  })
+}
+
+/**
+ * 设置任务面板
+ */
+function setTaskInfoPanel(thePage, task) {
+
+  var kindIndex = task.KindId - 1;
+  var taskKinds = thePage.data.TaskKinds;
+  taskKinds.forEach(x => { x.IsDefault = x.KindId == task.KindId ? true : false })
+
+  thePage.setData({
+    TypeIndex: kindIndex,
+    TaskKinds: taskKinds,
+    TaskTitle: task.TaskTitle,
+    TaskScore: task.TaskScore,
+    RepeatCount: task.RepeatCount,
+    BeginDateTime: buildDateTimeSelectorValue(new Date(task.BeginDateTime)),
+    EndDateTime: buildDateTimeSelectorValue(new Date(task.EndDateTime)),
+  })
+
+  // 任务已经发布，不能修改
+  if (new Date(task.BeginDateTime) < new Date()) {
+    showErrorMessage(thePage, '任务已经开始，不能更改 ！！！')
+    thePage.setData({ OnlyViewMode: true })
+  }
 }
 
 /**
@@ -124,7 +176,7 @@ function createTaskTitle(e) {
 /**
  * 任务类型选择器
  */
-function createTaskKindSelector(thePage) {
+function createTaskKindSelector(thePage, next) {
   wxutil.showLoading();
 
   org.getTaskKinds({
@@ -140,7 +192,9 @@ function createTaskKindSelector(thePage) {
       var kind = getSelectedTaskKind(thePage);
       thePage.setData({ TaskScore: kind.KindScore });
 
+      if (next != null) next(thePage);
     },
+
     fail(error) {
       wxutil.showModel('获得任务类型失败', error);
       console.log('获得任务类型失败', error);
@@ -223,6 +277,17 @@ function visiableForRangeChange(e) {
     VisiableForRange: radioItems,
     VisiableFor: vf
   });
+}
+
+function buildDateTimeSelectorValue(dt) {
+  var dtString = util.formatDate2String(dt, 'yyyy-MM-dd HH:mm:ss');
+
+  var picker = dateTimePicker.dateTimePicker(2011, 2100, dtString);
+  // 精确到分的处理，将数组的秒去掉
+  picker.dateTimeArray.pop();
+  picker.dateTime.pop();
+
+  return picker.dateTime;
 }
 
 /**
@@ -325,6 +390,8 @@ function onSubmit() {
     showErrorMessage(this, '');
   }
   var task = getTaskInfoFromInput(this);
+  task.Mode = this.CreateMode; // 设置任务的模式
+  task.id = this.OrgTaskId;    // 设置任务的编号
 
   setSubmitState(this, true);
   var thePage = this;

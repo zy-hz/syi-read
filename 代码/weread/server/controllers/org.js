@@ -206,7 +206,7 @@ async function getTasks(ctx, next) {
   // 操作微信用户对应的平台用户编号
   var user = await dbv.findUserByWx(ctx.state.$wxInfo.userinfo.openId);
 
-  const { OrgId, Limit, MinTaskId, MemberTaskId } = ctx.request.body;
+  const { OrgId, Limit, MinTaskId, MemberTaskId, OrgTaskId } = ctx.request.body;
   var beginId = MinTaskId || -1;
 
   var Tasks = {};
@@ -222,6 +222,10 @@ async function getTasks(ctx, next) {
     if (Tasks.length > 0) {
       Author = await dbv.findUserByUid(Tasks[0].TaskAuthorId);
     }
+  }
+  else if (OrgTaskId > 0) {
+    // 获得指定的组织任务
+    Tasks = await dbv.findOrgTasksById(OrgTaskId);
   }
   else {
     // 获得该用户需要执行的所有任务
@@ -264,18 +268,25 @@ async function createNewTask(ctx, next) {
   var task = ctx.request.body;
   task.AuthorId = user.id;
 
+  // 检测敏感词
   if (await dbv.countStopWords(task.TaskTitle) > 0) {
     ctx.body = { IsSuccess: false, ErrorMessage: '标题包含敏感词' };
     return;
   }
 
-  var TaskId = await dbv.addTask(task);
-  task.id = TaskId;
+  if (task.CreateMode) {  // 新建模式
+    var TaskId = await dbv.addTask(task);
+    task.id = TaskId;
 
-  // 尝试发布任务
-  tryPublishTask(task);
+    // 尝试发布任务
+    tryPublishTask(task);
+    ctx.body = { IsSuccess: true, TaskId };
+  }
+  else { // 编辑模式
+    await dbv.updateTask(task);
+    ctx.body = { IsSuccess: true, TaskId:task.id };
+  }
 
-  ctx.body = { IsSuccess: true, TaskId };
 }
 
 /**

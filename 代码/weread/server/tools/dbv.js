@@ -239,6 +239,19 @@ async function findTasksByOrgId(oid, maxCount, beginId = -1) {
 }
 
 /**
+ * 查找组织的任务
+ */
+async function findOrgTasksById(otid){
+  return await DB(TABLE_TASKS).select(ORG_TASK_ITEM)
+    .where(`${TABLE_TASKS}.id`, otid)
+    .leftJoin(`${TABLE_MEMBERS}`, function () {
+      this.on(`${TABLE_TASKS}.org_id`, '=', `${TABLE_MEMBERS}.org_id`)
+        .on(`${TABLE_TASKS}.author_id`, '=', `${TABLE_MEMBERS}.user_id`)
+    })
+    .leftJoin(`${TABLE_TASK_KINDS}`, `${TABLE_TASKS}.kind_id`, `${TABLE_TASK_KINDS}.id`);
+}
+
+/**
  * 获得成员任务
  */
 async function findMemberTasksById(mtid) {
@@ -295,6 +308,22 @@ async function addTask(task) {
   });
 
   return result.lenght == 0 ? null : result[0];
+}
+
+/**
+ * 更新任务
+ */
+async function updateTask(task){
+  await DB(TABLE_TASKS).update({
+    title: task.TaskTitle,
+    content: task.TaskContent,
+    kind_id: task.KindId,
+    task_score: task.TaskScore,
+    allow_repeat_cnt: task.RepeatCount,
+    begin_on: task.BeginDateTime,
+    end_on: task.EndDateTime,
+    is_published: task.IsPublished
+  }).where('id',task.id);
 }
 
 /**
@@ -436,11 +465,13 @@ module.exports = {
   resetOrgAdmin,
 
   findTasksByOrgId,
+  findOrgTasksById,
   findMemberTasksById,
   getUserSummary,
   getAllTasksAssignToUser,
   getTaskKinds4Org,
   addTask,
+  updateTask,
   addMemberTasks,
   setTaskPublishDateTime,
   buildMemberTaskByMemberType,
