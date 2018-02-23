@@ -15,6 +15,7 @@
 
         <view class="weui-cell__hd">
           <image src="{{item.TaskImageUrl}}" />
+          <view class="weui-badge weui-badge_dot weread-image__notice" hidden='{{item.is_done || item.TaskStateId != 0}}'></view>
         </view>
 
         <view class="weui-cell__bd">

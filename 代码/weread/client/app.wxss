@@ -99,6 +99,14 @@ page {
   opacity: 0.7;
 }
 
+.weread-image__notice{
+  position: absolute;
+  top: -.4em;
+  right: -.4em;
+}
+
 .weui-cells__title-more .weui-cell {
   padding: 0px;
 }
+
+
